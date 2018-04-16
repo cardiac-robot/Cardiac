@@ -8,14 +8,19 @@ from PyQt4.QtCore import*
 
 from PyQt4.QtGui import*
 
-import ctypes
 
 class WelcomeWin(QtGui.QMainWindow):
+    #Signal declaration
+    #when initial count_down has finished
+    OnCountDownEnd = QtCore.pyqtSignal()
+    #when the system is closing
+    OnShutDown = QtCore.pyqtSignal()
 
     def __init__(self, ProjectHandler):
         super(WelcomeWin,self).__init__()
         #load project handler settings
         self.PH = ProjectHandler
+        #get screen size
         self.screen_h = self.PH.settings['res']['width']
         self.screen_v = self.PH.settings['res']['height']
         #set relative size
@@ -46,15 +51,8 @@ class WelcomeWin(QtGui.QMainWindow):
         #----------------------------------
 
     #------------------------------------SIGNAL METHODS------------------------------------------------------------------------------
+    #internal signal methods - modify self properties of the GUI window
 
-
-
-
-#def main():
-    #app=QtGui.QApplication(sys.argv)
-    #GUI=MainMenuWin()
-    #sys.exit(app.exec_())
-#A=main()
 
 if __name__ == '__main__':
     app=QtGui.QApplication(sys.argv)

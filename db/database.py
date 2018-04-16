@@ -29,9 +29,6 @@ class database(object):
         #create Robot data manager
 
 
-
-
-
 class General(object):
     def __init__(self, ProjectHandler = None):
         #load project handler
@@ -57,10 +54,6 @@ class General(object):
              'Modality': int(settings[7])
              }
         return s
-
-
-
-
 
 
 if __name__=='__main__':

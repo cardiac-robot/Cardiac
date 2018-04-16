@@ -17,7 +17,7 @@ class MainPlugin(object):
     def __init__(self, ProjectHandler = None, DataHandler = None):
         #load project handler and system settings
         self.PH = ProjectHandler
-        #create database
+        #load database object
         self.DB = DataHandler
         #launch presentation window
         self.WelcomeWin = WelcomeWin.WelcomeWin(ProjectHandler = self.PH)
@@ -33,12 +33,18 @@ class MainPlugin(object):
         self.ModalityPlugin = ModalityPlugin.ModalityPlugin(ProjectHandler = self.PH, DataHandler = self.DB)
         #create therapy plugin
         self.MainTherapyPlugin  = MainTherapyPlugin.MainTherapyPlugin(ProjectHandler = self.PH, DataHandler = self.DB)
-        #count_down
+        #set signals
+        self.set_signals()
+        #count_down in another thread
         threading.Thread(target = self.count_down).start()
-        #create database object
 
 
 
+    #this function creates all the binds between plugins through signals
+    def set_signals(self):
+        #hide window when count_down ended
+        self.WelcomeWin.OnCountDownEnd.connect(self.WelcomeWin.hide)
+        self.WelcomeWin.OnShutDown.connect(self.shutdown)
 
     #count_down to start the application
     def count_down(self, t = 1):
@@ -47,9 +53,12 @@ class MainPlugin(object):
             cont = cont -1
             print cont
             time.sleep(t)
-        self.WelcomeWin.hide()
+        #emit signal when count_down is finished
+        self.WelcomeWin.OnCountDownEnd.emit()
         time.sleep(5)
-        self.shutdown()
+        #emit signal to close the entire system
+        self.WelcomeWin.OnShutDown.emit()
 
+    #shutdown plugin
     def shutdown(self):
         self.WelcomeWin.close()
