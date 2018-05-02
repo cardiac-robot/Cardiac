@@ -119,7 +119,7 @@ class Robot(object):
         #say welcome sentence
         self.animatedSpeech.say(self.dialogs.WelcomeSentence)
         #start asyncronic routines
-        #self.start_routines()
+        self.start_routines()
 
 
     #method to run with the ashyncronic task

@@ -78,13 +78,16 @@ class SessionManager(object):
         self.set_User(US = self.UserStatus)
         self.create_session()
 
+        return self.UserStatus
+
 
     def save_user(self):
         #verify in database
         self.UserStatus = self.check_user()
         print self.UserStatus
-        #saves patient if not exists
+        #saves patient if not exists: returns True if found in database and False otherwise
         if not self.UserStatus['registered']:
+            #enters if not registers and perform the register process
             path = self.PH.paths['general']
             if os.path.exists(path + "/Patients.csv"):
                 #open file to read an write
@@ -120,7 +123,7 @@ class SessionManager(object):
                 #close the file
                 f.close()
 
-
+    #method to check if user is already on the database
     def check_user(self):
         #load general path
         path = self.PH.paths['general']

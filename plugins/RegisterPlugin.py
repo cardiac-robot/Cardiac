@@ -26,9 +26,18 @@ class RegisterPlugin(object):
 
     def onDataReceived(self):
         print self.RegisterWin.info_reg
+        #register the user
+        self.DB.General.register(user = self.RegisterWin.info_reg)
+        #check the register status
+        if self.DB.General.UserStatus['registered']:
+            #if patient already found in the database emit signal
+            self.RegisterWin.onAlreadyRegistered.emit()
+        self.shutdown()
+
 
     def onEmptyData(self):
         print("empty field")
+        #launch pop up window or label in red
 
     def CancelConnect(self, f):
         self.RegisterWin.controlbuttons_reg['Cancel'].clicked.connect(f)

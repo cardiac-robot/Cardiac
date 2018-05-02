@@ -13,7 +13,7 @@ class TherapyWin(QtGui.QMainWindow):
 
 
 
-    def __init__(self, settings = {"mode": 1}, ProjectHandler = None):
+    def __init__(self, settings = {"mode": 1, "user":"jonathan casas"}, ProjectHandler = None):
         super(TherapyWin,self).__init__()
         #load settings
         self.settings = settings
@@ -62,7 +62,7 @@ class TherapyWin(QtGui.QMainWindow):
         self.label_background2.setGeometry(QtCore.QRect(0,0,self.winsize_h,self.winsize_v))
         self.label_background2.setPixmap(QtGui.QPixmap(self.PH.paths['img'] + "/background_blue.png"))
         self.label_background2.setScaledContents(True)
-        self.label_background2.hide()
+
         #%%LCD Display
         self.time_lcd=QtGui.QLCDNumber(self.centralwidget)
         self.time_lcd.setGeometry(QtCore.QRect(0.375*self.winsize_h,0.87*self.winsize_v,0.1*self.winsize_h,0.05*self.winsize_h))
@@ -195,6 +195,8 @@ class TherapyWin(QtGui.QMainWindow):
             self.lock_cooldown()
             #lock buttons
             self.lock_thumbs()
+            #hide backgorund background_blue
+            self.label_background2.hide()
 
         elif self.settings['mode'] == 0:
             #lock paus ans stop buttons
@@ -210,7 +212,8 @@ class TherapyWin(QtGui.QMainWindow):
             self.lock_warning()
             #lock biofeedback display
             self.lock_display()
-
+            #hide backgorund background_blue
+            self.label_background2.hide()
 
 
     def set_signals(self):
@@ -223,7 +226,8 @@ class TherapyWin(QtGui.QMainWindow):
         #cooldown locked
         self.pause_button['button'].clicked.connect(self.lock_pause)
         #unlock stop button
-        self.pause_button['button'].clicked.connect(self.unlock_stop)
+        self.pause_button['button'].clicked.connect(self.set_cooldown_state)
+
         self.stop_button['button'].clicked.connect(self.unlock_play)
         self.stop_button['button'].clicked.connect(self.lock_stop)
         #unlock borg when signal triggered
@@ -240,7 +244,12 @@ class TherapyWin(QtGui.QMainWindow):
         s = "Paciente Actual: " + n
         self.label_patient_name.setText(s)
 
-    
+    def set_cooldown_state(self):
+        self.label_background.hide()
+        self.label_background2.show()
+        self.unlock_stop()
+
+
     def send_data(self, hr = 0, speed = 0, sl = 0, cad =0, imu = 0):
         self.data_ecg = hr
         self.data_cadence = cad

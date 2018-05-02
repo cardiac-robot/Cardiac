@@ -55,9 +55,11 @@ class MainPlugin(object):
         #self.MainMenuPlugin.DataConnect(f = self.DataPlugin.LaunchView)
         self.MainMenuPlugin.SettingsConnect(f = self.SettingsPlugin.LaunchView)
         self.SettingsPlugin.CancelConnect(f = self.MainMenuPlugin.LaunchView)
-        #TODO: to implement
-        self.MainMenuPlugin.LogInConnect(f = self.MainTherapyPlugin.LaunchView)
+        #TODO: to implement LoginWin
         #self.MainMenuPlugin.LogInConnect(f =self.LoginPlugin.LaunchView)
+        self.MainMenuPlugin.LogInConnect(f = self.ModalityPlugin.LaunchView)
+        self.ModalityPlugin.ModalityWin.onModalitySet.connect(self.MainTherapyPlugin.LaunchView)
+
         #
         #
         self.WelcomeWin.OnShutDown.connect(self.shutdown)

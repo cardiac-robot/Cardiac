@@ -4,8 +4,9 @@ from PyQt4 import QtGui, QtCore
 
 class RegisterWin(QtGui.QMainWindow):
     #set signals
-    onEmptyField = QtCore.pyqtSignal()
-    onData       = QtCore.pyqtSignal()
+    onEmptyField       = QtCore.pyqtSignal()
+    onData             = QtCore.pyqtSignal()
+    onAlreadyRegistered = QtCore.pyqtSignal()
 
     def __init__(self,ProjectHandler):
         super(RegisterWin, self).__init__()
@@ -60,20 +61,20 @@ class RegisterWin(QtGui.QMainWindow):
         self.patologia.setText('Patology:')
 
         self.controllabels = {}
-        self.controllabels['nombre'] = QtGui.QLineEdit(self)
-        self.controllabels['nombre'].setGeometry(QtCore.QRect(self.winsize_v*0.7, self.winsize_h*0.065, self.winsize_v*0.55, self.winsize_h*0.03))
-        self.controllabels['edad'] = QtGui.QLineEdit(self)
-        self.controllabels['edad'].setGeometry(QtCore.QRect(self.winsize_v*0.75, self.winsize_h*0.115, self.winsize_v*0.55, self.winsize_h*0.03))
-        self.controllabels['altura'] = QtGui.QLineEdit(self)
-        self.controllabels['altura'].setGeometry(QtCore.QRect(self.winsize_v*0.7, self.winsize_h*0.182, self.winsize_v*0.1, self.winsize_h*0.03))
-        self.controllabels['peso'] = QtGui.QLineEdit(self)
-        self.controllabels['peso'].setGeometry(QtCore.QRect(self.winsize_v*0.7, self.winsize_h*0.22, self.winsize_v*0.1, self.winsize_h*0.03))
-        self.controllabels['al_entrepierna'] = QtGui.QLineEdit(self)
-        self.controllabels['al_entrepierna'].setGeometry(QtCore.QRect(self.winsize_v*0.75, self.winsize_h*0.255, self.winsize_v*0.1, self.winsize_h*0.029))
-        self.controllabels['cedula'] = QtGui.QLineEdit(self)
-        self.controllabels['cedula'].setGeometry(QtCore.QRect(self.winsize_v*0.65, self.winsize_h*0.285, self.winsize_v*0.25, self.winsize_h*0.03))
-        self.controllabels['patologia']= QtGui.QLineEdit(self)
-        self.controllabels['patologia'].setGeometry(QtCore.QRect(self.winsize_v*0.72, self.winsize_h*0.32, self.winsize_v*0.3, self.winsize_h*0.030))
+        self.controllabels['name'] = QtGui.QLineEdit(self)
+        self.controllabels['name'].setGeometry(QtCore.QRect(self.winsize_v*0.7, self.winsize_h*0.065, self.winsize_v*0.55, self.winsize_h*0.03))
+        self.controllabels['age'] = QtGui.QLineEdit(self)
+        self.controllabels['age'].setGeometry(QtCore.QRect(self.winsize_v*0.75, self.winsize_h*0.115, self.winsize_v*0.55, self.winsize_h*0.03))
+        self.controllabels['height'] = QtGui.QLineEdit(self)
+        self.controllabels['height'].setGeometry(QtCore.QRect(self.winsize_v*0.7, self.winsize_h*0.182, self.winsize_v*0.1, self.winsize_h*0.03))
+        self.controllabels['weight'] = QtGui.QLineEdit(self)
+        self.controllabels['weight'].setGeometry(QtCore.QRect(self.winsize_v*0.7, self.winsize_h*0.22, self.winsize_v*0.1, self.winsize_h*0.03))
+        self.controllabels['height_c'] = QtGui.QLineEdit(self)
+        self.controllabels['height_c'].setGeometry(QtCore.QRect(self.winsize_v*0.75, self.winsize_h*0.255, self.winsize_v*0.1, self.winsize_h*0.029))
+        self.controllabels['id'] = QtGui.QLineEdit(self)
+        self.controllabels['id'].setGeometry(QtCore.QRect(self.winsize_v*0.65, self.winsize_h*0.285, self.winsize_v*0.25, self.winsize_h*0.03))
+        self.controllabels['patology']= QtGui.QLineEdit(self)
+        self.controllabels['patology'].setGeometry(QtCore.QRect(self.winsize_v*0.72, self.winsize_h*0.32, self.winsize_v*0.3, self.winsize_h*0.030))
 
         self.femenino = QtGui.QRadioButton(self)
         self.femenino.setGeometry(QtCore.QRect(self.winsize_v*0.7, self.winsize_h*0.15, self.winsize_v*0.15, self.winsize_h*0.032))
@@ -81,16 +82,23 @@ class RegisterWin(QtGui.QMainWindow):
         self.masculino = QtGui.QRadioButton(self)
         self.masculino.setGeometry(QtCore.QRect(self.winsize_v*0.85, self.winsize_h*0.15, self.winsize_v*0.15, self.winsize_h*0.032))
         self.masculino.setText("Masculino")
+        #set internal signals
+        self.set_signals()
+
+
+    def set_signals(self):
+        self.controlbuttons_reg['submit'].clicked.connect(self.submit_button)
+
 
     def submit_button(self):
         if not(self.controllabels['name'].text() =="")and not(self.controllabels['age'].text() =="") and not(self.controllabels['height'].text() =="") and not(self.controllabels['weight'].text() =="") and not(self.controllabels['height_c'].text() =="") and not(self.controllabels['id'].text() =="")and not(self.controllabels['patology'].text() ==""):
-            self.info_reg['name'] = str(self.controllabels['nombre'].text())
-            self.info_reg['age'] = str(self.controllabels['edad'].text())
-            self.info_reg['height'] = str(self.controllabels['altura'].text())
-            self.info_reg['weight'] = str(self.controllabels['peso'].text())
-            self.info_reg['height_c'] = str(self.controllabels['al_entrepierna'].text())
-            self.info_reg['id'] = str(self.controllabels['cedula'].text())
-            self.info_reg['patology'] = str(self.controllabels['patologia'].text())
+            self.info_reg['name'] = str(self.controllabels['name'].text())
+            self.info_reg['age'] = str(self.controllabels['age'].text())
+            self.info_reg['height'] = str(self.controllabels['height'].text())
+            self.info_reg['weight'] = str(self.controllabels['weight'].text())
+            self.info_reg['height_c'] = str(self.controllabels['height_c'].text())
+            self.info_reg['id'] = str(self.controllabels['id'].text())
+            self.info_reg['patology'] = str(self.controllabels['patology'].text())
             self.onData.emit()
         else:
             self.onEmptyField.emit()

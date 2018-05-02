@@ -36,17 +36,43 @@ class MainTherapyPlugin(object):
         self.useRobot= False
 
 
+
+
+
+    #set signals
+    def set_signals(self):
+        #set on start clicked signal
+        self.View.play_button['button'].clicked.connect(self.onStart)
+        #set on cooldown clicked signal
+
+        #set on stop clicked signal
+        self.View.stop_button['button'].clicked.connect(self.shutdown)
+        #set on alamarms clicked signals
+
+        #set on borg clicked signal
+        self.View.onBorgReceive.connect(self.receive_borg)
+        #set on everything is alright signal YES
+
+        #set on everything is alright signal NO
+
+    def LaunchView(self):
+        #load settings
+        mode = self.DB.General.TherapyStatus['mode']
+        user = self.DB.General.TherapyStatus['user']
+
+        self.settings['mode'] = mode
+        #if no robot condition
         if self.settings['mode'] == 0:
             #set timer for the borgscale
             self.BorgTimer = threading.Timer(self.settings['BorgSample'], self.request_borg)
-
+        #if robot condition
         elif self.settings['mode'] == 1 or self.settings['mode'] ==2:
             self.useRobot = True
             #Create robot controller
             self.robotController = RC.Controller(ProjectHandler = self.PH,
                                                  settings ={ 'IpRobot': "127.0.0.1",
-                                                              'mode'  : 1,
-                                                              'port'   : 41800,
+                                                              'mode'  : 1, # no memory
+                                                              'port'   : 43472,
                                                               'name'   : 'Palin',
                                                               'UseSpanish': True,
                                                               'MotivationTime':1*60,
@@ -66,28 +92,15 @@ class MainTherapyPlugin(object):
             #create robot monitor thread
             self.RobotMonitorThread = RobotMonitorThread(self)
 
+
+
+
         ##create view component
-        self.View = MainTherapyWin.TherapyWin(settings = {"mode": 0}, ProjectHandler = self.PH)
+        self.View = MainTherapyWin.TherapyWin(settings = {"mode": mode, "user":user}, ProjectHandler = self.PH)
+        self.View.set_patients_name(n = user)
         #set interconecting signals
         self.set_signals()
-
-    #set signals
-    def set_signals(self):
-        #set on start clicked signal
-        self.View.play_button['button'].clicked.connect(self.onStart)
-        #set on cooldown clicked signal
-
-        #set on stop clicked signal
-        self.View.stop_button['button'].clicked.connect(self.shutdown)
-        #set on alamarms clicked signals
-
-        #set on borg clicked signal
-        self.View.onBorgReceive.connect(self.receive_borg)
-        #set on everything is alright signal YES
-
-        #set on everything is alright signal NO
-
-    def LaunchView(self):
+        #show window
         self.View.show()
 
     def request_borg(self):
@@ -103,8 +116,12 @@ class MainTherapyPlugin(object):
         #read variable from the view
         b = self.View. borg_data
         print "borg: " + str(b)
+        #if using robot, send the value
+        if self.robotController:
+            self.robotController.send_borg(b)
         #restart Timer
-        self.restart_borg_timer()
+        else:
+            self.restart_borg_timer()
 
     def restart_borg_timer(self):
         print self.BorgTimer
@@ -137,14 +154,16 @@ class MainTherapyPlugin(object):
             #launch robot
             self.robotController.launch()
             #launch robot monitor
-            self.RobotMonitorThread.strat()
+            self.RobotMonitorThread.start()
         else:
             #launch borg timer
             self.BorgTimer.start()
 
     def shutdown(self):
-        #kill timer
-        self.BorgTimer.cancel()
+
+        if self.settings['mode'] == 0:
+            #kill timer
+            self.BorgTimer.cancel()
         #kill sensor manager
         self.SensorManager.shutdown()
         #kill sensor monitor thread
@@ -163,12 +182,19 @@ class RobotMonitorThread(QtCore.QThread):
         #load controller
         self.c = controller
         self.on = True
-        self.ts = 4
+        self.ts = 0.5
 
     def run(self):
         #main monitor loop
         while self.on:
             print("robot monitoring loop")
+
+            #if borgscale requested
+            if self.c.robotController.onBorgRequest.is_set():
+                self.c.request_borg()
+                self.c.robotController.onBorgRequest.clear()
+
+
             time.sleep(self.ts)
 
     def shutdown(self):

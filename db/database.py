@@ -37,7 +37,25 @@ class General(object):
         self.UserStatus = {"name" : "no data", "registered" : False}
         #create session data manager
         self.SM = SM.SessionManager(ProjectHandler = self.PH, UserStatus = self.UserStatus)
+        #therapy status
+        self.TherapyStatus = {"user": "none", "mode":0}
 
+    #register user in db
+    def register(self, user = None):
+        self.UserStatus = self.SM.register_user(id_number = user['id'],
+                                                name      = user['name'],
+                                                age       = user['age'],
+                                                gender    = "F",
+                                                height    = user['height'],
+                                                disease   = user ['patology'],
+                                                crotch    = user['height_c'],
+                                                weight    = user['weight'])
+        self.TherapyStatus['user'] = self.UserStatus['name']
+    #set modality for the therapy win
+    def set_modality(self, d):
+        self.TherapyStatus['mode'] = d
+
+    #get last theray settings from db
     def get_therapy_settings(self):
         path = self.PH.paths['general']
         #read threapy settings files
@@ -53,6 +71,8 @@ class General(object):
              'IpRobot': settings[6],
              'Modality': int(settings[7])
              }
+
+        self.TherapyStatus['mode'] = s['Modality']
         return s
 
 
