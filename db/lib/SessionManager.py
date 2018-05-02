@@ -19,8 +19,10 @@ class SessionManager(object):
         self.SensorFile.write(data)
 
     def load_event(self, t = "nd", c = "nd", v = "nd"):
+        self.EventFile = open(self.event_name, 'a')
         data = str(t) + ";" + str(c) + ";" + str(v) +";"+ str(datetime.datetime.now())+'\n'
         self.EventFile.write(data)
+        self.EventFile.close()
 
     def set_User(self, US):
         #load User status
@@ -40,11 +42,11 @@ class SessionManager(object):
         if not os.path.exists(folder):
             os.makedirs(folder)
         #create sensor and event files
-        sensor_name = folder + "/Sensors.csv"
-        event_name = folder + "/Events.csv"
+        self.sensor_name = folder + "/Sensors.csv"
+        self.event_name = folder + "/Events.csv"
         #open files
-        self.SensorFile = open(sensor_name, 'w+')
-        self.EventFile = open(event_name, 'w+')
+        self.SensorFile = open(self.sensor_name, 'w+')
+        self.EventFile = open(self.event_name, 'w+')
         #initialize headers
         self.SensorFile.write('Heartrate;Speed;Cadence;Steplenght;Inclination\n')
         self.EventFile.write('Type;Cause;value;Timestamp\n')
@@ -52,8 +54,8 @@ class SessionManager(object):
         self.SensorFile.close()
         self.EventFile.close()
         #re open as append files
-        self.SensorFile = open(sensor_name, 'a')
-        self.EventFile = open(event_name, 'a')
+        self.SensorFile = open(self.sensor_name, 'a')
+        #self.EventFile = open(event_name, 'a')
 
     def finish_session(self):
         self.SensorFile.close()

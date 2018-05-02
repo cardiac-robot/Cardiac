@@ -13,6 +13,8 @@ import RegisterPlugin
 import SettingsPlugin
 import MainTherapyPlugin
 
+
+
 class MainPlugin(object):
     def __init__(self, ProjectHandler = None, DataHandler = None):
         #load project handler and system settings
@@ -44,6 +46,20 @@ class MainPlugin(object):
     def set_signals(self):
         #hide window when count_down ended
         self.WelcomeWin.OnCountDownEnd.connect(self.WelcomeWin.hide)
+        self.WelcomeWin.OnCountDownEnd.connect(self.MainMenuPlugin.LaunchView)
+        #connect main menu buttons
+        self.MainMenuPlugin.SignInConnect(f = self.RegisterPlugin.LaunchView)
+        self.RegisterPlugin.CancelConnect(f = self.MainMenuPlugin.LaunchView)
+        self.RegisterPlugin.RegisterWin.onData.connect(self.MainMenuPlugin.LaunchView)
+        #TODO: to implement
+        #self.MainMenuPlugin.DataConnect(f = self.DataPlugin.LaunchView)
+        self.MainMenuPlugin.SettingsConnect(f = self.SettingsPlugin.LaunchView)
+        self.SettingsPlugin.CancelConnect(f = self.MainMenuPlugin.LaunchView)
+        #TODO: to implement
+        self.MainMenuPlugin.LogInConnect(f = self.MainTherapyPlugin.LaunchView)
+        #self.MainMenuPlugin.LogInConnect(f =self.LoginPlugin.LaunchView)
+        #
+        #
         self.WelcomeWin.OnShutDown.connect(self.shutdown)
 
     #count_down to start the application
