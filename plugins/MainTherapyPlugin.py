@@ -44,7 +44,7 @@ class MainTherapyPlugin(object):
         #set on start clicked signal
         self.View.play_button['button'].clicked.connect(self.onStart)
         #set on cooldown clicked signal
-
+        self.View.pause_button['button'].clicked.connect(self.onCooldown)
         #set on stop clicked signal
         self.View.stop_button['button'].clicked.connect(self.shutdown)
         #set on alamarms clicked signals
@@ -111,10 +111,10 @@ class MainTherapyPlugin(object):
 
 
     def receive_borg(self):
-        #set event borg received
-
         #read variable from the view
         b = self.View. borg_data
+        #set event borg received
+        self.DB.General.SM.load_event(t ="BorgReceive", c ="Clicked", v = str(b))
         print "borg: " + str(b)
         #if using robot, send the value
         if self.robotController:
@@ -133,7 +133,7 @@ class MainTherapyPlugin(object):
 
     def onStart(self):
         #set start therapy event
-
+        self.DB.General.SM.load_event(t ="StartRecording", c ="None", v = "None")
         #deploy resources
         self.deploy_resources()
 
@@ -143,7 +143,7 @@ class MainTherapyPlugin(object):
     def deploy_resources(self):
         #sensor manager
         #set sensors
-        self.SensorManager.set_sensors()
+        self.SensorManager.set_sensors(ecg = True, imu = False, laser = True)
         #launch sensors
         self.SensorManager.launch_sensors()
         #launch sensor monitor
@@ -159,11 +159,19 @@ class MainTherapyPlugin(object):
             #launch borg timer
             self.BorgTimer.start()
 
-    def shutdown(self):
-
+    def onCooldown(self):
+        #set cooldown event
+        self.DB.General.SM.load_event(t ="Cooldown", c ="None", v = "None")
+        #sleep sensors
+        self.SensorManager.sleep_sensors(ecg = False, imu = True, laser = True)
         if self.settings['mode'] == 0:
             #kill timer
             self.BorgTimer.cancel()
+
+
+    def shutdown(self):
+
+
         #kill sensor manager
         self.SensorManager.shutdown()
         #kill sensor monitor thread
@@ -207,12 +215,32 @@ class SensorMonitorThread(QtCore.QThread):
         #load controller
         self.c = controller
         self.on = True
-        self.ts = 4
+        self.ts = 1
 
     def run(self):
         #main monitor loop
         while self.on:
             print("sensor monitoring loop")
+            #update data
+            self.c.SensorManager.update_data()
+            #load data to the database
+            self.c.DB.General.SM.load_sensor_data(hr          = self.c.SensorManager.data['ecg'],
+                                                speed       = self.c.SensorManager.data['laser']['speed'],
+                                                cadence     = self.c.SensorManager.data['laser']['cadence'],
+                                                sl          = self.c.SensorManager.data['laser']['steplenght'],
+                                                inclination = self.c.SensorManager.data['imu'])
+            #if robot, load data to the robot
+            if self.c.useRobot:
+                self.c.robotController.send_data(self.c.SensorManager.data)
+            #load data to the display
+            print "BABABA "
+            print self.c.SensorManager.data
+            self.c.View.send_data(hr    = self.c.SensorManager.data['ecg'],
+                                  speed = self.c.SensorManager.data['laser']['speed'],
+                                  sl    = self.c.SensorManager.data['laser']['steplenght'],
+                                  cad   = self.c.SensorManager.data['laser']['cadence'],
+                                  imu   = self.c.SensorManager.data['imu'])
+
             time.sleep(self.ts)
 
     def shutdown(self):

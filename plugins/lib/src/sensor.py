@@ -5,6 +5,8 @@ class Sensor(object):
     def __init__(self):
         #Create event handler for data request
         self.onRequest = multiprocessing.Event()
+        #on sleep event
+        self.onSleep = multiprocessing.Event()
         #create event handler to finish the process
         self.onShutdown = multiprocessing.Event()
         #create Pipe
@@ -29,6 +31,15 @@ class Sensor(object):
         print "data received" + str(d)
         return d
 
+    def Sleep(self):
+        #set signal
+        self.onSleep.set()
+
+    def WakeUp(self):
+        #clear sleep signal
+        self.onSleep.clear()
+
+
     #trigger the event to stop the process
     def shutdown(self):
         self.onShutdown.set()
@@ -38,12 +49,15 @@ class Sensor(object):
     def process(self, req, exit):
         t = 0
         while not exit.is_set():
-            t = t + 1
-            print ("running process " + str(t))
-            if req.is_set():
-                print("data requested" + str(t))
-                self.send_data(t)
-            time.sleep(0.1)
+            if not self.onSleep.is_set():
+                t = t + 1
+                print ("running process " + str(t))
+                if req.is_set():
+                    print("data requested" + str(t))
+                    self.send_data(t)
+                time.sleep(0.1)
+            else:
+                self.send_data(0)
 
 
 
