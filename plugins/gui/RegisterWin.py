@@ -2,6 +2,8 @@ import sys
 
 from PyQt4 import QtGui, QtCore
 
+from ProjectHandler import ProjectHandler
+
 class RegisterWin(QtGui.QMainWindow):
     #set signals
     onEmptyField       = QtCore.pyqtSignal()
@@ -35,30 +37,30 @@ class RegisterWin(QtGui.QMainWindow):
         self.controlbuttons_reg['Cancel'] = QtGui.QPushButton('Cancel', self)
         self.controlbuttons_reg["Cancel"].setGeometry(self.winsize_v*0.95, self.winsize_h*0.38, self.winsize_v*0.33, self.winsize_h*0.08)
 
-        self.nombre = QtGui.QLabel(self)
-        self.nombre.setGeometry(QtCore.QRect(self.winsize_v*0.6, self.winsize_h*0.035, self.winsize_v*0.1, self.winsize_h*0.1))
-        self.nombre.setText('Name:')
+        self.name = QtGui.QLabel(self)
+        self.name.setGeometry(QtCore.QRect(self.winsize_v*0.6, self.winsize_h*0.035, self.winsize_v*0.1, self.winsize_h*0.1))
+        self.name.setText('Name:')
         self.age = QtGui.QLabel(self)
         self.age.setGeometry(QtCore.QRect(self.winsize_v*0.6, self.winsize_h*0.08, self.winsize_v*0.12, self.winsize_h*0.1))
         self.age.setText('Edad:')
-        self.genero = QtGui.QLabel(self)
-        self.genero.setGeometry(QtCore.QRect(self.winsize_v*0.6, self.winsize_h*0.115, self.winsize_v*0.1, self.winsize_h*0.1))
-        self.genero.setText('Gender:')
-        self.altura = QtGui.QLabel(self)
-        self.altura.setGeometry(QtCore.QRect(self.winsize_v*0.6, self.winsize_h*0.15, self.winsize_v*0.1, self.winsize_h*0.1))
-        self.altura.setText('Height:')
-        self.peso = QtGui.QLabel(self)
-        self.peso.setGeometry(QtCore.QRect(self.winsize_v*0.6, self.winsize_h*0.185, self.winsize_v*0.1, self.winsize_h*0.1))
-        self.peso.setText('Weigth:')
-        self.altura_entrepierna = QtGui.QLabel(self)
-        self.altura_entrepierna.setGeometry(QtCore.QRect(self.winsize_v*0.6, self.winsize_h*0.217, self.winsize_v*0.2, self.winsize_h*0.1))
-        self.altura_entrepierna.setText('Crotch height:')
-        self.cedula = QtGui.QLabel(self)
-        self.cedula.setGeometry(QtCore.QRect(self.winsize_v*0.6, self.winsize_h*0.25, self.winsize_v*0.1, self.winsize_h*0.1))
-        self.cedula.setText('ID:')
-        self.patologia = QtGui.QLabel(self)
-        self.patologia.setGeometry(QtCore.QRect(self.winsize_v*0.6, self.winsize_h*0.285, self.winsize_v*0.1, self.winsize_h*0.1))
-        self.patologia.setText('Patology:')
+        self.gender = QtGui.QLabel(self)
+        self.gender.setGeometry(QtCore.QRect(self.winsize_v*0.6, self.winsize_h*0.115, self.winsize_v*0.1, self.winsize_h*0.1))
+        self.gender.setText('Gender:')
+        self.height = QtGui.QLabel(self)
+        self.height.setGeometry(QtCore.QRect(self.winsize_v*0.6, self.winsize_h*0.15, self.winsize_v*0.1, self.winsize_h*0.1))
+        self.height.setText('Height:')
+        self.weight = QtGui.QLabel(self)
+        self.weight.setGeometry(QtCore.QRect(self.winsize_v*0.6, self.winsize_h*0.185, self.winsize_v*0.1, self.winsize_h*0.1))
+        self.weight.setText('Weigth:')
+        self.height_c = QtGui.QLabel(self)
+        self.height_c.setGeometry(QtCore.QRect(self.winsize_v*0.6, self.winsize_h*0.217, self.winsize_v*0.2, self.winsize_h*0.1))
+        self.height_c.setText('Crotch height:')
+        self.id = QtGui.QLabel(self)
+        self.id.setGeometry(QtCore.QRect(self.winsize_v*0.6, self.winsize_h*0.25, self.winsize_v*0.1, self.winsize_h*0.1))
+        self.id.setText('ID:')
+        self.patology = QtGui.QLabel(self)
+        self.patology.setGeometry(QtCore.QRect(self.winsize_v*0.6, self.winsize_h*0.285, self.winsize_v*0.1, self.winsize_h*0.1))
+        self.patology.setText('Patology:')
 
         self.controllabels = {}
         self.controllabels['name'] = QtGui.QLineEdit(self)
@@ -76,12 +78,12 @@ class RegisterWin(QtGui.QMainWindow):
         self.controllabels['patology']= QtGui.QLineEdit(self)
         self.controllabels['patology'].setGeometry(QtCore.QRect(self.winsize_v*0.72, self.winsize_h*0.32, self.winsize_v*0.3, self.winsize_h*0.030))
 
-        self.femenino = QtGui.QRadioButton(self)
-        self.femenino.setGeometry(QtCore.QRect(self.winsize_v*0.7, self.winsize_h*0.15, self.winsize_v*0.15, self.winsize_h*0.032))
-        self.femenino.setText("Femenino")
-        self.masculino = QtGui.QRadioButton(self)
-        self.masculino.setGeometry(QtCore.QRect(self.winsize_v*0.85, self.winsize_h*0.15, self.winsize_v*0.15, self.winsize_h*0.032))
-        self.masculino.setText("Masculino")
+        self.female = QtGui.QRadioButton(self)
+        self.female.setGeometry(QtCore.QRect(self.winsize_v*0.7, self.winsize_h*0.15, self.winsize_v*0.15, self.winsize_h*0.032))
+        self.female.setText("Femenino")
+        self.male = QtGui.QRadioButton(self)
+        self.male.setGeometry(QtCore.QRect(self.winsize_v*0.85, self.winsize_h*0.15, self.winsize_v*0.15, self.winsize_h*0.032))
+        self.male.setText("Masculino")
         #set internal signals
         self.set_signals()
 
@@ -92,16 +94,64 @@ class RegisterWin(QtGui.QMainWindow):
 
     def submit_button(self):
         if not(self.controllabels['name'].text() =="")and not(self.controllabels['age'].text() =="") and not(self.controllabels['height'].text() =="") and not(self.controllabels['weight'].text() =="") and not(self.controllabels['height_c'].text() =="") and not(self.controllabels['id'].text() =="")and not(self.controllabels['patology'].text() ==""):
-            self.info_reg['name'] = str(self.controllabels['name'].text())
-            self.info_reg['age'] = str(self.controllabels['age'].text())
-            self.info_reg['height'] = str(self.controllabels['height'].text())
-            self.info_reg['weight'] = str(self.controllabels['weight'].text())
-            self.info_reg['height_c'] = str(self.controllabels['height_c'].text())
-            self.info_reg['id'] = str(self.controllabels['id'].text())
-            self.info_reg['patology'] = str(self.controllabels['patology'].text())
-            self.onData.emit()
+            if(str(self.controllabels['name'].text()).isalpha() == True) and (str(self.controllabels['age'].text()).isdigit() == True) and (str(self.controllabels['height'].text()).isdigit() == True) and (str(self.controllabels['weight'].text()).isdigit() == True) and (str(self.controllabels['height_c'].text()).isdigit() == True) and (str(self.controllabels['id'].text()).isdigit() == True) and (str(self.controllabels['patology'].text()).isalpha() == True):
+                self.info_reg['name'] = str(self.controllabels['name'].text())
+                self.info_reg['age'] = str(self.controllabels['age'].text())
+                self.info_reg['height'] = str(self.controllabels['height'].text())
+                self.info_reg['weight'] = str(self.controllabels['weight'].text())
+                self.info_reg['height_c'] = str(self.controllabels['height_c'].text())
+                self.info_reg['id'] = str(self.controllabels['id'].text())
+                self.info_reg['patology'] = str(self.controllabels['patology'].text())
+                self.onData.emit()
+                print(self.info_reg)
+
+
+        if not (str(self.controllabels['name'].text()).isalpha() == True) and not (self.controllabels['name'].text() ==""):
+            msgBox = QtGui.QMessageBox()
+            msgBox.setText('You must enter only letters in the name')
+            msgBox.setWindowTitle('Warning')
+            ret = msgBox.exec_()
+
+        if not (str(self.controllabels['age'].text()).isdigit() == True) and not(self.controllabels['age'].text() ==""):
+            msgBox = QtGui.QMessageBox()
+            msgBox.setText('You must enter only numbers in age')
+            msgBox.setWindowTitle('Warning')
+            ret = msgBox.exec_()
+
+        if not (str(self.controllabels['height'].text()).isdigit() == True) and not(self.controllabels['height'].text() ==""):
+            msgBox = QtGui.QMessageBox()
+            msgBox.setText('You must enter only numbers in height')
+            msgBox.setWindowTitle('Warning')
+            ret = msgBox.exec_()
+
+        if not (str(self.controllabels['weight'].text()).isdigit() == True) and not(self.controllabels['weight'].text() ==""):
+            msgBox = QtGui.QMessageBox()
+            msgBox.setText('You must enter only numbers in weight')
+            msgBox.setWindowTitle('Warning')
+            ret = msgBox.exec_()
+
+        if not (str(self.controllabels['height_c'].text()).isdigit() == True)and not(self.controllabels['height_c'].text() ==""):
+            msgBox = QtGui.QMessageBox()
+            msgBox.setText('You must enter only numbers in crotch height')
+            msgBox.setWindowTitle('Warning')
+            ret = msgBox.exec_()
+
+        if not (str(self.controllabels['id'].text()).isdigit() == True) and not (self.controllabels['id'].text() ==""):
+            msgBox = QtGui.QMessageBox()
+            msgBox.setText('You must enter only numbers in id')
+            msgBox.setWindowTitle('Warning')
+            ret = msgBox.exec_()
+
+
+        if not (str(self.controllabels['patology'].text()).isalpha() == True) and not (self.controllabels['patology'].text() ==""):
+            msgBox = QtGui.QMessageBox()
+            msgBox.setText('You must enter only letters in patology')
+            msgBox.setWindowTitle('Warning')
+            ret = msgBox.exec_()
+
         else:
             self.onEmptyField.emit()
+
 
 
 
