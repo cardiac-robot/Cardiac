@@ -43,9 +43,9 @@ class Imu(sensor.Sensor):
                         e3 =  e3 * 180/np.pi
                         #saving the collected data using the thread's lock.
                         d = [e1,e2,e3]
-                        print(d)
+                        #print(d)
                         if req.is_set():
-                            print("imu data requested" + str(d))
+                            #print("imu data requested" + str(d))
                             self.send_data(d)
                     #self.update_data([e1,e2,e3],[p1,p2,p3,p4])
                     #Coupling the list format (actual data) to the csv file (backup data).

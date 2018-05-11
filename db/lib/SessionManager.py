@@ -61,6 +61,10 @@ class SessionManager(object):
         self.SensorFile.close()
         self.EventFile.close()
 
+    def set_person(self, p):
+        self.person = p
+
+
     def register_user(self, name = "nd", age = "nd", gender = "nd", height = "nd", crotch= "nd", id_number = 'nd', weight = "nd", disease = "nd" ):
         self.person = {"name"   : name,
                        "gender" : gender,
@@ -140,6 +144,7 @@ class SessionManager(object):
             for p in patients:
                 pl = p.split(";")
                 if pl[0] == self.person['id']:
+                    self.person = pl[0]
                     print "patient already existing in db"
                     return {"name" : self.person['name'], "registered" : True}
 

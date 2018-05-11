@@ -88,7 +88,12 @@ class Controller(object):
 
         #enter to the main programm loop
         while not self.onShutdown.is_set():
-
+            """
+            REQUEST DATA
+            emitting signals:
+                *onCallStaff
+                *onAlert
+            """
             #if data available read data
             if self.onSensorData.is_set():
                 #receive data from pipe
@@ -114,7 +119,12 @@ class Controller(object):
                     self.onAlert.set()
                     #ask to the patient if everything is ok
                     self.robot.alertHr1()
-
+            """
+            REQUEST BORG
+            emitting signals:
+                *onAlert
+                *onBorgConfirm
+            """
             #if borg data available
             if self.onBorgScale.is_set():
                 #receive borg data

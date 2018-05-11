@@ -15,12 +15,13 @@ class Ecg(sensor.Sensor):
 
         while not exit.is_set():
             if not self.onSleep.is_set():
+                #ECG PROCESS HERE
                 ecg_data = 70 + random.randint(0,30)
             else:
                 ecg_data = 0
 
             if req.is_set():
-                print("desde ECG OBJECT ecg data requested" + str(ecg_data))
+                #print("desde ECG OBJECT ecg data requested" + str(ecg_data))
                 self.send_data(ecg_data)
 
 

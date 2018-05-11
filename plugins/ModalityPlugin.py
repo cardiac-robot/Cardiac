@@ -18,7 +18,7 @@ class ModalityPlugin(object):
         self.ModalityWin.ControlButtons['no_robot'].clicked.connect(self.onNoRobot)
         self.ModalityWin.ControlButtons['robot'].clicked.connect(self.onRobot)
         self.ModalityWin.ControlButtons['robot_memory'].clicked.connect(self.onMemoryRobot)
-
+        self.ModalityWin.onModalitySet.connect(self.ModalityWin.hide)
 
     #show the view component
     def LaunchView(self):

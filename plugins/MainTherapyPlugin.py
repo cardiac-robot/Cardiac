@@ -73,6 +73,7 @@ class MainTherapyPlugin(object):
                                                  settings ={ 'IpRobot': "127.0.0.1",
                                                               'mode'  : 1, # no memory
                                                               'port'   : 43472,
+                                                              'alarm1': 80,
                                                               'name'   : 'Palin',
                                                               'UseSpanish': True,
                                                               'MotivationTime':1*60,
@@ -81,7 +82,6 @@ class MainTherapyPlugin(object):
                                                               'UserProfile':{ 'name': "jonathan",
                                                                               'age' : 26,
                                                                               'alarm2': 100,
-                                                                              'alarm1': 80,
                                                                               'borg_threshold':9,
                                                                               'weight': 80,
                                                                               'last_measure': {}
@@ -103,34 +103,38 @@ class MainTherapyPlugin(object):
         #show window
         self.View.show()
 
+    #Emit signal to request the borg scale
     def request_borg(self):
+        #set request borg event
+        self.DB.General.SM.load_event(t ="BorgRequest", c = "Timeout", v ="none")
         #set event borg request
         print "borg request"
         #request borg to the view
         self.View.onBorg.emit()
 
-
+    #receive borg from the interface and forward it to the event handler and robot
     def receive_borg(self):
         #read variable from the view
-        b = self.View. borg_data
+        b = self.View.borg_data
         #set event borg received
         self.DB.General.SM.load_event(t ="BorgReceive", c ="Clicked", v = str(b))
         print "borg: " + str(b)
         #if using robot, send the value
-        if self.robotController:
+        if self.useRobot:
             self.robotController.send_borg(b)
         #restart Timer
         else:
             self.restart_borg_timer()
 
+    #restart timer in no robot condition
     def restart_borg_timer(self):
-        print self.BorgTimer
+
         if self.BorgTimer:
             self.BorgTimer.cancel()
-        self.BorgTimer = threading.Timer(15, self.View.onBorg.emit)
+        self.BorgTimer = threading.Timer(15, self.request_borg)
         self.BorgTimer.start()
 
-
+    #callback method to run when start button is clicked
     def onStart(self):
         #set start therapy event
         self.DB.General.SM.load_event(t ="StartRecording", c ="None", v = "None")
@@ -159,29 +163,33 @@ class MainTherapyPlugin(object):
             #launch borg timer
             self.BorgTimer.start()
 
+    #callback method when cooldown is pressed
     def onCooldown(self):
         #set cooldown event
         self.DB.General.SM.load_event(t ="Cooldown", c ="None", v = "None")
-        #sleep sensors
+        #sleep laser an IMu sensor
         self.SensorManager.sleep_sensors(ecg = False, imu = True, laser = True)
+        #if using no robot condition, cancel the timer
         if self.settings['mode'] == 0:
             #kill timer
             self.BorgTimer.cancel()
 
-
+    #callback method to close all resources in a safe way
     def shutdown(self):
-
-
+        #stop event
+        self.DB.General.SM.load_event(t ="EndRecording", c ="None", v = "None")
         #kill sensor manager
         self.SensorManager.shutdown()
         #kill sensor monitor thread
         self.SensorMonitorThread.shutdown()
-
+        #if using robot, kill all robot resources
         if self.useRobot:
             #kill robot
             self.robotController.shutdown()
             #kill robot monitor thread
             self.RobotMonitorThread.shutdown()
+        #finish session
+        self.DB.General.SM.finish_session()
 
 #robot monitor thread
 class RobotMonitorThread(QtCore.QThread):
@@ -195,12 +203,17 @@ class RobotMonitorThread(QtCore.QThread):
     def run(self):
         #main monitor loop
         while self.on:
-            print("robot monitoring loop")
 
             #if borgscale requested
             if self.c.robotController.onBorgRequest.is_set():
                 self.c.request_borg()
                 self.c.robotController.onBorgRequest.clear()
+            #if alert has triggered
+            #if self.c.onAlert.is_set():
+                #add event
+
+                #
+
 
 
             time.sleep(self.ts)
@@ -220,7 +233,6 @@ class SensorMonitorThread(QtCore.QThread):
     def run(self):
         #main monitor loop
         while self.on:
-            print("sensor monitoring loop")
             #update data
             self.c.SensorManager.update_data()
             #load data to the database
@@ -233,8 +245,6 @@ class SensorMonitorThread(QtCore.QThread):
             if self.c.useRobot:
                 self.c.robotController.send_data(self.c.SensorManager.data)
             #load data to the display
-            print "BABABA "
-            print self.c.SensorManager.data
             self.c.View.send_data(hr    = self.c.SensorManager.data['ecg'],
                                   speed = self.c.SensorManager.data['laser']['speed'],
                                   sl    = self.c.SensorManager.data['laser']['steplenght'],

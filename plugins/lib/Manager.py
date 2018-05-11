@@ -27,11 +27,11 @@ class SensorManager(object):
             self.imu = Imu.Imu()
 
         if self.ECG:
-            print("ecg")
+
             self.ecg = Ecg.Ecg()
 
         if self.LASER:
-            print("laser")
+
             self.laser = Laser.Laser()
 
     #sleep sensors
@@ -96,10 +96,10 @@ class SensorManager(object):
             self.imu.shutdown()
 
         if self.LASER:
-            self.Laser..shutdown()
+            self.laser.shutdown()
 
         if self.ECG:
-            self.Ecg.shutdown()
+            self.ecg.shutdown()
 
 if __name__ == '__main__':
     sm = SensorManager()

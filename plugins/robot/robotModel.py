@@ -112,7 +112,7 @@ class Robot(object):
     #start behavior method
     def start_behavior(self):
         if self.db:
-            self.db.General.SM.load_event(t ="robot_welcome", c ="start", v="WelcomeSentence")
+            self.db.General.SM.load_event(t ="RobotWelcome", c ="Start", v="WelcomeSentence")
 
         #make the robot stand up
         self.motion.wakeUp()
@@ -125,7 +125,7 @@ class Robot(object):
     #method to run with the ashyncronic task
     def motivation(self):
         if self.db:
-            self.db.General.SM.load_event(t ="motivation", c = "timeout", v ="none")
+            self.db.General.SM.load_event(t ="Motivation", c = "Timeout", v ="None")
         #request the dialog manager the random motivation sentence
         s = self.dialogs.get_motivation_sentence()
         self.tts.say(s)
@@ -134,9 +134,9 @@ class Robot(object):
     def ask_borg(self):
         if self.controller:
             self.controller.onBorgRequest.set()
-
-        if self.db:
-            self.db.General.SM.load_event(t ="borg_request", c = "timeout", v ="none")
+        #event loaded in the theray plugin
+        #if self.db:
+        #    self.db.General.SM.load_event(t ="BorgRequest", c = "Timeout", v ="none")
         #request the dialog mnager the random borg sentence
         s = self.dialogs.get_borg_sentence()
         self.tts.say(s)
@@ -157,16 +157,14 @@ class Robot(object):
 
    #ask borg again behavior
     def ask_borg_again(self):
-
         s = self.dialogs.ask_borg_again()
         self.tts.say(s)
 
     #alert 1 behavior
     def alertHr1(self):
         if self.db:
-            self.db.General.SM.load_event(t = "alert", c = "cause", v = "none")
+            self.db.General.SM.load_event(t = "Alert1", c = "HighHr", v = "None")
 
-        print("Alert")
         self.tts.say(self.dialogs.sentenceWarning)
         self.motion.rest()
 
@@ -174,13 +172,16 @@ class Robot(object):
     #TODO: set redundancy control
     def alertHr2(self):
         if self.db:
-            self.db.General.SM.load_event(t = "alert", c = "cause", v = "none")
+            self.db.General.SM.load_event(t = "Alert2", c = "HighHr", v = "none")
 
         self.tts.say(self.dialogs.sentenceAlertHR)
 
     #call doctor behavior
     def callMedicalStaff(self):
         print("call doctor behavior")
+        if self.db:
+            self.db.General.SM.load_event(t = "CallMedicalStaff", c = "HighHr", v = "none")
+
         self.tts.say(self.dialogs.sentenceWarning)
 
 
@@ -189,6 +190,7 @@ class Robot(object):
 
     #shutdown method, stop routines and get to rest position
     def shutdown(self):
+
         self.animatedSpeech.say(self.dialogs.ByeSentence)
         self.stop_routines()
         self.motion.rest()

@@ -20,9 +20,8 @@ class Laser(sensor.Sensor):
             else:
                 laser_data = {"speed": 0.0, "cadence": 0.0, "steplenght":0.0}
 
-
             if req.is_set():
-                print("laser data requested" + str(laser_data))
+                #print("laser data requested" + str(laser_data))
                 self.send_data(laser_data)
 
 

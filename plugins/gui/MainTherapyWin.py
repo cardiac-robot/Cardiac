@@ -476,25 +476,23 @@ class tester(object):
 
 
         self.timer = threading.Timer(15, self.main.onBorg.emit)
-        print(self.timer)
+        #print(self.timer)
         self.timer.start()
-        print(self.timer)
+        #print(self.timer)
         self.main.stop_button['button'].clicked.connect(self.shutdown)
 
 
     def get_borg(self):
-        print "borg received" + str(self.main.borg_data)
+        #print "borg received" + str(self.main.borg_data)
         self.restart_timer()
 
     def restart_timer(self):
-        print self.timer
         if self.timer:
             self.timer.cancel()
         self.timer = threading.Timer(15, self.main.onBorg.emit)
         self.timer.start()
 
     def shutdown(self):
-        print "sj"
         if self.timer:
             self.timer.cancel()
 

@@ -12,6 +12,7 @@ import ModalityPlugin
 import RegisterPlugin
 import SettingsPlugin
 import MainTherapyPlugin
+import LoginPlugin
 
 
 
@@ -31,6 +32,8 @@ class MainPlugin(object):
         self.RegisterPlugin = RegisterPlugin.RegisterPlugin(ProjectHandler = self.PH, DataHandler = self.DB)
         #create settings plugin
         self.SettingsPlugin = SettingsPlugin.SettingsPlugin(ProjectHandler = self.PH, DataHandler = self.DB)
+        #create LoginWin
+        self.LoginPlugin = LoginPlugin.LoginPlugin(ProjectHandler = self.PH, DataHandler = self.DB)
         #create modality plugin
         self.ModalityPlugin = ModalityPlugin.ModalityPlugin(ProjectHandler = self.PH, DataHandler = self.DB)
         #create therapy plugin
@@ -65,8 +68,8 @@ class MainPlugin(object):
         #[2] SettingsPlugin connect
         self.MainMenuPlugin.SettingsConnect(f = self.SettingsPlugin.LaunchView)
         #[3] Log in plugin connect
-        ##TODO: to implement LoginWin
-        #self.MainMenuPlugin.LogInConnect(f =self.LoginPlugin.LaunchView)
+        #TODO: to implement LoginWin
+        self.MainMenuPlugin.LogInConnect(f =self.LoginPlugin.LaunchView)
         self.MainMenuPlugin.LogInConnect(f = self.ModalityPlugin.LaunchView)
         #[4] DataPlugin connect
         #TODO: to implement
@@ -75,7 +78,7 @@ class MainPlugin(object):
         REGISTER STATE: register functionality defined
         register win has two signals
         [1]CancelConnect: when user cancel the register process, the window should close and reopen the main menu
-        [2]onDara: when there is data available and the register can be performed, the window should close and reopen the main menu
+        [2]onData: when there is data available and the register can be performed, the window should close and reopen the main menu
         """
         #[1] connect cancel button to relaunch the main menu and close the Register window
         self.RegisterPlugin.CancelConnect(f = self.MainMenuPlugin.LaunchView)
@@ -83,13 +86,32 @@ class MainPlugin(object):
         self.RegisterPlugin.RegisterWin.onData.connect(self.MainMenuPlugin.LaunchView)
         """
         SETTINGS STATE: settings has similar behavior as the Register, has two signals
-        [1] 
-        [2]
+        [1] CancelConnect: when settings process has been canceled, the window should close and reopen main menu
+        [2] onData: when data has been vaildated and the process finished, reopen the main menu
         """
-
+        #[1] connect cancel button to reopen main window
         self.SettingsPlugin.CancelConnect(f = self.MainMenuPlugin.LaunchView)
-        self.ModalityPlugin.ModalityWin.onModalitySet.connect(self.MainTherapyPlugin.LaunchView)
+        #[2]TODO: OnData validation signal implementation
+        #self.SettingsPlugin.SettingsWin.onData.connect(self.MainMenuPlugin.LaunchView)
+        """
+        LOG IN STATE: the login process should open a LoginWin and have two signals
+        [1]onNotRegistered: if not registered, the register window should be displayed and LoginWin closed
+        [2]onRegistered: if registered, the ModalityWin should be opened
+        """
+        #[1]TODO: integrate LoginWin
+        self.LoginPlugin.LogInWin.onRegistered.connect(self.ModalityPlugin.LaunchView)
+        self.LoginPlugin.LogInWin.onNotRegistered.connect(self.RegisterPlugin.LaunchView)
+        #[2]TODO if registered open the modality win
 
+        """
+        MODALITY STATE: the modality win emit three signals that set the configuration of the MainTherapyPlugin
+        [1]onModalitySet: closes the window and launch the MainTherapyPlugin
+        """
+        #[1]connect MainTherapyPlugin to the onModalitySet signal
+        self.ModalityPlugin.ModalityWin.onModalitySet.connect(self.MainTherapyPlugin.LaunchView)
+        """
+        THERAPY STATE
+        """
 
 
     #count_down to start the application
