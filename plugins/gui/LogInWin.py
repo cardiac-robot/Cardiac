@@ -62,6 +62,8 @@ class LogInWin(QtGui.QMainWindow):
         else:
             self.onEmptyField.emit()
 
+        self.close()
+
 
 def main():
     app = QtGui.QApplication(sys.argv)

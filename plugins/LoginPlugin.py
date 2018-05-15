@@ -19,20 +19,11 @@ class LoginPlugin(object):
 
     def idReceived(self):
         i = self.LogInWin.id
-        p = {"name"   : "",
-             "gender" : "",
-                       "age"    : "",
-                       "height" : "",
-                       "weight" : "",
-                       "crotch" : "",
-                       "disease": "",
-                       "id"     : i
-                       }
-        self.DB.General.SM.set_person(p  = p)
-        #self.DB.General.SM.set_User(US  =)
-        status = self.DB.General.SM.check_user()
-        self.DB.General.SM.set_User(US  = status)
+
+        status = self.DB.General.login(i = i)
+        #print status
         if status["registered"]:
-            self.LoginWin.onRegistered.emit()
+            self.DB.General.SM.create_session()
+            self.LogInWin.onRegistered.emit()
         else:
-            self.LoginWin.onNotRegistered.emit()
+            self.LogInWin.onNotRegistered.emit()

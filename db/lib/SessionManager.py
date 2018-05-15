@@ -144,7 +144,8 @@ class SessionManager(object):
             for p in patients:
                 pl = p.split(";")
                 if pl[0] == self.person['id']:
-                    self.person = pl[0]
+                    self.person['name'] = pl[1]
+                    print self.person
                     print "patient already existing in db"
                     return {"name" : self.person['name'], "registered" : True}
 

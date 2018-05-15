@@ -60,6 +60,8 @@ class MainTherapyPlugin(object):
         mode = self.DB.General.TherapyStatus['mode']
         user = self.DB.General.TherapyStatus['user']
 
+        print "from therapy " + str(self.DB.General.TherapyStatus)
+
         self.settings['mode'] = mode
         #if no robot condition
         if self.settings['mode'] == 0:

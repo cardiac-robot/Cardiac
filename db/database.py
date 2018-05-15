@@ -51,6 +51,26 @@ class General(object):
                                                 crotch    = user['height_c'],
                                                 weight    = user['weight'])
         self.TherapyStatus['user'] = self.UserStatus['name']
+
+    #log the user in
+    def login(self, i):
+        p = {"name"   : "",
+             "gender" : "",
+                       "age"    : "",
+                       "height" : "",
+                       "weight" : "",
+                       "crotch" : "",
+                       "disease": "",
+                       "id"     : i
+                       }
+        self.SM.set_person(p  = p)
+        #self.DB.General.SM.set_User(US  =)
+        status = self.SM.check_user()
+        self.SM.set_User(US  = status)
+        self.TherapyStatus['user'] = status['name']
+        return status
+
+
     #set modality for the therapy win
     def set_modality(self, d):
         self.TherapyStatus['mode'] = d

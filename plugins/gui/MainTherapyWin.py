@@ -189,6 +189,7 @@ class TherapyWin(QtGui.QMainWindow):
             #lock paus ans stop buttons
             self.lock_pause()
             self.lock_stop()
+            self.lock_exit()
             #lock borg buttons
             self.lock_borg()
             #lock cooldown
@@ -202,6 +203,7 @@ class TherapyWin(QtGui.QMainWindow):
             #lock paus ans stop buttons
             self.lock_pause()
             self.lock_stop()
+            self.lock_exit()
             #lock borg buttons
             self.lock_borg()
             #lock cooldown
@@ -228,7 +230,7 @@ class TherapyWin(QtGui.QMainWindow):
         #unlock stop button
         self.pause_button['button'].clicked.connect(self.set_cooldown_state)
 
-        self.stop_button['button'].clicked.connect(self.unlock_play)
+        self.stop_button['button'].clicked.connect(self.unlock_exit)
         self.stop_button['button'].clicked.connect(self.lock_stop)
         #unlock borg when signal triggered
         self.onBorg.connect(self.unlock_borg)
@@ -330,6 +332,16 @@ class TherapyWin(QtGui.QMainWindow):
         self.stop_button['button'].show()
         self.stop_button['labelon'].show()
         self.stop_button['label'].hide()
+
+    #lock exit button
+    def lock_exit(self):
+        self.exit_button['button'].hide()
+        self.exit_button['label'].hide()
+
+    #unlock exit button
+    def unlock_exit(self):
+        self.exit_button['button'].show()
+        self.exit_button['label'].show()
 
     #lock borg buttons
     def lock_borg(self):

@@ -2,7 +2,6 @@ import sys
 
 from PyQt4 import QtGui, QtCore
 
-from ProjectHandler import ProjectHandler
 
 class RegisterWin(QtGui.QMainWindow):
     #set signals

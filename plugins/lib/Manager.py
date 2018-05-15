@@ -27,11 +27,9 @@ class SensorManager(object):
             self.imu = Imu.Imu()
 
         if self.ECG:
-
             self.ecg = Ecg.Ecg()
 
         if self.LASER:
-
             self.laser = Laser.Laser()
 
     #sleep sensors

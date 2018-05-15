@@ -70,7 +70,7 @@ class MainPlugin(object):
         #[3] Log in plugin connect
         #TODO: to implement LoginWin
         self.MainMenuPlugin.LogInConnect(f =self.LoginPlugin.LaunchView)
-        self.MainMenuPlugin.LogInConnect(f = self.ModalityPlugin.LaunchView)
+        #self.MainMenuPlugin.LogInConnect(f = self.ModalityPlugin.LaunchView)
         #[4] DataPlugin connect
         #TODO: to implement
         #self.MainMenuPlugin.DataConnect(f = self.DataPlugin.LaunchView)
