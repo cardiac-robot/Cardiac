@@ -217,7 +217,7 @@ class TherapyWin(QtGui.QMainWindow):
             #hide backgorund background_blue
             self.label_background2.hide()
 
-
+    #set signals
     def set_signals(self):
         #start stop signal controller
         self.play_button['button'].clicked.connect(self.lock_play)
@@ -242,6 +242,7 @@ class TherapyWin(QtGui.QMainWindow):
 
         self.send_data()
 
+    
     def set_patients_name(self, n):
         s = "Paciente Actual: " + n
         self.label_patient_name.setText(s)

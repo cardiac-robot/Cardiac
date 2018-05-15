@@ -7,6 +7,7 @@ class Ecg(sensor.Sensor):
     def __init__(self, settings = {"port":'COM8', "sample":1}):
         super(Ecg, self).__init__()
         #load settings
+        print settings
         self.settings = settings
 
     #overrride function

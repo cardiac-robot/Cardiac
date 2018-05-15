@@ -98,6 +98,7 @@ class SettingsWin(QtGui.QMainWindow):
     #set internal signals method
     def set_signals(self):
         self.ControlButtons['apply'].clicked.connect(self.apply_button)
+        self.onData.connect(self.close)
 
     #method called when apply button is pressed
     def apply_button(self):

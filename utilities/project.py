@@ -17,6 +17,24 @@ class ProjectHandler(object):
         self.settings = settings
         #get root directory
         self.root = os.getcwd()
+        #flag for settings
+        self.OnSettings = False
+        #general settings variable
+        self.GeneralSettings = {'robot': {'IpRobot'       : "127.0.0.1",
+                                          'port'          : 45335,
+                                          'mode'          : 1,
+                                          'name'          : "Palin",
+                                          'UseSpanish'    : True,
+                                          'MotivationTime': 1*60,
+                                          'BorgTime'      : 2*60,
+                                          'useMemory'     : False,
+                                          'UserProfile'   : {}
+                                         },
+                                'ecg'  : {"port" : 'COM8', "sample" : 1},
+                                'imu'  : {"port" : 'COM8', "sample" : 1},
+                                'laser': {"port" : 'COM8', "sample" : 1, 'crotch': 0.8},
+                                'therapy':{'BorgSample' : 20}
+                                }
         #paths dcitionary
         self.paths = {
 						'db'  			  : '/db',
@@ -38,6 +56,21 @@ class ProjectHandler(object):
         #print all info generated
         if log:
             self.print_info()
+
+    #load general settings
+    def load_general_settings(self, s):
+        self.GeneralSettings['ecg']['sample']    = s['ecg_sample']
+        self.GeneralSettings['ecg']['port']      = s['ecg_port']
+        self.GeneralSettings['imu']['sample']    = s['imu_sample']
+        self.GeneralSettings['imu']['port']      = s['imu_port']
+        self.GeneralSettings['laser']['sample']  = s['laser_sample']
+        self.GeneralSettings['laser']['port']    = s['laser_port']
+        self.GeneralSettings['robot']['IpRobot'] = s['IpRobot']
+        self.OnSettings = True
+
+    #load detailed settings
+    def load_advanced_settings(self,s):
+        print('advanced settings')
 
     #method that prints all the info and paths generated in the object
     def print_info(self):

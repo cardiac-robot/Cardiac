@@ -144,8 +144,17 @@ class SessionManager(object):
             for p in patients:
                 pl = p.split(";")
                 if pl[0] == self.person['id']:
-                    self.person['name'] = pl[1]
-                    print self.person
+                    #load personf info
+                    self.person['name']           = pl[1]
+                    self.person['gender']         = pl[2]
+                    self.person['age']            = pl[3]
+                    self.person['height']         = pl[4]
+                    self.person['weight']         = pl[5]
+                    self.person['crotch']         = pl[6]
+                    self.person['disease']        = pl[7]
+                    self.person['alarm1']         = 50
+                    self.person['alarm2']         = 80
+                    self.person['borg_threshold'] = 7
                     print "patient already existing in db"
                     return {"name" : self.person['name'], "registered" : True}
 

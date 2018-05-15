@@ -7,6 +7,7 @@ class Laser(sensor.Sensor):
     def __init__(self, settings = {"port":'COM8', "sample":1, "crotch":0.68}):
         super(Laser, self).__init__()
         #load settings
+        print settings
         self.settings = settings
 
     #overrride function

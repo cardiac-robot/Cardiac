@@ -24,7 +24,11 @@ class SettingsPlugin(object):
 
     #callback function when onData signal is emitted
     def onDataReceived(self):
-        print self.SettingsWin.inf_settings
+        #get settings from the window
+        s = self.SettingsWin.inf_settings
+        #load general settings to the ProjectHandler
+        self.PH.load_general_settings(s = s)
+        
 
     #callback function when onEmptyField signal is emitted
     def onEmptyData(self):

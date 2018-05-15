@@ -19,6 +19,7 @@ Robot ./
 """
 import lib.SessionManager as SM
 import os
+
 class database(object):
     def __init__(self, ProjectHandler = None):
         print("database created and launched")

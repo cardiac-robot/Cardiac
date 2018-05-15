@@ -8,6 +8,7 @@ class Imu(sensor.Sensor):
     def __init__(self, settings = {"port":'/dev/ttyACM0', "sample":1}):
         super(Imu, self).__init__()
         #load settings
+        print settings
         self.settings = settings
         #Default debug provided by InvenSense.
         self.__debug = Lec_imu.debug_packet_viewer()

@@ -27,11 +27,6 @@ class MainTherapyPlugin(object):
         self.PH = ProjectHandler
         #load database manager
         self.DB = DataHandler
-        #creates sensor manager resources
-        #create sensor manager
-        self.SensorManager = M.SensorManager()
-        #create sensor monitor thread
-        self.SensorMonitorThread = SensorMonitorThread(self)
         #creates robot resources
         self.useRobot= False
 
@@ -59,37 +54,29 @@ class MainTherapyPlugin(object):
         #load settings
         mode = self.DB.General.TherapyStatus['mode']
         user = self.DB.General.TherapyStatus['user']
-
-        print "from therapy " + str(self.DB.General.TherapyStatus)
+        #creates sensor manager resources
+        #get crotch for laser settings
+        self.PH.GeneralSettings['laser']['crotch'] = self.DB.General.SM.person['crotch']
+        #create sensor manager
+        self.SensorManager = M.SensorManager(imu   = self.PH.GeneralSettings['imu'],
+                                             ecg   = self.PH.GeneralSettings['ecg'],
+                                             laser = self.PH.GeneralSettings['laser'])
+        #create sensor monitor thread
+        self.SensorMonitorThread = SensorMonitorThread(self)
 
         self.settings['mode'] = mode
         #if no robot condition
         if self.settings['mode'] == 0:
             #set timer for the borgscale
-            self.BorgTimer = threading.Timer(self.settings['BorgSample'], self.request_borg)
+            self.BorgTimer = threading.Timer(self.PH.GeneralSettings['therapy']['BorgSample'], self.request_borg)
         #if robot condition
         elif self.settings['mode'] == 1 or self.settings['mode'] ==2:
             self.useRobot = True
+            #get user profile
+            self.PH.GeneralSettings['robot']['UserProfile'] = self.DB.General.SM.person
             #Create robot controller
             self.robotController = RC.Controller(ProjectHandler = self.PH,
-                                                 settings ={ 'IpRobot': "127.0.0.1",
-                                                              'mode'  : 1, # no memory
-                                                              'port'   : 43472,
-                                                              'alarm1': 80,
-                                                              'name'   : 'Palin',
-                                                              'UseSpanish': True,
-                                                              'MotivationTime':1*60,
-                                                              'BorgTime':2*60,
-                                                              'useMemory': False,
-                                                              'UserProfile':{ 'name': "jonathan",
-                                                                              'age' : 26,
-                                                                              'alarm2': 100,
-                                                                              'borg_threshold':9,
-                                                                              'weight': 80,
-                                                                              'last_measure': {}
-                                                                             }
-                                                            }
-
+                                                 settings       = self.PH.GeneralSettings['robot']
                                                 )
             #create robot monitor thread
             self.RobotMonitorThread = RobotMonitorThread(self)

@@ -6,8 +6,12 @@ import time
 import random
 
 class SensorManager(object):
-    def __init__(self):
+    def __init__(self, imu, ecg, laser):
         #sensor control variable
+        self.settings_imu = imu
+        self.settings_ecg = ecg
+        self.settings_laser = laser
+        #control variables
         self.IMU =False
         self.LASER = False
         self.ECG =False
@@ -24,13 +28,13 @@ class SensorManager(object):
         self.LASER = laser
         self.ECG = ecg
         if self.IMU:
-            self.imu = Imu.Imu()
+            self.imu = Imu.Imu(settings = self.settings_imu)
 
         if self.ECG:
-            self.ecg = Ecg.Ecg()
+            self.ecg = Ecg.Ecg(settings = self.settings_ecg)
 
         if self.LASER:
-            self.laser = Laser.Laser()
+            self.laser = Laser.Laser(settings = self.settings_laser)
 
     #sleep sensors
     def sleep_sensors(self, ecg = False, imu = False, laser = False):

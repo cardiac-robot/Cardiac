@@ -91,18 +91,17 @@ class MainPlugin(object):
         """
         #[1] connect cancel button to reopen main window
         self.SettingsPlugin.CancelConnect(f = self.MainMenuPlugin.LaunchView)
-        #[2]TODO: OnData validation signal implementation
-        #self.SettingsPlugin.SettingsWin.onData.connect(self.MainMenuPlugin.LaunchView)
+        #[2] OnData validation signal implementation
+        self.SettingsPlugin.SettingsWin.onData.connect(self.MainMenuPlugin.LaunchView)
         """
         LOG IN STATE: the login process should open a LoginWin and have two signals
         [1]onNotRegistered: if not registered, the register window should be displayed and LoginWin closed
         [2]onRegistered: if registered, the ModalityWin should be opened
         """
-        #[1]TODO: integrate LoginWin
-        self.LoginPlugin.LogInWin.onRegistered.connect(self.ModalityPlugin.LaunchView)
+        #[1] integrate LoginWin
         self.LoginPlugin.LogInWin.onNotRegistered.connect(self.RegisterPlugin.LaunchView)
-        #[2]TODO if registered open the modality win
-
+        #[2]if registered open the modality win
+        self.LoginPlugin.LogInWin.onRegistered.connect(self.ModalityPlugin.LaunchView)
         """
         MODALITY STATE: the modality win emit three signals that set the configuration of the MainTherapyPlugin
         [1]onModalitySet: closes the window and launch the MainTherapyPlugin
