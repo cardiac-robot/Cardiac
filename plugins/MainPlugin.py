@@ -13,6 +13,7 @@ import RegisterPlugin
 import SettingsPlugin
 import MainTherapyPlugin
 import LoginPlugin
+import RecognitionPlugin
 
 
 
@@ -36,6 +37,8 @@ class MainPlugin(object):
         self.LoginPlugin = LoginPlugin.LoginPlugin(ProjectHandler = self.PH, DataHandler = self.DB)
         #create modality plugin
         self.ModalityPlugin = ModalityPlugin.ModalityPlugin(ProjectHandler = self.PH, DataHandler = self.DB)
+        #create recognition plugin
+        self.RecognitionPlugin = RecognitionPlugin.RecognitionPlugin(ProjectHandler = self.PH, DataHandler = self.DB)
         #create therapy plugin
         self.MainTherapyPlugin  = MainTherapyPlugin.MainTherapyPlugin(ProjectHandler = self.PH, DataHandler = self.DB)
         #set signals
@@ -69,8 +72,8 @@ class MainPlugin(object):
         self.MainMenuPlugin.SettingsConnect(f = self.SettingsPlugin.LaunchView)
         #[3] Log in plugin connect
         #TODO: to implement LoginWin
-        self.MainMenuPlugin.LogInConnect(f =self.LoginPlugin.LaunchView)
-        #self.MainMenuPlugin.LogInConnect(f = self.ModalityPlugin.LaunchView)
+        #self.MainMenuPlugin.LogInConnect(f =self.LoginPlugin.LaunchView)
+        self.MainMenuPlugin.LogInConnect(f = self.ModalityPlugin.LaunchView)
         #[4] DataPlugin connect
         #TODO: to implement
         #self.MainMenuPlugin.DataConnect(f = self.DataPlugin.LaunchView)
@@ -101,13 +104,21 @@ class MainPlugin(object):
         #[1] integrate LoginWin
         self.LoginPlugin.LogInWin.onNotRegistered.connect(self.RegisterPlugin.LaunchView)
         #[2]if registered open the modality win
-        self.LoginPlugin.LogInWin.onRegistered.connect(self.ModalityPlugin.LaunchView)
+        #self.LoginPlugin.LogInWin.onRegistered.connect(self.ModalityPlugin.LaunchView)
+        self.LoginPlugin.LogInWin.onRegistered.connect(self.MainTherapyPlugin.LaunchView)
         """
         MODALITY STATE: the modality win emit three signals that set the configuration of the MainTherapyPlugin
         [1]onModalitySet: closes the window and launch the MainTherapyPlugin
         """
         #[1]connect MainTherapyPlugin to the onModalitySet signal
-        self.ModalityPlugin.ModalityWin.onModalitySet.connect(self.MainTherapyPlugin.LaunchView)
+        #self.ModalityPlugin.ModalityWin.onModalitySet.connect(self.MainTherapyPlugin.LaunchView)
+        self.ModalityPlugin.ModalityWin.onModalitySet.connect(self.LoginPlugin.LaunchView)
+        self.ModalityPlugin.ModalityWin.onMemory.connect(self.RecognitionPlugin.LaunchView)
+
+        """
+        RECOGNITION STATE
+        """
+        self.RecognitionPlugin.RecognitionWin.onRegistered.connect(self.MainTherapyPlugin.LaunchView)
         """
         THERAPY STATE
         """

@@ -50,8 +50,6 @@ class LogInWin(QtGui.QMainWindow):
         self.submit.clicked.connect(self.submit_button)
 
     def submit_button(self):
-
-
         if not (str(self.id_text.text()) == ""):
             self.id = str(self.id_text.text())
             #self.a = self.id.isalpha()

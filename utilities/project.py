@@ -17,11 +17,12 @@ class ProjectHandler(object):
         self.settings = settings
         #get root directory
         self.root = os.getcwd()
+        #self.root = self.root.replace("/","\\")
         #flag for settings
         self.OnSettings = False
         #general settings variable
         self.GeneralSettings = {'robot': {'IpRobot'       : "127.0.0.1",
-                                          'port'          : 45335,
+                                          'port'          : 33199,#9559
                                           'mode'          : 1,
                                           'name'          : "Palin",
                                           'UseSpanish'    : True,

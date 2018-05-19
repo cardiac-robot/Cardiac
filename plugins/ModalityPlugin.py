@@ -40,4 +40,4 @@ class ModalityPlugin(object):
     def onMemoryRobot(self):
         print("memory robot")
         self.DB.General.set_modality(2)
-        self.ModalityWin.onModalitySet.emit()
+        self.ModalityWin.onMemory.emit()

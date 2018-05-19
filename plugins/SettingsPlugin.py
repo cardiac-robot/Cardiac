@@ -28,7 +28,7 @@ class SettingsPlugin(object):
         s = self.SettingsWin.inf_settings
         #load general settings to the ProjectHandler
         self.PH.load_general_settings(s = s)
-        
+        print"SS"
 
     #callback function when onEmptyField signal is emitted
     def onEmptyData(self):

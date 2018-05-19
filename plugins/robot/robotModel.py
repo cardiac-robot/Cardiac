@@ -7,7 +7,7 @@ import sys
 import time
 import functools
 import resources.dialogs as dialogs
-
+import threading
 
 class Robot(object):
     def __init__(self, settings = { 'IpRobot': "192.168.0.100",
@@ -54,6 +54,7 @@ class Robot(object):
 
     #connect to the robot through session
     def connect_session(self):
+        print self.settings['IpRobot']
         self.session.connect("tcp://" + self.settings['IpRobot'] + ":" + str(self.settings['port']))
 
 
@@ -116,11 +117,16 @@ class Robot(object):
 
         #make the robot stand up
         self.motion.wakeUp()
-        #say welcome sentence
-        self.animatedSpeech.say(self.dialogs.WelcomeSentence)
+        #run behavior   cardio-7fad01
+        threading.Thread(target = self.run_welcome_behavior).start()
+
+
+    #behavior fucntion
+    def run_welcome_behavior(self):
+        #run behavior manager
+        self.behavior.runBehavior("cardio-7fad01/Welcome")
         #start asyncronic routines
         self.start_routines()
-
 
     #method to run with the ashyncronic task
     def motivation(self):
