@@ -29,6 +29,7 @@ class ProjectHandler(object):
                                           'MotivationTime': 1*60,
                                           'BorgTime'      : 2*60,
                                           'useMemory'     : False,
+                                          'nao_image'     : '/home/nao/dev/images',
                                           'UserProfile'   : {}
                                          },
                                 'ecg'  : {"port" : 'COM8', "sample" : 1},
@@ -44,9 +45,12 @@ class ProjectHandler(object):
                         'general'         : '/db/general',
                         'robot_db'        : '/db/robot',
                         'db_lib'          : '/db/lib',
+                        'current_user'    : '/',
 						'plugin'		  : '/plugins',
 						'gui' 			  : '/plugins/gui',
 						'img'             : '/plugins/gui/img',
+                        'recognition'     : '/db/recognition',
+                        'recog_analysis'  : '/db/recognition/AnalysisFolder',
 						'sensor_lib'      : '/plugins/lib',
 						'robotController' : '/plugins/robot',
                         'robotBehaviors'  : '/plugins/robot/behaviors',
@@ -69,6 +73,8 @@ class ProjectHandler(object):
         self.GeneralSettings['robot']['IpRobot'] = s['IpRobot']
         self.OnSettings = True
 
+    def set_user_folder(self,f):
+        self.paths['current_user'] =f
     #load detailed settings
     def load_advanced_settings(self,s):
         print('advanced settings')

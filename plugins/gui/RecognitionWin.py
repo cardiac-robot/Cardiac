@@ -68,6 +68,7 @@ class RecognitionWin(QtGui.QMainWindow):
         self.ControlButtons['No'].clicked.connect(self.unlock_id_request)
         self.ControlButtons['Yes'].clicked.connect(self.onSuccess.emit)
         self.onConfirm.connect(self.unlock_confirmation)
+        self.onFailed.connect(self.unlock_id_request)
 
     def set_initial_state(self):
         self.ControlButtons['StartRecog'].show()

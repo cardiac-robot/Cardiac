@@ -51,6 +51,7 @@ class General(object):
                                                 disease   = user ['patology'],
                                                 crotch    = user['height_c'],
                                                 weight    = user['weight'])
+
         self.TherapyStatus['user'] = self.UserStatus['name']
 
     #log the user in

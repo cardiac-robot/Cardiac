@@ -28,15 +28,75 @@ class SessionManager(object):
         #load User status
         self.UserStatus = US
 
+    def check_attending_time(self):
+        #p = self.RegisterStatus[1]
+        p = self.load_user_times()
+        isSameTime = False
+        period = 5
+        stddev_time = 15
+
+        for t in p:
+            if self.date.isoweekday() == t.isoweekday():
+                ts = self.find_time_slot(t.isoweekday(), t.time().strftime('%H:%M:%S'), period)
+                cur_ts = self.find_time_slot(self.date.isoweekday(), self.date.time().strftime('%H:%M:%S'), period)
+                if cur_ts >= ts - (stddev_time/period) and cur_ts <= ts + (stddev_time/period):
+                    isSameTime = True
+                    print "same time"
+                    break
+        if not isSameTime:
+            print "new time "
+            #p["times"].append(self.date)
+            #result = self.db_handler.update_person_times(p["name"], p["times"])
+            #if result:
+            #    logging.debug("added a new time for the patient")
+            #else:
+            #    logging.debug(self.date + ": problem occurred while adding time to patient! Add manually!!!!")
+
+
+    def load_user_times(self):
+        #get user path
+        path = self.PH.paths['current_user']
+        #open time files
+        f = open(path + "/times.csv",'r')
+        #read times
+        p = f.readlines()
+        #eliminate "\n" character
+        l = [i.strip() for i in p]
+        #remove header
+        times = p[1:]
+        #convert to datetime format
+        t = [datetime.datetime.strptime(i,'%Y-%m-%d %H:%M:%S.%f') for i in times]
+        #return list of time attendance
+        return t
+
+    def find_time_slot(self, week_day, p_time, period):
+        tp = p_time.split(":")
+        time_slot = (int(week_day)-1)*24*60/period + int(tp[0])*60/period + int(tp[1])/period
+        return time_slot
+
+    def update_person_times(self):
+        #get user path
+        path = self.PH.paths['current_user']
+        #open file_name
+        f = open(path + "/times.csv", "a")
+        #write new attendance
+        f.write(str(datetime.datetime.now()) + '\n')
+        #close files
+        f.close()
 
     def create_session(self):
         #get path
         p = self.PH.paths['data']
         #create user folder if not existing
         user_folder = p + "/" + str(self.UserStatus['name'])
+        #load to the project handler
+        self.PH.set_user_folder(user_folder)
+        #validate paths
         if not os.path.exists(user_folder):
             os.makedirs(user_folder)
-
+            self.times_file = open(user_folder + "/times.csv", 'a+')
+            self.times_file.write("times\n")
+            self.times_file.close()
         #create session folder
         folder = user_folder +"/" +str(self.date.year)+'-'+str(self.date.month)+'-'+str(self.date.day)
         if not os.path.exists(folder):
@@ -58,8 +118,11 @@ class SessionManager(object):
         #self.EventFile = open(event_name, 'a')
 
     def finish_session(self):
+        #close files
         self.SensorFile.close()
         self.EventFile.close()
+        #register attending
+        self.update_person_times()
 
     def set_person(self, p):
         self.person = p
