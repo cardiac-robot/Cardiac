@@ -215,9 +215,9 @@ class SessionManager(object):
                     self.person['weight']         = pl[5]
                     self.person['crotch']         = pl[6]
                     self.person['disease']        = pl[7]
-                    self.person['alarm1']         = 50
-                    self.person['alarm2']         = 80
-                    self.person['borg_threshold'] = 7
+                    self.person['alarm1']         = 120
+                    self.person['alarm2']         = 150
+                    self.person['borg_threshold'] = 12
                     print "patient already existing in db"
                     return {"name" : self.person['name'], "registered" : True}
 

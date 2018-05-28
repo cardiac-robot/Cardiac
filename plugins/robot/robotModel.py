@@ -134,7 +134,11 @@ class Robot(object):
             self.db.General.SM.load_event(t ="Motivation", c = "Timeout", v ="None")
         #request the dialog manager the random motivation sentence
         s = self.dialogs.get_motivation_sentence()
-        self.tts.say(s)
+        #self.tts.say(s)
+        threading.Thread(target = self.run_motivation_behavior).start()
+
+    def run_motivation_behavior(self):
+        self.behavior.runBehavior('motivation-f4819c/motivation1') 
 
     #borg scale request behavior
     def ask_borg(self):
@@ -190,15 +194,16 @@ class Robot(object):
 
         self.tts.say(self.dialogs.sentenceWarning)
 
-
+    #cooldown behavior
+    def cooldown(self):
+        self.animatedSpeech.say(self.dialogs.cooldownSentence)
+        self.stop_routines()
 
 #------------------------------------------------------------------------
 
     #shutdown method, stop routines and get to rest position
     def shutdown(self):
-
         self.animatedSpeech.say(self.dialogs.ByeSentence)
-        self.stop_routines()
         self.motion.rest()
 
 

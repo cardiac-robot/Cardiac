@@ -28,7 +28,8 @@ class Dialogs(object):
         self.midMotivationProvided = []
         self.sentencesLateMotivation = ["Falta poco","Ya casi terminamos","Solo faltan algunos minutos","Puedes hacerlo","Que bien lo has hecho","¡Ánimo!","Lo estás haciendo muy bien","Te veo mejor "]
         self.lateMotivationProvided = []
-
+        #sentnece for cooldown
+        self.cooldownSentence = "Has terminado, ahora puedes seguir con el enfriamiento"
         #Sentences for alert
         self.sentenceAlertHR = "Tu frecuencia cardiaca es muy alta, voy a llamar al doctor"
         self.sentenceAlertBP = "Tu presión cardiaca es muy alta, voy a llamar al doctor"
@@ -76,7 +77,7 @@ class Dialogs(object):
         #additional indications
         self.CloseInstructionSentence = "Para finalizar, \\pau=50\\ pulsa el botón rojo, en la esquina superior derecha, \\pau=200\\ por favor"
         #say bye sentences
-        self.ByeSentence = 'Nos la vemos próxima sesión!! \\pau=20\\ Ahora puedes continuar con el enfriamiento! '
+        self.ByeSentence = 'Eso ha sido todo por hoy!! \\pau=20\\ No olvides ingresar la presión arterial y responder las preguntas al final! '
 
 
     #returns a random motivation sentences depending on the therapy time

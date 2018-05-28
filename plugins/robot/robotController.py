@@ -24,8 +24,8 @@ class Controller(object):
                                     'useMemory': False,
                                     'UserProfile':{ 'name': "jonathan",
                                                     'age' : 26,
-                                                    'alarm2': 80,
-                                                    'alarm1': 50,
+                                                    'alarm2': 150,
+                                                    'alarm1': 130,
                                                     'borg_threshold':7,
                                                     'weight': 80,
                                                     'last_measure': {}
@@ -60,7 +60,8 @@ class Controller(object):
         self.onWarning =multiprocessing.Event()
         #
         self.onEmergency = multiprocessing.Event()
-
+        #on cooldown
+        self.onCooldown = multiprocessing.Event()
         #events to be passed to the robot model as they are trigger with ashync tasks
         self.Events = {"onMotivation": self.onMotivation,
                        "onBorgScale" : self.onBorgScale
@@ -158,6 +159,13 @@ class Controller(object):
             if self.onCallStaff.is_set():
                 #set call staff behavior
                 self.robot.callMedicalStaff()
+
+
+            #listen for cooldown event
+            if self.onCooldown.is_set():
+                self.onCooldown.clear()
+                self.robot.cooldown()
+
 
 
 

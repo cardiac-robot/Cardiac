@@ -49,6 +49,7 @@ class MainTherapyPlugin(object):
         #set on everything is alright signal YES
 
         #set on everything is alright signal NO
+        #robot signals
 
     def LaunchView(self):
         #load settings
@@ -162,6 +163,8 @@ class MainTherapyPlugin(object):
         if self.settings['mode'] == 0:
             #kill timer
             self.BorgTimer.cancel()
+        if self.useRobot:
+            self.robotController.onCooldown.set()
 
     #callback method to close all resources in a safe way
     def shutdown(self):
