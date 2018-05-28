@@ -17,7 +17,7 @@ if s == 'win32':
     import ctypes
     #get resolution
     user32=ctypes.windll.user32
-    resolution = user32.GetSysftemMetrics(0), user32.GetSystemMetrics(1)
+    resolution = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
     res = {'width': int(resolution[0]), 'height': int(resolution[1])}
 
 #linux case

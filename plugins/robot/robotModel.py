@@ -138,7 +138,7 @@ class Robot(object):
         threading.Thread(target = self.run_motivation_behavior).start()
 
     def run_motivation_behavior(self):
-        self.behavior.runBehavior('motivation-f4819c/motivation1') 
+        self.behavior.runBehavior('motivation-f4819c/motivation1')
 
     #borg scale request behavior
     def ask_borg(self):
@@ -149,7 +149,7 @@ class Robot(object):
         #    self.db.General.SM.load_event(t ="BorgRequest", c = "Timeout", v ="none")
         #request the dialog mnager the random borg sentence
         s = self.dialogs.get_borg_sentence()
-        self.tts.say(s)
+        self.animatedSpeech.say(s)
 
     #alert fatigue
     def alertFatigue(self):
@@ -163,7 +163,7 @@ class Robot(object):
         print("say_ thanks")
         s = self.dialogs.get_borg_receive()
         print s
-        self.tts.say(s)
+        self.animatedSpeech.say(s)
 
    #ask borg again behavior
     def ask_borg_again(self):
