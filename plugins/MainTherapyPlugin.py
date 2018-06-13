@@ -8,6 +8,9 @@ import robot.robotController as RC
 import lib.Manager as M
 #import view component
 import gui.MainTherapyWin as MainTherapyWin
+#import child plugins
+import BloodPressurePlugin
+import EndQuestionPlugin
 """
 main therapy controller, receives ProjectHandler and datanhandler
 receives a settings dict to set the interface in mode 0: no robot, 1:robot with no memory and 2: personalized robot
@@ -29,20 +32,30 @@ class MainTherapyPlugin(object):
         self.DB = DataHandler
         #creates robot resources
         self.useRobot= False
-
-
+        #create child plugins
+        #blood pressure plugin
+        self.BloodPressurePlugin = BloodPressurePlugin.BloodPressurePlugin(ProjectHandler = self.PH, DataHandler = self.DB)
+        #end questionnaire plugin
+        self.EndQuestionPlugin = EndQuestionPlugin.EndQuestionPlugin(ProjectHandler = self.PH, DataHandler = self.DB)
 
 
 
     #set signals
     def set_signals(self):
+        #blood pressure plugin
+        self.BloodPressurePlugin.View.onStartTherapy.connect(self.View.show)
+        self.BloodPressurePlugin.View.onFinishTherapy.connect(self.EndQuestionPlugin.LaunchView)
+
+
         #set on start clicked signal
         self.View.play_button['button'].clicked.connect(self.onStart)
         #set on cooldown clicked signal
         self.View.pause_button['button'].clicked.connect(self.onCooldown)
         #set on stop clicked signal
         self.View.stop_button['button'].clicked.connect(self.shutdown)
+        self.View.exit_button['button'].clicked.connect(self.launch_final_bpm)
         #set on alamarms clicked signals
+
 
         #set on borg clicked signal
         self.View.onBorgReceive.connect(self.receive_borg)
@@ -50,6 +63,8 @@ class MainTherapyPlugin(object):
 
         #set on everything is alright signal NO
         #robot signals
+
+
 
     def LaunchView(self):
         #load settings
@@ -90,8 +105,14 @@ class MainTherapyPlugin(object):
         self.View.set_patients_name(n = user)
         #set interconecting signals
         self.set_signals()
-        #show window
-        self.View.show()
+
+        #launch blood pressure
+        self.BloodPressurePlugin.set_mode(mode = "initial")
+        self.BloodPressurePlugin.LaunchView()
+
+
+
+        #self.View.show()
 
     #Emit signal to request the borg scale
     def request_borg(self):
@@ -182,6 +203,10 @@ class MainTherapyPlugin(object):
             self.RobotMonitorThread.shutdown()
         #finish session
         self.DB.General.SM.finish_session()
+    def launch_final_bpm(self):
+        #set mode
+        self.BloodPressurePlugin.set_mode(mode = "final")
+        self.BloodPressurePlugin.LaunchView()
 
 #robot monitor thread
 class RobotMonitorThread(QtCore.QThread):

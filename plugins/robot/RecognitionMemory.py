@@ -68,9 +68,14 @@ class RecogniserBN:
                  initial_recognition_file = "InitialRecognition.csv",
                  analysis_file            = "AnalysisFolder/Analysis.json",
                  db_file                  = "db.csv",
-                 comparison_file          = "AnalysisFolder/Comparison.csv"
+                 comparison_file          = "AnalysisFolder/Comparison.csv",
+                 ProjectHandler           = None,
+                 DataHandler              = None
+
                  ):
 
+        self.PH = ProjectHandler
+        self.DB = DataHandler
         np.set_printoptions(threshold=np.nan)
         print('PATH LINE 75 RECOGNITIONMEMORY.PY')
         print(os.path.dirname(__file__))
@@ -220,7 +225,9 @@ class RecogniserBN:
     def subscribeToRecognitionResultsUpdated(self):
         self.recognitionResultsUpdatedEvent = "RecognitionResultsUpdated"
         self.recognitionResultsUpdated = self.memory_service.subscriber(self.recognitionResultsUpdatedEvent)
+        print self.recognitionResultsUpdated
         self.idRecognitionResultsUpdated = self.recognitionResultsUpdated.signal.connect(functools.partial(self.onRecognitionResultsUpdated, self.recognitionResultsUpdatedEvent))
+        print self.idRecognitionResultsUpdated
         self.recog_service.subscribeToPeopleDetected()
 
     def onRecognitionResultsUpdated(self, strVarName, value):
@@ -228,6 +235,7 @@ class RecogniserBN:
         self.recognitionResultsUpdated = None
         self.idRecognitionResultsUpdated = -1
         self.recog_temp = value
+        print"setting the recogntion event"
         self.event_recog.set()
 
     def recognisePerson(self, num_recog = None):
@@ -243,6 +251,7 @@ class RecogniserBN:
             self.subscribeToRecognitionResultsUpdated()
             print'3'
             self.event_recog.wait()
+            print "4 after event recog"
             recog_results = self.recog_temp
             print'after wait 246'
         else:
@@ -780,29 +789,43 @@ class RecogniserBN:
         self.heights = []
         self.times =[]
 #         self.loadDummyData()
-
-        db_handler = db.DbHandler(testMode = self.testMode)
-        p = db_handler.get_all_patients()
+        p = self.DB.General.get_all_patients()
+        #db_handler = db.DbHandler(testMode = self.testMode)
+        #p = db_handler.get_all_patients()
         counter_p = 0
         for a in p:
 #             name_person = str(a["name"])
 #             name_person = name_person.replace(" ","_")
 #             self.i_labels.append(name_person)
             print 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
-            print(a.get('id_number'))
-            print(a)
-            self.i_labels.append(str(a["id_number"]))
-            self.names.append(str(a["name"]))
-            self.genders.append(str(a["gender"]))
-            self.ages.append(int(a["age"]))
-            self.heights.append(float(a["height"]))
-            times_patients = []
-            for tt in a["times"]:
-                times_patients.append([tt.time().strftime('%H:%M:%S'), tt.isoweekday()])
-            self.times.append(times_patients)
-            counter_p = counter_p + 1
-            print 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+            #print(a.get('id_number'))
+            #print(a
+            self.i_labels.append(str(a[0]))
+            self.names.append(str(a[1]))
+            self.genders.append(str(a[2]))
+            self.ages.append(int(a[3]))
+            self.heights.append(float(a[4]))
+
         print 'calling addUnknown'
+        all_times = self.DB.General.get_all_times()
+        for key in all_times:
+            times_patients = []
+            user_times = all_times[key]
+            if user_times:
+                times_patients = [[i.time().strftime('%H:%M:%S'), i.isoweekday()] for i in user_times]
+                self.times.append(times_patients)
+
+        """for tt in a["times"]:
+            times_patients.append([tt.time().strftime('%H:%M:%S'), tt.isoweekday()])
+        self.times.append(times_patients)"""
+
+        counter_p = counter_p + 1
+        print "labels from loadDB"
+        print self.i_labels
+        print"TIMES from loadDB"
+        for i in self.times:
+            print i
+        print 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
         self.addUnknown()
 
         self.num_people = len(self.i_labels)
@@ -880,6 +903,8 @@ class RecogniserBN:
 # #  #       self.r_bn.addArc(self.I,self.L)
 
     def findTimeSlot(self, p_time):
+        print "from findTimeSlot"
+        print p_time
         tp = p_time[0].split(":")
         time_slot = (int(p_time[1])-1)*24*60/self.period + int(tp[0])*60/self.period + int(tp[1])/self.period
         return time_slot
@@ -887,7 +912,8 @@ class RecogniserBN:
     def addCpts(self, csv_file, initial_recognition_file):
         start_time = time.time()
         if self.num_recognitions > 0:
-            self.learnParameters(csv_file, initial_recognition_file)
+            self.learnParameters(csv_file, initial_recognition_clear
+            )
         else:
             # P(I)
             self.r_bn.cpt(self.I).fillWith(1).normalize()
@@ -897,6 +923,8 @@ class RecogniserBN:
                 if counter == index_unknown:
                     self.addUnknownLikelihood(self.r_bn)
                 else:
+                    print "counter from addCpts"
+                    print counter
                     self.addLikelihoods(counter)
         print "time passed for learning: " + str(time.time() - start_time)
 
@@ -945,8 +973,21 @@ class RecogniserBN:
 
         # P(T|I)
         time_curve_total_pdf = []
+        print"before for"
+        print counter
+        print "#####end####"
         for t_counter in range(0, len(self.times[counter])):
-            time_curve_pdf = self.getCurve(mean = self.findTimeSlot(self.times[counter][t_counter]), stddev = self.stddev_time, min_value = self.time_min, max_value = self.time_max, weight = self.weights[4])
+            print "t_counter from addLikelihoods"
+            print t_counter
+            print "self.times"
+            print self.times[counter][t_counter]
+            print "counter"
+            print counter
+            print "#####"
+            mean = self.findTimeSlot(self.times[counter][t_counter])
+            print mean
+            print "-------"
+            time_curve_pdf = self.getCurve(mean = mean , stddev = self.stddev_time, min_value = self.time_min, max_value = self.time_max, weight = self.weights[4])
             if t_counter == 0:
                 time_curve_total_pdf = time_curve_pdf[:]
             else:
@@ -1358,9 +1399,9 @@ class RecogniserBN:
 
     def saveImageToTablet(self, p_id, num_recog=None):
         # TODO: check with windows (/ might need to be \ instead)
-        cur_dir = os.path.dirname(os.path.realpath(__file__))
-        temp_dir = os.path.abspath(os.path.join(cur_dir, '../..', 'cam')) + "/"
-        image_dir = os.path.abspath(os.path.join(cur_dir, '', 'images')) + "\\"
+        #cur_dir = os.path.dirname(os.path.realpath(__file__))
+        #temp_dir = os.path.abspath(os.path.join(cur_dir, '../..', 'cam')) + "/"
+        #image_dir = os.path.abspath(os.path.join(cur_dir, '', 'images')) + "\\"
         print 'GET IMAGE PATH'
         temp_image = self.ise.get_image_path()
         print temp_image
@@ -1704,7 +1745,8 @@ class RecogniserBN:
         """call initSession and take picture before calling this function"""
         print 'startRecognition enter'
         identity_est = self.recognise(isRegistered = self.isRegistered, recog_results_from_file = recog_results_from_file)
-        print 'xxxx'
+        print 'xxidentity estx'
+        print identity_est
         if self.isMemoryRobot and self.isRegistered:
             if identity_est == self.unknown_var:
                 textToSay = self.unknownPerson

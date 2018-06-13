@@ -35,7 +35,7 @@ class General(object):
         #load project handler
         self.PH = ProjectHandler
         #User status create
-        self.UserStatus = {"name" : "no data", "registered" : False}
+        self.UserStatus = {"name" : "no data", "registered" : False, "id":""}
         #create session data manager
         self.SM = SM.SessionManager(ProjectHandler = self.PH, UserStatus = self.UserStatus)
         #therapy status
@@ -72,10 +72,42 @@ class General(object):
         self.TherapyStatus['user'] = status['name']
         return status
 
+    #get all patients
+    def get_all_patients(self):
+        path = self.PH.paths['general']
+        if os.path.exists(path + "/Patients.csv"):
+            #open file to read an write
+            f = open(path + "/Patients.csv", 'r')
+            r = f.readlines()
+            L = []
+            #process data
+            for i in r[1:]:
+                L.append(i.strip().split(";"))
+
+            return L
+        else:
+            return 0
 
     #set modality for the therapy win
     def set_modality(self, d):
         self.TherapyStatus['mode'] = d
+
+
+    def get_all_times(self):
+
+        Times = {}
+
+        dirs = next(os.walk(self.PH.paths['data']))[1]
+
+        for d in dirs:
+            path = self.PH.paths['data'] +"/"+ d
+            l = self.SM.load_user_times(p = path)
+            Times[d] = l
+
+        return Times
+
+
+
 
     #get last theray settings from db
     def get_therapy_settings(self):

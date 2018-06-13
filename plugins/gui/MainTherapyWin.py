@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-__author__ = 'Juan'
 from PyQt4 import QtCore, QtGui
-import ctypes,threading
+
 
 #%% Therapy window
 class TherapyWin(QtGui.QMainWindow):
@@ -242,7 +241,7 @@ class TherapyWin(QtGui.QMainWindow):
 
         self.send_data()
 
-    
+
     def set_patients_name(self, n):
         s = "Paciente Actual: " + n
         self.label_patient_name.setText(s)

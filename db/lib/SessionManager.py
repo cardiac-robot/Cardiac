@@ -53,21 +53,23 @@ class SessionManager(object):
             #    logging.debug(self.date + ": problem occurred while adding time to patient! Add manually!!!!")
 
 
-    def load_user_times(self):
+    def load_user_times(self, p):
         #get user path
-        path = self.PH.paths['current_user']
-        #open time files
-        f = open(path + "/times.csv",'r')
-        #read times
-        p = f.readlines()
-        #eliminate "\n" character
-        l = [i.strip() for i in p]
-        #remove header
-        times = p[1:]
-        #convert to datetime format
-        t = [datetime.datetime.strptime(i,'%Y-%m-%d %H:%M:%S.%f') for i in times]
-        #return list of time attendance
-        return t
+        #path = self.PH.paths['current_user']
+        path = p + "/times.csv"
+        if os.path.exists(path):
+            #open time files
+            f = open(path,'r')
+            #read times
+            p = f.readlines()
+            #eliminate "\n" character
+            l = [i.strip() for i in p]
+            #remove header
+            times = l[1:]
+            #convert to datetime format
+            t = [datetime.datetime.strptime(i,'%Y-%m-%d %H:%M:%S.%f') for i in times]
+            #return list of time attendance
+            return t
 
     def find_time_slot(self, week_day, p_time, period):
         tp = p_time.split(":")
@@ -88,7 +90,7 @@ class SessionManager(object):
         #get path
         p = self.PH.paths['data']
         #create user folder if not existing
-        user_folder = p + "/" + str(self.UserStatus['name'])
+        user_folder = p + "/" + str(self.UserStatus['id'])
         #load to the project handler
         self.PH.set_user_folder(user_folder)
         #validate paths
@@ -219,11 +221,11 @@ class SessionManager(object):
                     self.person['alarm2']         = 150
                     self.person['borg_threshold'] = 12
                     print "patient already existing in db"
-                    return {"name" : self.person['name'], "registered" : True}
+                    return {"name" : self.person['name'], "registered" : True, "id" : self.person['id']}
 
-            return {"name" : self.person['name'], "registered" : False}
+            return {"name" : self.person['name'], "registered" : False, "id" : self.person['id']}
         else:
             f = open(path + "/Patients.csv", 'w+')
             f.write("Id;Name;Gender;Age;Height;Weight;Crotch;Disease\n")
             f.close()
-            return {"name" : self.person['name'], "registered" : False}
+            return {"name" : self.person['name'], "registered" : False, "id" : self.person['id']}

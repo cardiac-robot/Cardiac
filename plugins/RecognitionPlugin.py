@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import gui.RecognitionWin as RecognitionWin
 #import BN
-#import robot.RecognitionMemory as RM
+import robot.RecognitionMemory as RM
 #import ISE
 import robot.resources.photo_handler as PHOTO
 import time
@@ -14,18 +14,23 @@ class RecognitionPlugin(object):
         self.DB = DataHandler
         #create window
         self.RecognitionWin = RecognitionWin.RecognitionWin(ProjectHandler = self.PH)
-
+        #id variable
+        self.id = ""
     def deploy_resources(self):
         #create recogniser bayesian network
         self.RecogniserBN  = RM.RecogniserBN(
                                               image_sender             = None,
                                               testMode                 = False,
-                                              recog_file               = self.PH['recognition']    + "/RecogniserBN.bif",
-                                              csv_file                 = self.PH['recognition']    + "/RecogniserBN.csv",
-                                              initial_recognition_file = self.PH['recognition']    + "/InitialRecognition.csv",
-                                              analysis_file            = self.PH['recog_analysis'] + "/Analysis.json",
-                                              db_file                  = self.PH['recognition']    + "/db.csv",
-                                              comparison_file          = self.PH['recog_analysis'] + "/Comparison.csv")
+                                              recog_file               = self.PH.paths['recognition']    + "/RecogniserBN.bif",
+                                              csv_file                 = self.PH.paths['recognition']    + "/RecogniserBN.csv",
+                                              initial_recognition_file = self.PH.paths['recognition']    + "/InitialRecognition.csv",
+                                              analysis_file            = self.PH.paths['recog_analysis'] + "/Analysis.json",
+                                              db_file                  = self.PH.paths['recognition']    + "/db.csv",
+                                              comparison_file          = self.PH.paths['recog_analysis'] + "/Comparison.csv",
+                                              ProjectHandler           = self.PH,
+                                              DataHandler              = self.DB
+                                              )
+
         #create image sender
         self.ISE = PHOTO.ImageSender(
                                      ip             = self.PH.GeneralSettings['robot']['IpRobot'],
@@ -40,6 +45,7 @@ class RecognitionPlugin(object):
     def set_signals(self):
         self.RecognitionWin.ControlButtons['StartRecog'].clicked.connect(self.start_recog)
         self.RecognitionWin.onData.connect(self.idReceived)
+        self.RecognitionWin.onRegistered.connect(self.onRegisteredCallback)
 
     def LaunchView(self):
         #deploy resources
@@ -72,6 +78,7 @@ class RecognitionPlugin(object):
             print "Identity: " + self.identity_est
             self.RecognitionWin.onConfirm.emit()
         else:
+            print "Emiting on failed recognition signal"
             self.RecognitionWin.onFailed.emit()
 
     def recognition_sucessfull(self):
@@ -82,6 +89,8 @@ class RecognitionPlugin(object):
         print("recognition failed")
         #make the robot
 
+    def onRegisteredCallback(self):
+        self.RecogniserBN.confirmPersonIdentity(p_id = self.id)
 
     def idReceived(self):
         #get the label conent
@@ -92,6 +101,7 @@ class RecognitionPlugin(object):
         if status["registered"]:
             #if found in db, create session and start
             self.DB.General.SM.create_session()
+            self.id = i
             self.RecognitionWin.onRegistered.emit()
         else:
             self.RecognitionWin.onNotRegistered.emit()

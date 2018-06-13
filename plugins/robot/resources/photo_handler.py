@@ -28,7 +28,9 @@ class ImageSender(object):
         self.imgName = name
         self.destIp = ip
         self.destPath = path
-        self.tempPath = self.PH.paths['img_recog']
+        self.tempPath = self.PH.paths['recognition']
+        self.local = self.tempPath + "/took.jpg"
+
 
     #
     def takePhoto(self):
@@ -40,21 +42,21 @@ class ImageSender(object):
                 cv2.imshow("cam-test",img)
                 time.sleep(5)
                 cv2.destroyWindow("cam-test")
-                cv2.imwrite(self.imgName,img) #save image
+                cv2.imwrite(self.local,img) #save image
 
             self.cam.release()
     #
     def sendPhoto(self):
-        if self.PH['sys'] == "win32":
+        if self.PH.settings['sys'] == "win32":
             os.system('pscp .\\' + self.imgName + ' nao@' + self.destIp + '://home//nao//dev//images//nao_image.jpg')
-        elif self.PH['sys'] == "linux2":
-            os.system("scp ./" + self.imgName + " nao@" + self.destIp + ":/home/nao/dev/images/nao_image.jpg")
+        elif self.PH.settings['sys'] == "linux2":
+            os.system("pscp -pw bmd ./" + self.imgName + " nao@" + self.destIp + ":/home/nao/dev/images/nao_image.jpg")
 
     #
     def get_image_path(self):
         print('from scripts')
-        print self.tempPath
-        return self.tempPath
+        print self.local
+        return self.local
 
 
 '''

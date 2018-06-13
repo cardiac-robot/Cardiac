@@ -118,7 +118,8 @@ class Robot(object):
         #make the robot stand up
         self.motion.wakeUp()
         #run behavior   cardio-7fad01
-        threading.Thread(target = self.run_welcome_behavior).start()
+        self.run_welcome_behavior()
+        #threading.Thread(target = self.run_welcome_behavior).start()
 
 
     #behavior fucntion
@@ -135,7 +136,8 @@ class Robot(object):
         #request the dialog manager the random motivation sentence
         s = self.dialogs.get_motivation_sentence()
         #self.tts.say(s)
-        threading.Thread(target = self.run_motivation_behavior).start()
+        self.run_motivation_behavior()
+        #threading.Thread(target = self.run_motivation_behavior).start()
 
     def run_motivation_behavior(self):
         self.behavior.runBehavior('motivation-f4819c/motivation1')

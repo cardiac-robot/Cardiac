@@ -1,8 +1,0 @@
-Type;Cause;value;Timestamp
-StartRecording;None;None;2018-05-28 10:22:55.551269
-BorgRequest;Timeout;none;2018-05-28 10:23:14.595900
-BorgReceive;Clicked;9;2018-05-28 10:23:24.644305
-BorgRequest;Timeout;none;2018-05-28 10:25:18.720346
-BorgReceive;Clicked;9;2018-05-28 10:25:26.573877
-Cooldown;None;None;2018-05-28 10:26:27.052853
-EndRecording;None;None;2018-05-28 10:27:01.394488
