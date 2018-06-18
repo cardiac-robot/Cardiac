@@ -118,7 +118,9 @@ class MainPlugin(object):
         """
         RECOGNITION STATE
         """
-        self.RecognitionPlugin.RecognitionWin.onRegistered.connect(self.MainTherapyPlugin.LaunchView)
+        self.RecognitionPlugin.RecognitionWin.onStartTherapy.connect(self.MainTherapyPlugin.LaunchView)
+        self.RecognitionPlugin.RecognitionWin.onStartTherapy.connect(self.RecognitionPlugin.shutdown)
+        self.RecognitionPlugin.RecognitionWin.onNotRegistered.connect(self.RegisterPlugin.LaunchView)
         """
         THERAPY STATE
         """

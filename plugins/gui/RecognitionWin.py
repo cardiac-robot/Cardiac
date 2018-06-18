@@ -12,6 +12,7 @@ class RecognitionWin(QtGui.QMainWindow):
     onConfirm       = QtCore.pyqtSignal()
     onRegistered    = QtCore.pyqtSignal()
     onNotRegistered = QtCore.pyqtSignal()
+    onStartTherapy  = QtCore.pyqtSignal()
 
     def __init__(self, ProjectHandler):
         super(RecognitionWin, self).__init__()

@@ -594,7 +594,8 @@ class RecogniserBN:
         self.recog_file = recog_file
         self.csv_file = csv_file
         if self.isDBinCSV:
-            self.loadDBFromCSV(self.db_file)
+            self.loadDB()
+            #self.loadDBFromCSV(self.db_file)
         else:
             self.loadDB()
         self.num_recognitions = sum(1 for line in open(csv_file)) - 1
@@ -1136,6 +1137,8 @@ class RecogniserBN:
     def fillNonweightedEvidence(self, recog_results):
 
         # SOFT EVIDENCE:
+        print "RECOG_RESULTS 1139"
+        print type(recog_results)
         face_est = recog_results[0][:]
 
         gender_val = recog_results[1][:]
@@ -1234,8 +1237,20 @@ class RecogniserBN:
         elif i_max_cpt < self.conf_min_identity:
              # if maximum confidence is lower than self.conf_min_identity
             identity_est = "unknown-low"
-        date_today = recog_results[4][2] + " " + recog_results[4][3] + " " + recog_results[4][4] + " " + recog_results[4][0]
-        date_now = str(datetime.strptime(date_today, '%d %B %Y %H:%M:%S'))
+        date_today = recog_results[4][2]+" "+ recog_results[4][3] +" "+ recog_results[4][4] +" "+ recog_results[4][0]
+
+        print "getAnalysisData 1240"
+        a =  str(recog_results[4][2])
+        b =  str(recog_results[4][3])
+        c =  str(recog_results[4][4])
+        d =  str(recog_results[4][0])
+        print a, b,c,d
+        #date_today = str(date_today)
+        da = a+" "+b+" "+c+" "+d
+
+        print da
+        #date_now = str(datetime.strptime(da, "%d %B %Y %H:%M:%S"))
+        date_now = str(datetime.now())
         data = OrderedDict([("Date", date_now),
                 ("Database", self.i_labels),
                 ("I_real", identity_real),
@@ -1262,9 +1277,10 @@ class RecogniserBN:
     def saveAnalysisToDB(self, recog_results, identity_real, ie):
         """Call this file for self.num_people >= 2"""
         data = self.getAnalysisData(recog_results, identity_real, ie)
-
-        db_handler = db.DbHandler()
-        db_handler.save_recognition_data(data)
+        print "RECOGNITION DATA 1279"
+        print data['Database']
+        #db_handler = db.DbHandler()
+        #db_handler.save_recognition_data(data)
 
     def saveAnalysisToJson(self, recog_results, identity_real, ie, isPrevSavedToAnalysis, num_recog = None):
         """Call this file for self.num_people >= 2"""
@@ -1401,7 +1417,7 @@ class RecogniserBN:
         # TODO: check with windows (/ might need to be \ instead)
         #cur_dir = os.path.dirname(os.path.realpath(__file__))
         #temp_dir = os.path.abspath(os.path.join(cur_dir, '../..', 'cam')) + "/"
-        #image_dir = os.path.abspath(os.path.join(cur_dir, '', 'images')) + "\\"
+        image_dir = self.PH.paths['recog_img']
         print 'GET IMAGE PATH'
         temp_image = self.ise.get_image_path()
         print temp_image
@@ -1424,7 +1440,7 @@ class RecogniserBN:
             save_name = image_dir + p_id + "_" + (str(0)*(4-counter)) + str(orig_matches) + "-" + str(num_recog) +".jpg"
             os.rename(temp_image,save_name)
         else:
-            match_name = image_dir + p_id + "*.jpg"
+            match_name = image_dir + "/" + p_id + "*.jpg"
             num_matches = len(glob.glob(match_name)) + 1
             orig_matches = num_matches
             counter = 0
@@ -1435,7 +1451,7 @@ class RecogniserBN:
                 else:
                     counter += 1
                     break
-            save_name = image_dir + p_id + "_" + (str(0)*(4-counter)) + str(orig_matches) + ".jpg"
+            save_name = image_dir + "/" + p_id + "_" + (str(0)*(4-counter)) + str(orig_matches) + ".jpg"
             print('Os rename ' +  temp_image + ' ' + save_name)
             os.rename(temp_image,save_name)
 
@@ -1671,9 +1687,10 @@ class RecogniserBN:
                 self.identity_est = self.getEstimatedIdentity()
                 self.identity_prob_list = [1.0] # for unknown
         else:
-            print('is not  MultipleRecognition 1617')
+            print('is not  MultipleRecognition 1674')
             self.recog_results = self.recognisePerson()
-            print('after recognized person 1619')
+            print self.recog_results
+            print('after recognized person 1677')
             self.nonweighted_evidence = self.fillNonweightedEvidence(self.recog_results)
             if self.num_people > 1:
                 self.ie = self.setEvidence(self.recog_results)

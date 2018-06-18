@@ -21,7 +21,7 @@ class ProjectHandler(object):
         #flag for settings
         self.OnSettings = False
         #general settings variable
-        self.GeneralSettings = {'robot': {'IpRobot'       : "192.168.0.103",
+        self.GeneralSettings = {'robot': {'IpRobot'       : "192.168.1.3",
                                           'port'          : 9559,#9559
                                           'mode'          : 1,
                                           'name'          : "Palin",
@@ -51,6 +51,7 @@ class ProjectHandler(object):
 						'img'             : '/plugins/gui/img',
                         'recognition'     : '/db/recognition',
                         'recog_analysis'  : '/db/recognition/AnalysisFolder',
+                        'recog_img'       : '/db/recognition/images',
 						'sensor_lib'      : '/plugins/lib',
 						'robotController' : '/plugins/robot',
                         'robotBehaviors'  : '/plugins/robot/behaviors',
