@@ -17,6 +17,7 @@ class RecognitionPlugin(object):
         #id variable
         self.id = ""
 
+    #creates all required objects to perform the recogntion
     def deploy_resources(self):
         #create image sender
         self.ISE = PHOTO.ImageSender(
@@ -44,7 +45,7 @@ class RecognitionPlugin(object):
         #set signals
         self.set_signals()
 
-
+    #set required signals to interact with the plugins and resources
     def set_signals(self):
         #start recognition signal(recog button clicked)
         self.RecognitionWin.ControlButtons['StartRecog'].clicked.connect(self.start_recog)
@@ -55,6 +56,7 @@ class RecognitionPlugin(object):
         #on recogntion confirmed and success
         self.RecognitionWin.onSuccess.connect(self.onSuccessCallback)
 
+    #launch resources and shows the gui for recognition
     def LaunchView(self):
         #deploy resources
         self.deploy_resources()
@@ -62,6 +64,7 @@ class RecognitionPlugin(object):
         self.RecognitionWin.show()
         #print self.PH.GeneralSettings['IpRobot']
 
+    #callback function to start recognition process, launched when the start recognition button is pressed
     def start_recog(self):
         print("recognition started ")
         #connect to the robot
@@ -91,30 +94,26 @@ class RecognitionPlugin(object):
             self.RecognitionWin.onFailed.emit()
 
 
-    def recognition_sucessfull(self):
-        print("success in recognition")
-
-
-    def recognition_fail(self):
-        print("recognition failed")
-        #make the robot
-
+    #callback function called when the recognition has been carried out succesfuly
     def onSuccessCallback(self):
 
-        print "ID ON SUCCESSCALLBACK" + self.id
         #confirm person identity
         self.RecogniserBN.confirmPersonIdentity(p_id = self.id)
-        print "SUCCESSSSSSSS!!!!!"
+        #call id received function to set the user in the database
         self.idReceived(id_recog = self.id)
+        #emit on start therapy
         self.RecognitionWin.onStartTherapy.emit()
 
+    #callback function called when not recognized and need to indicate the id (submit button pressed)
+    #and was found in the database
     def onRegisteredCallback(self):
         #confirm person identity with the recognized person
         self.RecogniserBN.confirmPersonIdentity(p_id = self.id)
+        #emit on start therapy signal
+        self.RecognitionWin.onStartTherapy.emit()
 
 
-
-
+    #callback function called when not recognized and need to find patient in the database
     def idReceived(self, id_recog = None):
         #get the label conent
         if not id_recog:
@@ -130,13 +129,16 @@ class RecognitionPlugin(object):
         #get the status after login
         if status["registered"]:
             #if found in db, create session and start
-            print "CREATE SESSSINNNNNNN"
             self.DB.General.SM.create_session()
+            #load id
             self.id = i
+            #validate both cases of use
             if EmitOnRegister:
                 self.RecognitionWin.onRegistered.emit()
         else:
             self.RecognitionWin.onNotRegistered.emit()
 
+    #close window
     def shutdown(self):
+        #hide window
         self.RecognitionWin.hide()

@@ -58,6 +58,7 @@ class MainPlugin(object):
         self.WelcomeWin.OnCountDownEnd.connect(self.WelcomeWin.hide)
         #launch MainMenu window
         self.WelcomeWin.OnCountDownEnd.connect(self.MainMenuPlugin.LaunchView)
+        #connect to shutdown method for the main pulgin
         self.WelcomeWin.OnShutDown.connect(self.shutdown)
         """
         MAIN MENU STATE: The main menu is displayed, all buttons of the main menu must be connected to each window
@@ -71,8 +72,6 @@ class MainPlugin(object):
         #[2] SettingsPlugin connect
         self.MainMenuPlugin.SettingsConnect(f = self.SettingsPlugin.LaunchView)
         #[3] Log in plugin connect
-        #TODO: to implement LoginWin
-        #self.MainMenuPlugin.LogInConnect(f =self.LoginPlugin.LaunchView)
         self.MainMenuPlugin.LogInConnect(f = self.ModalityPlugin.LaunchView)
         #[4] DataPlugin connect
         #TODO: to implement
@@ -104,22 +103,27 @@ class MainPlugin(object):
         #[1] integrate LoginWin
         self.LoginPlugin.LogInWin.onNotRegistered.connect(self.RegisterPlugin.LaunchView)
         #[2]if registered open the modality win
-        #self.LoginPlugin.LogInWin.onRegistered.connect(self.ModalityPlugin.LaunchView)
         self.LoginPlugin.LogInWin.onRegistered.connect(self.MainTherapyPlugin.LaunchView)
         """
         MODALITY STATE: the modality win emit three signals that set the configuration of the MainTherapyPlugin
-        [1]onModalitySet: closes the window and launch the MainTherapyPlugin
+        [1] onModalitySet: closes the window and launch the MainTherapyPlugin
+        [2] onMemory: closes the modality win and launch the recognition plugin
         """
-        #[1]connect MainTherapyPlugin to the onModalitySet signal
-        #self.ModalityPlugin.ModalityWin.onModalitySet.connect(self.MainTherapyPlugin.LaunchView)
+        #[1] connect MainTherapyPlugin to the onModalitySet signal
         self.ModalityPlugin.ModalityWin.onModalitySet.connect(self.LoginPlugin.LaunchView)
+        #[2] connect onMemory signal to the recognition LaunchView method
         self.ModalityPlugin.ModalityWin.onMemory.connect(self.RecognitionPlugin.LaunchView)
 
         """
-        RECOGNITION STATE
+        RECOGNITION STATE: the recognition state, performs the recognition process and emmit two signals depending on the result
+        [1] onStartTherapy: emmited when the recognition has been succesfully performed and is ready to start the therapy
+        [2] onNotRegistered: emmited when the user couldnt be recognized because is not registered and must perform the register process
         """
+        #[1] connect launch view method for the therapy win
         self.RecognitionPlugin.RecognitionWin.onStartTherapy.connect(self.MainTherapyPlugin.LaunchView)
+        #[1] connect recogntition shutdown method to start the therapy
         self.RecognitionPlugin.RecognitionWin.onStartTherapy.connect(self.RecognitionPlugin.shutdown)
+        #[2] connect to the register launch view method to perform the register process
         self.RecognitionPlugin.RecognitionWin.onNotRegistered.connect(self.RegisterPlugin.LaunchView)
         """
         THERAPY STATE

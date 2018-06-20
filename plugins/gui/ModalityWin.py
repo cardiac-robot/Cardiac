@@ -37,10 +37,12 @@ class ModalityWin(QtGui.QMainWindow):
         #robot with memory button
         self.ControlButtons['robot_memory'] = QtGui.QPushButton('Robot with memory',self)
         self.ControlButtons['robot_memory'].setGeometry(QtCore.QRect(self.winsize_h*0.648, self.winsize_h*0.1, self.winsize_v*0.5, self.winsize_h*0.3))
-
+        #call set internal signals method
         self.set_signals()
 
+    #set internal signals
     def set_signals(self):
+        #close the window when any of the modality buttons is pressed
         self.ControlButtons['no_robot'].clicked.connect(self.close)
         self.ControlButtons['robot'].clicked.connect(self.close)
         self.ControlButtons['robot_memory'].clicked.connect(self.close)

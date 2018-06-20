@@ -59,59 +59,78 @@ class RecognitionWin(QtGui.QMainWindow):
         self.id_text = QtGui.QLineEdit(self)
         self.id_text.setGeometry(QtCore.QRect(self.winsize_h * 0.45, self.winsize_v * 0.3, self.winsize_h * 0.15, self.winsize_v * 0.05))
 
+        #call initial state method
         self.set_initial_state()
-
+        #set internal signals
         self. set_signals()
 
+
+    #internal signal method
     def set_signals(self):
+        #lock button when pressed
         self.ControlButtons['StartRecog'].clicked.connect(self.lock_recog_button)
+        #connect to callback function, submit_button to validate data submitted
         self.ControlButtons['submit'].clicked.connect(self.submit_button)
+        #connect to callback function to unlock request widget
         self.ControlButtons['No'].clicked.connect(self.unlock_id_request)
+        #connect to emit onSuccess signal when yes is pressed
         self.ControlButtons['Yes'].clicked.connect(self.onSuccess.emit)
+        #connect to unlock confirmation widget
         self.onConfirm.connect(self.unlock_confirmation)
+        #connect to unlock id request when recognition has failed
         self.onFailed.connect(self.unlock_id_request)
 
+    #set the initial window configuration state
     def set_initial_state(self):
+        #display recognition button
         self.ControlButtons['StartRecog'].show()
+        #lock confirmation buttons
         self.lock_confirmation()
+        #lock id requests
         self.lock_id_request()
 
+    #widget control function
     def lock_recog_button(self):
         self.ControlButtons['StartRecog'].hide()
 
+    #widget control function
     def unlock_recog_button(self):
         self.ControlButtons['StartRecog'].show()
 
+    #widget control function
     def lock_confirmation(self):
         self.ControlButtons['Yes'].hide()
         self.ControlButtons['No'].hide()
 
+    #widget control function
     def unlock_confirmation(self):
         self.ControlButtons['Yes'].show()
         self.ControlButtons['No'].show()
 
+    #widget control function
     def lock_id_request(self):
         self.ControlButtons['submit'].hide()
         self.id_label.hide()
         self.id_text.hide()
 
+    #widget control function
     def unlock_id_request(self):
         self.ControlButtons['submit'].show()
         self.id_label.show()
         self.id_text.show()
 
+    #callback function for id validation
     def submit_button(self):
+        #validate empty field
         if not (str(self.id_text.text()) == ""):
             self.id = str(self.id_text.text())
-            #self.a = self.id.isalpha()
-            #if (self.a == False):
-            #    print(self.id)
             print type(self.id)
             self.onData.emit()
+            self.hide()
         else:
             self.onEmptyField.emit()
 
-        self.close()
+
 
 
 def main():

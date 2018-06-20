@@ -13,31 +13,41 @@ class ModalityPlugin(object):
         #set signals
         self.set_signals()
 
-
+    #signal connection method
     def set_signals(self):
+        #connect to onNoRobot callback function when no robot button is pressed
         self.ModalityWin.ControlButtons['no_robot'].clicked.connect(self.onNoRobot)
+        #connect to onRobot callback functin when robot button is ressed
         self.ModalityWin.ControlButtons['robot'].clicked.connect(self.onRobot)
+        #connect to onMemoryRobot callback function when robot memory button is pressed
         self.ModalityWin.ControlButtons['robot_memory'].clicked.connect(self.onMemoryRobot)
+        #close modality win whe it has been set
         self.ModalityWin.onModalitySet.connect(self.ModalityWin.hide)
 
     #show the view component
     def LaunchView(self):
         self.ModalityWin.show()
 
-    #on no robot button clicked
+    #callback function when on no robot button clicked
     def onNoRobot(self):
         print("no robot")
+        #set modality on the database
         self.DB.General.set_modality(0)
+        #emit on modality set signal
         self.ModalityWin.onModalitySet.emit()
 
-    #on no robot button clicked
+    #callback function when on no robot button clicked
     def onRobot(self):
         print("robot")
+        #set modality on the database
         self.DB.General.set_modality(1)
+        #emit on modality set signal
         self.ModalityWin.onModalitySet.emit()
 
-    #on no robot button clicked
+    #callback function when on  memory robot button clicked
     def onMemoryRobot(self):
         print("memory robot")
+        #set modality on the database
         self.DB.General.set_modality(2)
+        #emit on modality set signal
         self.ModalityWin.onMemory.emit()
