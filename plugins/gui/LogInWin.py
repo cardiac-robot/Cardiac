@@ -54,6 +54,9 @@ class LogInWin(QtGui.QMainWindow):
 
         self.set_signals()
 
+    def close_button(self):
+        self.close()
+
     def set_signals(self):
         self.submit.clicked.connect(self.submit_button)
 
