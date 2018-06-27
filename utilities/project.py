@@ -39,25 +39,47 @@ class ProjectHandler(object):
                                 }
         #paths dcitionary
         self.paths = {
-						'db'  			  : '/db',
-						'backup'		  : '/db/backup',
-						'data'			  : '/db/data',
-                        'general'         : '/db/general',
-                        'robot_db'        : '/db/robot',
-                        'db_lib'          : '/db/lib',
+						'db'  			  : '/db/',
+						'backup'		  : '/db/backup/',
+						'data'			  : '/db/data/',
+                        'general'         : '/db/general/',
+                        'robot_db'        : '/db/robot/',
+                        'db_lib'          : '/db/lib/',
                         'current_user'    : '/',
-						'plugin'		  : '/plugins',
-						'gui' 			  : '/plugins/gui',
-						'img'             : '/plugins/gui/img',
-                        'recognition'     : '/db/recognition',
-                        'recog_analysis'  : '/db/recognition/AnalysisFolder',
-                        'recog_img'       : '/db/recognition/images',
-						'sensor_lib'      : '/plugins/lib',
-						'robotController' : '/plugins/robot',
-                        'robotBehaviors'  : '/plugins/robot/behaviors',
-                        'robotResources'  : '/plugins/robot/resources',
-                        'utilities'       : '/utilities'
+						'plugin'		  : '/plugins/',
+						'gui' 			  : '/plugins/gui/',
+						'img'             : '/plugins/gui/img/',
+                        'recognition'     : '/db/recognition/',
+                        'recog_analysis'  : '/db/recognition/AnalysisFolder/',
+                        'recog_img'       : '/db/recognition/images/',
+						'sensor_lib'      : '/plugins/lib/',
+						'robotController' : '/plugins/robot/',
+                        'robotBehaviors'  : '/plugins/robot/behaviors/',
+                        'robotResources'  : '/plugins/robot/resources/',
+                        'utilities'       : '/utilities/'
 					 }
+         #paths dcitionary
+         if self.settings['sys'] == 'win32':
+             self.paths = {
+            				'db'  			  : '\\db\\',
+            				'backup'		  : '\\db\\backup\\',
+            				'data'			  : '\\db\\data\\',
+                            'general'         : '\\db\\general\\',
+                            'robot_db'        : '\\db\\robot\\',
+                            'db_lib'          : '\\db\\lib\\',
+                            'current_user'    : '\\',
+            				'plugin'		  : '\\plugins\\',
+            			    'gui' 			  : '\\plugins\\gui\\',
+            				'img'             : '\\plugins\\gui\\img\\',
+                            'recognition'     : '\\db\\recognition\\',
+                            'recog_analysis'  : '\\db\\recognition\\AnalysisFolder\\',
+                            'recog_img'       : '\\db\\recognition\\images\\',
+            				'sensor_lib'      : '\\plugins\\lib\\',
+            				'robotController' : '\\plugins\\robot\\',
+                            'robotBehaviors'  : '\\plugins\\robot\\behaviors\\',
+                            'robotResources'  : '\\plugins\\robot\\resources\\',
+                            'utilities'       : '\\utilities\\'
+            				}
 
         #print all info generated
         if log:

@@ -18,6 +18,7 @@ Robot ./
       ./Dialogs.csv
 """
 import lib.SessionManager as SM
+import lib.BackupDatabase as BDB
 import os
 
 class database(object):
@@ -28,6 +29,7 @@ class database(object):
         #create general data manager
         self.General = General(ProjectHandler = self.PH)
         #create Robot data manager
+        self.Backup = BDB.Backup(ProjectHandler = self.PH)
 
 
 class General(object):
