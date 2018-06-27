@@ -59,8 +59,8 @@ class ProjectHandler(object):
                         'utilities'       : '/utilities/'
 					 }
          #paths dcitionary
-         if self.settings['sys'] == 'win32':
-             self.paths = {
+        if self.settings['sys'] == 'win32':
+            self.paths = {
             				'db'  			  : '\\db\\',
             				'backup'		  : '\\db\\backup\\',
             				'data'			  : '\\db\\data\\',

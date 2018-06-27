@@ -27,6 +27,11 @@ class ModalityWin(QtGui.QMainWindow):
 
         self.setGeometry(self.screen_h / 2 - (self.winsize_h / 2), self.screen_v / 2 - (self.winsize_v / 2), self.winsize_h, self.winsize_v)
 
+        self.label_background = QtGui.QLabel(self)
+        self.label_background.setGeometry(QtCore.QRect(0, 0, self.winsize_h, self.winsize_v))
+        self.label_background.setPixmap(QtGui.QPixmap(self.PH.paths["img"] + "Modalities_background.png"))
+        self.label_background.setScaledContents(True)
+
         self.ControlButtons = {}
         #no robot button
         self.ControlButtons['no_robot'] = QtGui.QPushButton('No robot',self)

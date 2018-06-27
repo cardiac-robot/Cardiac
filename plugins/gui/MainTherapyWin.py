@@ -54,12 +54,12 @@ class TherapyWin(QtGui.QMainWindow):
         #%% Background
         self.label_background=QtGui.QLabel(self.centralwidget)
         self.label_background.setGeometry(QtCore.QRect(0,0,self.winsize_h,self.winsize_v))
-        self.label_background.setPixmap(QtGui.QPixmap(self.PH.paths['img'] + "/background.jpg"))
+        self.label_background.setPixmap(QtGui.QPixmap(self.PH.paths['img'] + "background.jpg"))
         self.label_background.setScaledContents(True)
         #%% Background cooldown phase
         self.label_background2=QtGui.QLabel(self.centralwidget)
         self.label_background2.setGeometry(QtCore.QRect(0,0,self.winsize_h,self.winsize_v))
-        self.label_background2.setPixmap(QtGui.QPixmap(self.PH.paths['img'] + "/background_blue.png"))
+        self.label_background2.setPixmap(QtGui.QPixmap(self.PH.paths['img'] + "background_blue.png"))
         self.label_background2.setScaledContents(True)
 
         #%%LCD Display
@@ -67,26 +67,26 @@ class TherapyWin(QtGui.QMainWindow):
         self.time_lcd.setGeometry(QtCore.QRect(0.375*self.winsize_h,0.87*self.winsize_v,0.1*self.winsize_h,0.05*self.winsize_h))
         self.time_lcd.display("00:00")
         #%%exit button
-        self.exit_button = self.create_textured_button([0.95,0.02,0.035,0.035],self.PH.paths['img'] + "/exit_icon.png")
+        self.exit_button = self.create_textured_button([0.95,0.02,0.035,0.035],self.PH.paths['img'] + "exit_icon.png")
         #%% bord_description
         self.borg_description=QtGui.QLabel(self.centralwidget)
         self.borg_description.setGeometry(QtCore.QRect(0.04*self.winsize_h,0.15*self.winsize_v,0.91*self.winsize_h,0.12*self.winsize_h))
-        self.borg_description.setPixmap(QtGui.QPixmap(self.PH.paths['img'] + "/borg_description.png"))
+        self.borg_description.setPixmap(QtGui.QPixmap(self.PH.paths['img'] + "borg_description.png"))
         self.borg_description.setScaledContents(True)
         #%% borg 6-9 layout
-        self.borg69b=self.create_textured_borg([0.04,0.4,0.2,0.2],self.PH.paths['img'] + "/borg69b.png",self.PH.paths['img'] + "/borg69_lock.png")
+        self.borg69b=self.create_textured_borg([0.04,0.4,0.2,0.2],self.PH.paths['img'] + "borg69b.png",self.PH.paths['img'] + "borg69_lock.png")
         #%% borg 10-13 layout
-        self.borg1013b=self.create_textured_borg([0.28,0.4,0.2,0.2],self.PH.paths['img']+"/borg1013b.png",self.PH.paths['img'] + "/borg1013_lock.png")
+        self.borg1013b=self.create_textured_borg([0.28,0.4,0.2,0.2],self.PH.paths['img']+"borg1013b.png",self.PH.paths['img'] + "borg1013_lock.png")
         #%% borg 14-17 layout
-        self.borg1417b=self.create_textured_borg([0.52,0.4,0.2,0.2],self.PH.paths['img']+"/borg1417b.png",self.PH.paths['img'] + "/borg1417_lock.png")
+        self.borg1417b=self.create_textured_borg([0.52,0.4,0.2,0.2],self.PH.paths['img']+"borg1417b.png",self.PH.paths['img'] + "borg1417_lock.png")
         #%% borg 18-20 layout
-        self.borg1820b=self.create_textured_borg([0.76,0.4,0.2,0.2],self.PH.paths['img']+"/borg1820b.png",self.PH.paths['img'] + "/borg1820_lock.png",flag=False)
+        self.borg1820b=self.create_textured_borg([0.76,0.4,0.2,0.2],self.PH.paths['img']+"borg1820b.png",self.PH.paths['img'] + "borg1820_lock.png",flag=False)
 
         #%% dinamic labels layout data display
         self.label_show={}
         self.label_show['label_back']=QtGui.QLabel(self.centralwidget)
         self.label_show['label_back'].setGeometry(int(self.winsize_h*0.65),int(self.winsize_v*0.785),int(self.winsize_h*0.15),int(self.winsize_v*0.2))
-        self.label_show['label_back'].setPixmap(QtGui.QPixmap(self.PH.paths['img'] + '/data_icons.png'))
+        self.label_show['label_back'].setPixmap(QtGui.QPixmap(self.PH.paths['img'] + 'data_icons.png'))
         self.label_show['label_back'].setScaledContents(True)
         self.label_show['widget']=QtGui.QWidget(self.centralwidget)
         self.label_show['widget'].setGeometry(int(self.winsize_h*0.65),int(self.winsize_v*0.785),int(self.winsize_h*0.15),int(self.winsize_v*0.2))
@@ -115,7 +115,7 @@ class TherapyWin(QtGui.QMainWindow):
 
         self.label_names['label_back']=QtGui.QLabel(self.centralwidget)
         self.label_names['label_back'].setGeometry(int(self.winsize_h*0.5),int(self.winsize_v*0.785),int(self.winsize_h*0.15),int(self.winsize_v*0.2))
-        self.label_names['label_back'].setPixmap(QtGui.QPixmap(self.PH.paths['img'] + "/data_icons.png"))
+        self.label_names['label_back'].setPixmap(QtGui.QPixmap(self.PH.paths['img'] + "data_icons.png"))
         self.label_names['label_back'].setScaledContents(True)
         self.label_names['widget']=QtGui.QWidget(self.centralwidget)
         self.label_names['widget'].setGeometry(int(self.winsize_h*0.5),int(self.winsize_v*0.785),int(self.winsize_h*0.15),int(self.winsize_v*0.2))
@@ -134,19 +134,19 @@ class TherapyWin(QtGui.QMainWindow):
             self.label_names['layout'].addWidget(self.label_names['label'+str(i)])
 
         #%% play button
-        self.play_button=self.create_textured_button([0.05,0.8,0.1,0.1],self.PH.paths['img'] + "/play_icon.png",self.PH.paths['img'] + "/play_icon_on.png")
+        self.play_button=self.create_textured_button([0.05,0.8,0.1,0.1],self.PH.paths['img'] + "play_icon.png",self.PH.paths['img'] + "play_icon_on.png")
         #%% pause button
-        self.pause_button=self.create_textured_button([0.18,0.85,0.07,0.07],self.PH.paths['img'] + "/pause_icon.png",self.PH.paths['img'] + "/cooldown1.png")
+        self.pause_button=self.create_textured_button([0.18,0.85,0.07,0.07],self.PH.paths['img'] + "pause_icon.png",self.PH.paths['img'] + "cooldown1.png")
         #%% stop button
-        self.stop_button=self.create_textured_button([0.28,0.85,0.07,0.07],self.PH.paths['img'] + "/stop_icon.png",self.PH.paths['img'] + "/stop_icon_on.png")
+        self.stop_button=self.create_textured_button([0.28,0.85,0.07,0.07],self.PH.paths['img'] + "stop_icon.png",self.PH.paths['img'] + "stop_icon_on.png")
         #%%panic button
-        self.panic_button=self.create_textured_button([0.85,0.8,0.1,0.1],self.PH.paths['img'] + "/panic_icon.png")
+        self.panic_button=self.create_textured_button([0.85,0.8,0.1,0.1],self.PH.paths['img'] + "panic_icon.png")
         #%%cooldown phase button
-        self.cool_button=self.create_textured_button([0.4,0.02,0.2,0.07],self.PH.paths['img'] + "/cooldown.png")
+        self.cool_button=self.create_textured_button([0.4,0.02,0.2,0.07],self.PH.paths['img'] + "cooldown.png")
         #%%Thumbs up button
-        self.thumbsup_button=self.create_textured_button([0.2,0.15,0.2,0.1],self.PH.paths['img'] + "/good_button.png")
+        self.thumbsup_button=self.create_textured_button([0.2,0.15,0.2,0.1],self.PH.paths['img'] + "good_button.png")
         #%%Thumbs down button
-        self.thumbsdown_button=self.create_textured_button([0.6,0.15,0.2,0.1],self.PH.paths['img'] + "/bad_button.png")
+        self.thumbsdown_button=self.create_textured_button([0.6,0.15,0.2,0.1],self.PH.paths['img'] + "bad_button.png")
 
         #%% Message label
         self.label_log=QtGui.QLabel(self.centralwidget)
