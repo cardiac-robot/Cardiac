@@ -40,7 +40,7 @@ class LogInWin(QtGui.QMainWindow):
         self.submit.setIcon(icon)
         self.submit.setIconSize(QtCore.QSize(self.winsize_v * 0.4, self.winsize_h * 0.037))
 
-        self.closeButton = QtGui.QCommandLinkButton(self)
+        self.CloseButton = QtGui.QCommandLinkButton(self)
         self.CloseButton.setGeometry(QtCore.QRect(self.winsize_h * 0.95, self.winsize_v * 0.01, self.winsize_v * 0.045, self.winsize_h * 0.03))
         self.CloseButton.setStyleSheet("background-color: rgb(255, 255, 255);")
         icon = QtGui.QIcon()

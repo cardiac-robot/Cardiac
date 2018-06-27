@@ -105,7 +105,7 @@ class SettingsWin(QtGui.QMainWindow):
 
     def close_button(self):
         self.close()
-        
+
     #set internal signals method
     def set_signals(self):
         self.ControlButtons['apply'].clicked.connect(self.apply_button)
