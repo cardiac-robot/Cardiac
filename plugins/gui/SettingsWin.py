@@ -27,7 +27,7 @@ class SettingsWin(QtGui.QMainWindow):
                              "ecg_port"    : None,
                              "ecg_sample"  : None,
                              "IpRobot"     : None}
-        #self.apply.clicked.connect(self.apply_button)
+        self.CloseButton.clicked.connect(self.close_button)
         #self.cancel.clicked.connect(self.cancel_button)
 
     def init_ui(self):
@@ -45,6 +45,14 @@ class SettingsWin(QtGui.QMainWindow):
         self.ControlButtons['cancel'] = QtGui.QPushButton(self)
         self.ControlButtons['cancel'].setGeometry(QtCore.QRect(self.winsize_v*0.951, self.winsize_h*0.38, self.winsize_v*0.33, self.winsize_h*0.08))
         self.ControlButtons['cancel'].setText("Cancel")
+
+        self.CloseButton = QtGui.QCommandLinkButton(self)
+        self.CloseButton.setGeometry(QtCore.QRect(self.winsize_h * 0.95, self.winsize_v * 0.01, self.winsize_v * 0.045, self.winsize_h * 0.03))
+        self.CloseButton.setStyleSheet("background-color: rgb(255, 255, 255);")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(self.PH.paths["img"] + "exit_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.CloseButton.setIcon(icon)
+        self.CloseButton.setIconSize(QtCore.QSize(self.winsize_v * 0.3, self.winsize_h * 0.14))
         #LABELS
         #port label
         self.port = QtGui.QLabel(self)
@@ -95,6 +103,9 @@ class SettingsWin(QtGui.QMainWindow):
         #set internal signals
         self.set_signals()
 
+    def close_button(self):
+        self.close()
+        
     #set internal signals method
     def set_signals(self):
         self.ControlButtons['apply'].clicked.connect(self.apply_button)

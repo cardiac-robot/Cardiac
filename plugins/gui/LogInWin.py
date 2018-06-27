@@ -1,7 +1,6 @@
 import sys
 #import os
 from PyQt4 import QtGui, QtCore
-#from ProjectHandler import ProjectHandler
 
 class LogInWin(QtGui.QMainWindow):
     onEmptyField = QtCore.pyqtSignal()
@@ -18,6 +17,7 @@ class LogInWin(QtGui.QMainWindow):
         #set relative size
         self.r_size = 0.65
         self.init_ui()
+        self.CloseButton.clicked.connect(self.close_button)
 
 
     def init_ui(self):
@@ -26,23 +26,31 @@ class LogInWin(QtGui.QMainWindow):
         self.winsize_v = int(self.screen_v * self.r_size)
         self.setGeometry(self.screen_h / 2 - (self.winsize_h / 2), self.screen_v / 2 - (self.winsize_v / 2),self.winsize_h, self.winsize_v)
 
-        self.submit = QtGui.QPushButton('Submit',self)
-        self.submit.setGeometry(self.winsize_h*0.39, self.winsize_v*0.45, self.winsize_v*0.4, self.winsize_h*0.08)
-        font = QtGui.QFont()
-        font.setPointSize(16)
-        self.submit.setFont(font)
+        ## background label
+        self.label_background = QtGui.QLabel(self)
+        self.label_background.setGeometry(QtCore.QRect(0, 0, self.winsize_h, self.winsize_v))
+        self.label_background.setPixmap(QtGui.QPixmap( self.PH.paths["img"] + "LogIn_background.png"))
+        self.label_background.setScaledContents(True)
 
-        ## Labels
-        self.id_label = QtGui.QLabel(self)
-        self.id_label.setGeometry(QtCore.QRect(self.winsize_h * 0.4, self.winsize_v * 0.3, self.winsize_h * 0.15, self.winsize_v * 0.05))
-        self.id_label.setText("ID:")
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.id_label.setFont(font)
+        ## Buttons
+        self.submit = QtGui.QCommandLinkButton(self)
+        self.submit.setGeometry(self.winsize_h * 0.39, self.winsize_v * 0.65, self.winsize_v * 0.4,self.winsize_h * 0.05)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap( self.PH.paths["img"] + "submit.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.submit.setIcon(icon)
+        self.submit.setIconSize(QtCore.QSize(self.winsize_v * 0.4, self.winsize_h * 0.037))
+
+        self.closeButton = QtGui.QCommandLinkButton(self)
+        self.CloseButton.setGeometry(QtCore.QRect(self.winsize_h * 0.95, self.winsize_v * 0.01, self.winsize_v * 0.045, self.winsize_h * 0.03))
+        self.CloseButton.setStyleSheet("background-color: rgb(255, 255, 255);")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(self.PH.paths["img"] + "exit_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.CloseButton.setIcon(icon)
+        self.CloseButton.setIconSize(QtCore.QSize(self.winsize_v * 0.3, self.winsize_h * 0.14))
 
         ## Line Edit
         self.id_text = QtGui.QLineEdit(self)
-        self.id_text.setGeometry(QtCore.QRect(self.winsize_h * 0.45, self.winsize_v * 0.3, self.winsize_h * 0.15, self.winsize_v * 0.05))
+        self.id_text.setGeometry(QtCore.QRect(self.winsize_h * 0.395, self.winsize_v * 0.49, self.winsize_v * 0.37, self.winsize_h * 0.05))
 
         self.set_signals()
 

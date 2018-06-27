@@ -17,7 +17,7 @@ class ModalityWin(QtGui.QMainWindow):
         self.r_size = 0.7
         self.init_ui()
 
-        #self.no_robot.clicked.connect(self.no_robot_button)
+        self.CloseButton.clicked.connect(self.close_button)
         #self.robot.clicked.connect(self.robot_button)
         #self.robot_memoria.clicked.connect(self.robot_memoria_button)
 
@@ -33,17 +33,41 @@ class ModalityWin(QtGui.QMainWindow):
         self.label_background.setScaledContents(True)
 
         self.ControlButtons = {}
-        #no robot button
-        self.ControlButtons['no_robot'] = QtGui.QPushButton('No robot',self)
-        self.ControlButtons['no_robot'].setGeometry(QtCore.QRect(self.winsize_v*0.11, self.winsize_h*0.1, self.winsize_v*0.5, self.winsize_h*0.3))
-        #robot no memory button
-        self.ControlButtons['robot'] = QtGui.QPushButton('Robot',self)
-        self.ControlButtons['robot'].setGeometry(QtCore.QRect(self.winsize_v*0.63, self.winsize_h*0.1, self.winsize_v*0.5, self.winsize_h*0.3))
-        #robot with memory button
-        self.ControlButtons['robot_memory'] = QtGui.QPushButton('Robot with memory',self)
-        self.ControlButtons['robot_memory'].setGeometry(QtCore.QRect(self.winsize_h*0.648, self.winsize_h*0.1, self.winsize_v*0.5, self.winsize_h*0.3))
-        #call set internal signals method
-        self.set_signals()
+        # no robot button
+        self.ControlButtons['no_robot'] = QtGui.QCommandLinkButton(self)
+        self.ControlButtons['no_robot'].setGeometry(QtCore.QRect(self.winsize_h * 0.23, self.winsize_v * 0.4, self.winsize_v * 0.3, self.winsize_h * 0.15))
+        self.ControlButtons['no_robot'].setStyleSheet("background-color: rgb(255, 255, 255);")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(self.PH.paths["img"] + "no_robot.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.ControlButtons['no_robot'].setIcon(icon)
+        self.ControlButtons['no_robot'].setIconSize(QtCore.QSize(self.winsize_v * 0.3, self.winsize_h * 0.14))
+        # robot no memory button
+        self.ControlButtons['robot'] = QtGui.QCommandLinkButton(self)
+        self.ControlButtons['robot'].setGeometry(QtCore.QRect(self.winsize_h * 0.43, self.winsize_v * 0.4, self.winsize_v * 0.3, self.winsize_h * 0.15))
+        self.ControlButtons['robot'].setStyleSheet("background-color: rgb(255, 255, 255);")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(self.PH.paths["img"] + "y_robot.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.ControlButtons['robot'].setIcon(icon)
+        self.ControlButtons['robot'].setIconSize(QtCore.QSize(self.winsize_v * 0.3, self.winsize_h * 0.14))
+        # robot with memory button
+        self.ControlButtons['robot_memory'] = QtGui.QCommandLinkButton(self)
+        self.ControlButtons['robot_memory'].setGeometry(QtCore.QRect(self.winsize_h * 0.63, self.winsize_v * 0.4, self.winsize_v * 0.3, self.winsize_h * 0.15))
+        self.ControlButtons['robot_memory'].setStyleSheet("background-color: rgb(255, 255, 255);")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(self.PH.paths["img"] + "robot_memory.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.ControlButtons['robot_memory'].setIcon(icon)
+        self.ControlButtons['robot_memory'].setIconSize(QtCore.QSize(self.winsize_v * 0.3, self.winsize_h * 0.14))
+        # Close button
+        self.CloseButton = QtGui.QCommandLinkButton(self)
+        self.CloseButton.setGeometry(QtCore.QRect(self.winsize_h * 0.95, self.winsize_v * 0.01, self.winsize_v * 0.045, self.winsize_h * 0.03))
+        self.CloseButton.setStyleSheet("background-color: rgb(255, 255, 255);")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(self.PH.paths["img"] + "exit_icon.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.CloseButton.setIcon(icon)
+        self.CloseButton.setIconSize(QtCore.QSize(self.winsize_v * 0.3, self.winsize_h * 0.14))
+
+    def close_button(self):
+        self.close()
 
     #set internal signals
     def set_signals(self):
