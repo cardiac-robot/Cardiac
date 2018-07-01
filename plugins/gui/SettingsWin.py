@@ -35,70 +35,57 @@ class SettingsWin(QtGui.QMainWindow):
         self.winsize_h=int(self.screen_h * self.r_size)
         self.winsize_v=int(self.screen_v* self.r_size)
         self.setGeometry(self.screen_h / 2 - (self.winsize_h / 2), self.screen_v / 2 - (self.winsize_v / 2), self.winsize_h, self.winsize_v)
+        ## background label
+        self.label_background = QtGui.QLabel(self)
+        self.label_background.setGeometry(QtCore.QRect(0, 0, self.winsize_h, self.winsize_v))
+        self.label_background.setPixmap(QtGui.QPixmap(self.PH.paths["img"] + "Settings_background.png"))
+        self.label_background.setScaledContents(True)
         #buttons dict
         self.ControlButtons = {}
         #apply changes button
-        self.ControlButtons['apply'] = QtGui.QPushButton(self)
-        self.ControlButtons['apply'].setGeometry(QtCore.QRect(self.winsize_v*0.51, self.winsize_h*0.38, self.winsize_v*0.33, self.winsize_h*0.08))
-        self.ControlButtons['apply'].setText("Apply")
-        #cancel button
-        self.ControlButtons['cancel'] = QtGui.QPushButton(self)
-        self.ControlButtons['cancel'].setGeometry(QtCore.QRect(self.winsize_v*0.951, self.winsize_h*0.38, self.winsize_v*0.33, self.winsize_h*0.08))
-        self.ControlButtons['cancel'].setText("Cancel")
+        self.ControlButtons['apply'] = QtGui.QCommandLinkButton(self)
+        self.ControlButtons['apply'].setGeometry(QtCore.QRect(self.winsize_h*0.75, self.winsize_v*0.85, self.winsize_v*0.17, self.winsize_h*0.05))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(self.PH.paths["img"] + "aply_settings.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.ControlButtons['apply'].setIcon(icon)
+        self.ControlButtons['apply'].setIconSize(QtCore.QSize(self.winsize_v * 0.16, self.winsize_h * 0.04))
 
+        #cancel button
+        self.ControlButtons['cancel'] = QtGui.QCommandLinkButton(self)
+        self.ControlButtons['cancel'].setGeometry(QtCore.QRect(self.winsize_h*0.85, self.winsize_v*0.85, self.winsize_v*0.17, self.winsize_h*0.05))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(self.PH.paths["img"] + "cancel_settings.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.ControlButtons['cancel'].setIcon(icon)
+        self.ControlButtons['cancel'].setIconSize(QtCore.QSize(self.winsize_v * 0.16, self.winsize_h * 0.04))
+
+        # close button
         self.CloseButton = QtGui.QCommandLinkButton(self)
         self.CloseButton.setGeometry(QtCore.QRect(self.winsize_h * 0.95, self.winsize_v * 0.01, self.winsize_v * 0.045, self.winsize_h * 0.03))
-        self.CloseButton.setStyleSheet("background-color: rgb(255, 255, 255);")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(self.PH.paths["img"] + "exit_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.CloseButton.setIcon(icon)
-        self.CloseButton.setIconSize(QtCore.QSize(self.winsize_v * 0.3, self.winsize_h * 0.14))
-        #LABELS
-        #port label
-        self.port = QtGui.QLabel(self)
-        self.port.setGeometry(QtCore.QRect(self.winsize_h*0.351, self.winsize_v*0.1, self.winsize_v*0.1, self.winsize_h*0.1))
-        self.port.setText("Port:")
-
-        self.sample = QtGui.QLabel(self)
-        self.sample.setGeometry(QtCore.QRect(self.winsize_h*0.61, self.winsize_v*0.1, self.winsize_v*0.1, self.winsize_h*0.1))
-        self.sample.setText("Sample:")
-
-        self.laser = QtGui.QLabel(self)
-        self.laser.setGeometry(QtCore.QRect(self.winsize_h*0.21, self.winsize_v*0.2, self.winsize_v*0.1, self.winsize_h*0.1))
-        self.laser.setText("Laser:")
-
-        self.imu = QtGui.QLabel(self)
-        self.imu.setGeometry(QtCore.QRect(self.winsize_h*0.21, self.winsize_v*0.3, self.winsize_v*0.1, self.winsize_h*0.1))
-        self.imu.setText("imu:")
-
-        self.ecg = QtGui.QLabel(self)
-        self.ecg.setGeometry(QtCore.QRect(self.winsize_h*0.21, self.winsize_v*0.4, self.winsize_v*0.1, self.winsize_h*0.1))
-        self.ecg.setText("ECG:")
-
-        self.ip = QtGui.QLabel(self)
-        self.ip.setGeometry(QtCore.QRect(self.winsize_h*0.351, self.winsize_v*0.5, self.winsize_v*0.1, self.winsize_h*0.1))
-        self.ip.setText("IP Robot:")
-
+        self.CloseButton.setIconSize(QtCore.QSize(self.winsize_v * 0.4, self.winsize_h * 0.02))
+        #
         self.laser_port = QtGui.QLineEdit(self)
-        self.laser_port.setGeometry(QtCore.QRect(self.winsize_h*0.31, self.winsize_v*0.26, self.winsize_h*0.15, self.winsize_v*0.05))
+        self.laser_port.setGeometry(QtCore.QRect(self.winsize_h * 0.33, self.winsize_v * 0.47, self.winsize_h * 0.1, self.winsize_v * 0.04))
 
         self.imu_port = QtGui.QLineEdit(self)
-        self.imu_port.setGeometry(QtCore.QRect(self.winsize_h*0.31, self.winsize_v*0.36, self.winsize_h*0.15, self.winsize_v*0.05))
+        self.imu_port.setGeometry(QtCore.QRect(self.winsize_h * 0.67, self.winsize_v * 0.255, self.winsize_h * 0.1, self.winsize_v * 0.04))
 
         self.ecg_port = QtGui.QLineEdit(self)
-        self.ecg_port.setGeometry(QtCore.QRect(self.winsize_h*0.31, self.winsize_v*0.46, self.winsize_h*0.15, self.winsize_v*0.05))
+        self.ecg_port.setGeometry(QtCore.QRect(self.winsize_h * 0.6, self.winsize_v * 0.61, self.winsize_h * 0.1, self.winsize_v * 0.04))
 
         self.laser_sample = QtGui.QLineEdit(self)
-        self.laser_sample.setGeometry(QtCore.QRect(self.winsize_h*0.551, self.winsize_v*0.26, self.winsize_h*0.15, self.winsize_v*0.05))
+        self.laser_sample.setGeometry(QtCore.QRect(self.winsize_h * 0.33, self.winsize_v * 0.53, self.winsize_h * 0.1, self.winsize_v * 0.04))
 
         self.imu_sample = QtGui.QLineEdit(self)
-        self.imu_sample.setGeometry(QtCore.QRect(self.winsize_h*0.551, self.winsize_v*0.36, self.winsize_h*0.15, self.winsize_v*0.05))
+        self.imu_sample.setGeometry(QtCore.QRect(self.winsize_h * 0.67, self.winsize_v * 0.32, self.winsize_h * 0.1, self.winsize_v * 0.04))
 
         self.ecg_sample = QtGui.QLineEdit(self)
-        self.ecg_sample.setGeometry(QtCore.QRect(self.winsize_h*0.551, self.winsize_v*0.46, self.winsize_h*0.15, self.winsize_v*0.05))
+        self.ecg_sample.setGeometry(QtCore.QRect(self.winsize_h * 0.6, self.winsize_v * 0.66, self.winsize_h * 0.1, self.winsize_v * 0.04))
 
         self.id_robot = QtGui.QLineEdit(self)
-        self.id_robot.setGeometry(QtCore.QRect(self.winsize_h*0.421, self.winsize_v*0.56, self.winsize_h*0.15, self.winsize_v*0.05))
+        self.id_robot.setGeometry(QtCore.QRect(self.winsize_h * 0.285, self.winsize_v * 0.32, self.winsize_h * 0.12, self.winsize_v * 0.04))
 
         #set internal signals
         self.set_signals()

@@ -46,7 +46,7 @@ class LogInWin(QtGui.QMainWindow):
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(self.PH.paths["img"] + "exit_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.CloseButton.setIcon(icon)
-        self.CloseButton.setIconSize(QtCore.QSize(self.winsize_v * 0.3, self.winsize_h * 0.14))
+        self.CloseButton.setIconSize(QtCore.QSize(self.winsize_v * 0.4, self.winsize_h * 0.02))
 
         ## Line Edit
         self.id_text = QtGui.QLineEdit(self)
