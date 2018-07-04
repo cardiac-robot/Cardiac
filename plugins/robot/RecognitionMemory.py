@@ -13,7 +13,7 @@ import shutil
 #sys.path.append(os.path.abspath(os.path.join('..\..\..\CRRobot', 'cam')))
 
 #print os.path.abspath(os.path.join('..\..\..\CRRobot\db', 'database'))
-from pylab import *
+#from pylab import *
 import matplotlib.pyplot as plt
 import pyAgrum as gum
 import pyAgrum.lib.notebook as gnb
