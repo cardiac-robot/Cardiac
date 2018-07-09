@@ -88,6 +88,9 @@ class MainTherapyPlugin(object):
         #if robot condition
         elif self.settings['mode'] == 1 or self.settings['mode'] ==2:
             self.useRobot = True
+            if self.settings['mode'] == 2:
+                self.useMemory = True
+                self.PH.GeneralSettings['robot']['useMemory'] = self.useMemory
             #get user profile
             self.PH.GeneralSettings['robot']['UserProfile'] = self.DB.General.SM.person
             #Create robot controller

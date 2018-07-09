@@ -21,7 +21,7 @@ class ProjectHandler(object):
         #flag for settings
         self.OnSettings = False
         #general settings variable
-        self.GeneralSettings = {'robot': {'IpRobot'       : "192.168.1.3",
+        self.GeneralSettings = {'robot': {'IpRobot'       : "192.168.0.102",
                                           'port'          : 9559,#9559
                                           'mode'          : 1,
                                           'name'          : "Palin",
@@ -46,6 +46,7 @@ class ProjectHandler(object):
                         'robot_db'        : '/db/robot/',
                         'db_lib'          : '/db/lib/',
                         'current_user'    : '/',
+                        'current_session' : '/',
 						'plugin'		  : '/plugins/',
 						'gui' 			  : '/plugins/gui/',
 						'img'             : '/plugins/gui/img/',
@@ -68,6 +69,7 @@ class ProjectHandler(object):
                             'robot_db'        : '\\db\\robot\\',
                             'db_lib'          : '\\db\\lib\\',
                             'current_user'    : '\\',
+                            'current_session' : '\\',
             				'plugin'		  : '\\plugins\\',
             			    'gui' 			  : '\\plugins\\gui\\',
             				'img'             : '\\plugins\\gui\\img\\',

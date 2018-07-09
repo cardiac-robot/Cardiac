@@ -1,6 +1,6 @@
 
 # coding: utf-8
-
+import numpy as np
 import sys
 # sys.path.insert(0, '../../db')
 # sys.path.insert(0, '../../cam')

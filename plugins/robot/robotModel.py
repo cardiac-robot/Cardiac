@@ -8,7 +8,7 @@ import time
 import functools
 import resources.dialogs as dialogs
 import threading
-
+import resources.MemoryRobot as RMEM
 class Robot(object):
     def __init__(self, settings = { 'IpRobot': "192.168.0.100",
                                     'port'   : 9559,
@@ -18,7 +18,6 @@ class Robot(object):
                                     'BorgTime': 3,
                                     'useMemory': False
                                     },
-
                         db = None,
                         controller = None,
                  ):
@@ -32,8 +31,15 @@ class Robot(object):
         self.dialogs = dialogs.Dialogs()
         #micro second
         self.micro = 1000000
+
+        if self.settings['useMemory']:
+            self.MemoryRobot = RMEM.MemoryRobot(ProjectHandler = self.controller.PH,
+                                                settings = self.controller.settings,
+                                                DataHandler    = self.controller.DB)
         #launch_robot
         self.launch_robot()
+
+
 
     #launch the main robot utilities
     def launch_robot(self):

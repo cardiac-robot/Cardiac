@@ -48,9 +48,10 @@ class ImageSender(object):
     #
     def sendPhoto(self):
         if self.PH.settings['sys'] == "win32":
-            os.system('pscp .\\' + self.imgName + ' nao@' + self.destIp + '://home//nao//dev//images//nao_image.jpg')
+            os.system('pscp .\\' + self.local + ' nao@' + self.destIp + '://home//nao//dev//images//nao_image.jpg')
         elif self.PH.settings['sys'] == "linux2":
-            os.system("pscp -pw bmd ./" + self.imgName + " nao@" + self.destIp + ":/home/nao/dev/images/nao_image.jpg")
+            print "pscp -pw bmd " + self.imgName + " nao@" + self.destIp + ":/home/nao/dev/images/nao_image.jpg"
+            os.system("pscp -pw bmd " + self.local + " nao@" + self.destIp + ":/home/nao/dev/images/nao_image.jpg")
 
     #
     def get_image_path(self):

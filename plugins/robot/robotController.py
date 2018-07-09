@@ -34,6 +34,7 @@ class Controller(object):
                         db = None
                 ):
         #load settings
+        print settings
         self.settings = settings
         self.PH = ProjectHandler
         self.db = db
@@ -85,7 +86,12 @@ class Controller(object):
         #create robot model
         self.robot = robotModel.Robot(controller = self, settings = self.settings, db = self.db)
         #init behavior
-        self.robot.start_behavior()
+        if not self.settings['useMemory']:
+            self.robot.start_behavior()
+        else:
+            announce = self.robot.dialogs.sentenceAnnounce.replace("XX",str(5))
+            announce = announce.replace("YY", str(1))
+            text_to_say = self.robot.MemoryRobot.checkAbsence() + self.robot.MemoryRobot.checkPreviousSessionAlerts(announce,5,1)
 
         #enter to the main programm loop
         while not self.onShutdown.is_set():

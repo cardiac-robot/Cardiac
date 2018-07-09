@@ -28,6 +28,61 @@ class SessionManager(object):
         #load User status
         self.UserStatus = US
 
+
+    def get_all_sessions(self):
+
+        path  =  self.PH.paths['current_user']
+
+        sessions = next(os.walk(path))[1]
+
+        session_dict = {"events": [], "average":[],"sensors":[], 'date': []}
+        all_sessions = []
+        if sessions:
+            for s in sessions:
+                session_sensor_list = []
+                session_event_list = []
+                #print s
+                string = path + "/" +str(s)
+                print string
+                sensor_file = open(string + "/Sensors.csv","r")
+                se = sensor_file.readlines()[1:]
+                se_dict = {"Heartrate":"","Speed":"","Cadence":"","Steplenght":"","Inclination":"","Timestamp":""}
+                l = 0
+                for l in enumerate(se):
+                    d = se[l[0]].strip().split(";")
+
+                    se_dict['Heartrate'] = d[0]
+                    se_dict['Speed'] = d[1]
+                    se_dict['Cadence'] = d[2]
+                    se_dict['Steplenght'] = d[3]
+                    se_dict['Inclination'] = d[4]
+                    se_dict['Timestamp'] = d[5]
+                    session_sensor_list.append(dict(se_dict))
+
+                event_file = open(string + "/Events.csv", "r")
+                ev = event_file.readlines()[1:]
+                ev_dict = {"Type":"","Cause":"","Value":"","Timestamp":""}
+                for l in enumerate(ev):
+                    e = ev[l[0]].strip().split(";")
+
+                    ev_dict['Type'] = e[0]
+                    ev_dict['Cause'] = e[1]
+                    ev_dict['Value'] = e[2]
+                    ev_dict['Timestamp'] = e[3]
+                    session_event_list.append(dict(ev_dict))
+
+                session_dict['date'] = s
+
+            session_dict['events'] = session_event_list
+            session_dict['sensors']= session_sensor_list
+            all_sessions.append(dict(session_dict))
+        else:
+            print "0"
+            return 0
+
+        print all_sessions
+        return all_sessions
+
     def check_attending_time(self):
         #p = self.RegisterStatus[1]
         p = self.load_user_times()
@@ -101,6 +156,9 @@ class SessionManager(object):
             self.times_file.close()
         #create session folder
         folder = user_folder +"/" +str(self.date.year)+'-'+str(self.date.month)+'-'+str(self.date.day)
+        #update current session folder
+        self.PH.paths['current_session'] = folder
+        #create folder
         if not os.path.exists(folder):
             os.makedirs(folder)
         #create sensor and event files
@@ -110,7 +168,7 @@ class SessionManager(object):
         self.SensorFile = open(self.sensor_name, 'w+')
         self.EventFile = open(self.event_name, 'w+')
         #initialize headers
-        self.SensorFile.write('Heartrate;Speed;Cadence;Steplenght;Inclination\n')
+        self.SensorFile.write('Heartrate;Speed;Cadence;Steplenght;Inclination;Timestamp\n')
         self.EventFile.write('Type;Cause;value;Timestamp\n')
         #close files
         self.SensorFile.close()
