@@ -39,18 +39,18 @@ class RegisterWin(QtGui.QMainWindow):
         self.controlbuttons_reg = {}
 
         self.controlbuttons_reg['submit'] = QtGui.QCommandLinkButton(self)
-        self.controlbuttons_reg["submit"].setGeometry(self.winsize_h * 0.57, self.winsize_v * 0.75,self.winsize_v * 0.27, self.winsize_h * 0.06)
+        self.controlbuttons_reg["submit"].setGeometry(self.winsize_h * 0.65, self.winsize_v * 0.82,self.winsize_v * 0.27, self.winsize_h * 0.06)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(self.PH.paths["img"] + "submit_register.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.controlbuttons_reg['submit'].setIcon(icon)
-        self.controlbuttons_reg['submit'].setIconSize(QtCore.QSize(self.winsize_v * 0.25, self.winsize_h * 0.052))
+        self.controlbuttons_reg['submit'].setIconSize(QtCore.QSize(self.winsize_v * 0.25, self.winsize_h * 0.05))
 
         self.controlbuttons_reg['Cancel'] = QtGui.QCommandLinkButton(self)
-        self.controlbuttons_reg["Cancel"].setGeometry(self.winsize_h * 0.71, self.winsize_v * 0.75,self.winsize_v * 0.25, self.winsize_h * 0.06)
+        self.controlbuttons_reg["Cancel"].setGeometry(self.winsize_h * 0.78, self.winsize_v * 0.82,self.winsize_v * 0.25, self.winsize_h * 0.06)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(self.PH.paths["img"] + "cancel_reg.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.controlbuttons_reg['Cancel'].setIcon(icon)
-        self.controlbuttons_reg['Cancel'].setIconSize(QtCore.QSize(self.winsize_v * 0.25, self.winsize_h * 0.052))
+        self.controlbuttons_reg['Cancel'].setIconSize(QtCore.QSize(self.winsize_v * 0.25, self.winsize_h * 0.05))
 
         self.CloseButton = QtGui.QCommandLinkButton(self)
         self.CloseButton.setGeometry(QtCore.QRect(self.winsize_h * 0.95, self.winsize_v * 0.01, self.winsize_v * 0.045, self.winsize_h * 0.03))
@@ -60,68 +60,36 @@ class RegisterWin(QtGui.QMainWindow):
         self.CloseButton.setIcon(icon)
         self.CloseButton.setIconSize(QtCore.QSize(self.winsize_v * 0.4, self.winsize_h * 0.02))
 
-        ## Labels
-        self.name = QtGui.QLabel(self)
-        self.name.setGeometry(QtCore.QRect(self.winsize_h * 0.57, self.winsize_v * 0.1, self.winsize_v * 0.1, self.winsize_h * 0.08))
-        self.name.setText('Nombre:')
-
-        self.age = QtGui.QLabel(self)
-        self.age.setGeometry(QtCore.QRect(self.winsize_h * 0.57, self.winsize_v * 0.2, self.winsize_v * 0.12, self.winsize_h * 0.1))
-        self.age.setText('Edad:')
-
-        self.gender = QtGui.QLabel(self)
-        self.gender.setGeometry(QtCore.QRect(self.winsize_h * 0.57, self.winsize_v * 0.315, self.winsize_v * 0.1, self.winsize_h * 0.1))
-        self.gender.setText('Genero:')
-
-        self.height = QtGui.QLabel(self)
-        self.height.setGeometry(QtCore.QRect(self.winsize_h * 0.57, self.winsize_v * 0.42, self.winsize_v * 0.1, self.winsize_h * 0.1))
-        self.height.setText('Altura:')
-
-        self.weight = QtGui.QLabel(self)
-        self.weight.setGeometry(QtCore.QRect(self.winsize_h * 0.7, self.winsize_v * 0.42, self.winsize_v * 0.1, self.winsize_h * 0.1))
-        self.weight.setText('Peso:')
-
-        self.height_c = QtGui.QLabel(self)
-        self.height_c.setGeometry(QtCore.QRect(self.winsize_h * 0.57, self.winsize_v * 0.54, self.winsize_v * 0.2, self.winsize_h * 0.1))
-        self.height_c.setText('Altura entrepierna:')
-
-        self.id = QtGui.QLabel(self)
-        self.id.setGeometry(QtCore.QRect(self.winsize_h * 0.7, self.winsize_v * 0.2, self.winsize_v * 0.1, self.winsize_h * 0.1))
-        self.id.setText('Cedula:')
-
-        self.patology = QtGui.QLabel(self)
-        self.patology.setGeometry(QtCore.QRect(self.winsize_h * 0.7, self.winsize_v * 0.54, self.winsize_v * 0.1, self.winsize_h * 0.1))
-        self.patology.setText('Patologia:')
 
         ## Line Edit
         self.controllabels = {}
         self.controllabels['name'] = QtGui.QLineEdit(self)
-        self.controllabels['name'].setGeometry(QtCore.QRect(self.winsize_h * 0.57, self.winsize_v * 0.2, self.winsize_v * 0.48, self.winsize_h * 0.03))
+        self.controllabels['name'].setGeometry(QtCore.QRect(self.winsize_h * 0.62, self.winsize_v * 0.23, self.winsize_v * 0.58, self.winsize_h * 0.03))
 
         self.controllabels['age'] = QtGui.QLineEdit(self)
-        self.controllabels['age'].setGeometry(QtCore.QRect(self.winsize_h * 0.57, self.winsize_v * 0.32, self.winsize_v * 0.1, self.winsize_h * 0.03))
+        self.controllabels['age'].setGeometry(QtCore.QRect(self.winsize_h * 0.62, self.winsize_v * 0.36, self.winsize_v * 0.1, self.winsize_h * 0.03))
 
         self.controllabels['height'] = QtGui.QLineEdit(self)
-        self.controllabels['height'].setGeometry(QtCore.QRect(self.winsize_h * 0.57, self.winsize_v * 0.535, self.winsize_v * 0.1, self.winsize_h * 0.03))
+        self.controllabels['height'].setGeometry(QtCore.QRect(self.winsize_h * 0.62, self.winsize_v * 0.62, self.winsize_v * 0.1, self.winsize_h * 0.03))
 
         self.controllabels['weight'] = QtGui.QLineEdit(self)
-        self.controllabels['weight'].setGeometry(QtCore.QRect(self.winsize_h * 0.7, self.winsize_v * 0.535, self.winsize_v * 0.1, self.winsize_h * 0.03))
+        self.controllabels['weight'].setGeometry(QtCore.QRect(self.winsize_h * 0.8, self.winsize_v * 0.62, self.winsize_v * 0.1, self.winsize_h * 0.03))
 
         self.controllabels['height_c'] = QtGui.QLineEdit(self)
-        self.controllabels['height_c'].setGeometry(QtCore.QRect(self.winsize_h * 0.57, self.winsize_v * 0.66, self.winsize_v * 0.1, self.winsize_h * 0.029))
+        self.controllabels['height_c'].setGeometry(QtCore.QRect(self.winsize_h * 0.62, self.winsize_v * 0.75, self.winsize_v * 0.1, self.winsize_h * 0.029))
 
         self.controllabels['id'] = QtGui.QLineEdit(self)
-        self.controllabels['id'].setGeometry(QtCore.QRect(self.winsize_h * 0.7, self.winsize_v * 0.32, self.winsize_v * 0.25, self.winsize_h * 0.029))
+        self.controllabels['id'].setGeometry(QtCore.QRect(self.winsize_h * 0.8, self.winsize_v * 0.36, self.winsize_v * 0.25, self.winsize_h * 0.029))
 
         self.controllabels['patology'] = QtGui.QLineEdit(self)
-        self.controllabels['patology'].setGeometry(QtCore.QRect(self.winsize_h * 0.7, self.winsize_v * 0.66, self.winsize_v * 0.25, self.winsize_h * 0.029))
+        self.controllabels['patology'].setGeometry(QtCore.QRect(self.winsize_h * 0.8, self.winsize_v * 0.75, self.winsize_v * 0.25, self.winsize_h * 0.029))
 
         self.female = QtGui.QRadioButton(self)
-        self.female.setGeometry(QtCore.QRect(self.winsize_h * 0.57, self.winsize_v * 0.42, self.winsize_v * 0.15, self.winsize_h * 0.032))
+        self.female.setGeometry(QtCore.QRect(self.winsize_h * 0.62, self.winsize_v * 0.49, self.winsize_v * 0.21, self.winsize_h * 0.032))
         self.female.setText("Femenino")
 
         self.male = QtGui.QRadioButton(self)
-        self.male.setGeometry(QtCore.QRect(self.winsize_h * 0.67, self.winsize_v * 0.42, self.winsize_v * 0.15, self.winsize_h * 0.032))
+        self.male.setGeometry(QtCore.QRect(self.winsize_h * 0.75, self.winsize_v * 0.49, self.winsize_v * 0.21, self.winsize_h * 0.032))
         self.male.setText("Masculino")
 
         #set internal signals
