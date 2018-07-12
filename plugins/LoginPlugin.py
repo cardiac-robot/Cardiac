@@ -32,3 +32,6 @@ class LoginPlugin(object):
             self.LogInWin.onRegistered.emit()
         else:
             self.LogInWin.onNotRegistered.emit()
+
+    def ExitConnect(self,f):
+        self.LogInWin.CloseButton.clicked.connect(f)

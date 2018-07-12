@@ -86,6 +86,8 @@ class MainPlugin(object):
         self.RegisterPlugin.CancelConnect(f = self.MainMenuPlugin.LaunchView)
         #[2] connect onData signal, when data has been succesfuly filled in the form and ready to use, launch de main menu again
         self.RegisterPlugin.RegisterWin.onData.connect(self.MainMenuPlugin.LaunchView)
+        #[3] connect exit button to relaunch the Main Menu and close the Register window
+        self.RegisterPlugin.ExitConnect(f = self.MainMenuPlugin.LaunchView)
         """
         SETTINGS STATE: settings has similar behavior as the Register, has two signals
         [1] CancelConnect: when settings process has been canceled, the window should close and reopen main menu
@@ -104,6 +106,9 @@ class MainPlugin(object):
         self.LoginPlugin.LogInWin.onNotRegistered.connect(self.RegisterPlugin.LaunchView)
         #[2]if registered open the modality win
         self.LoginPlugin.LogInWin.onRegistered.connect(self.MainTherapyPlugin.LaunchView)
+        #[3] connect exit button to relaunch the Main Menu and close the Log in  window
+        self.LoginPlugin.ExitConnect(f = self.MainMenuPlugin.LaunchView)
+
         """
         MODALITY STATE: the modality win emit three signals that set the configuration of the MainTherapyPlugin
         [1] onModalitySet: closes the window and launch the MainTherapyPlugin
@@ -113,6 +118,9 @@ class MainPlugin(object):
         self.ModalityPlugin.ModalityWin.onModalitySet.connect(self.LoginPlugin.LaunchView)
         #[2] connect onMemory signal to the recognition LaunchView method
         self.ModalityPlugin.ModalityWin.onMemory.connect(self.RecognitionPlugin.LaunchView)
+        #[3] connect exit button to relaunch the Main Menu and close the Modality window
+        self.ModalityPlugin.ExitConnect(f = self.MainMenuPlugin.LaunchView)
+
 
         """
         RECOGNITION STATE: the recognition state, performs the recognition process and emmit two signals depending on the result

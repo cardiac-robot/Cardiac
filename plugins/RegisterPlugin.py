@@ -45,6 +45,9 @@ class RegisterPlugin(object):
     def onCancelPressed(self, f):
         self.RegisterWin.close()
 
+    def ExitConnect(self,f):
+        self.RegisterWin.CloseButton.clicked.connect(f)
+
     def HideView(self):
         self.RegisterWin.hide()
 

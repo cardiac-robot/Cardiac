@@ -51,3 +51,6 @@ class ModalityPlugin(object):
         self.DB.General.set_modality(2)
         #emit on modality set signal
         self.ModalityWin.onMemory.emit()
+
+    def ExitConnect(self,f):
+        self.ModalityWin.CloseButton.clicked.connect(f)

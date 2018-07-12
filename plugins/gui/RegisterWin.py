@@ -64,7 +64,7 @@ class RegisterWin(QtGui.QMainWindow):
         ## Line Edit
         self.controllabels = {}
         self.controllabels['name'] = QtGui.QLineEdit(self)
-        self.controllabels['name'].setGeometry(QtCore.QRect(self.winsize_h * 0.62, self.winsize_v * 0.23, self.winsize_v * 0.58, self.winsize_h * 0.03))
+        self.controllabels['name'].setGeometry(QtCore.QRect(self.winsize_h * 0.62, self.winsize_v * 0.23, self.winsize_v * 0.575, self.winsize_h * 0.03))
 
         self.controllabels['age'] = QtGui.QLineEdit(self)
         self.controllabels['age'].setGeometry(QtCore.QRect(self.winsize_h * 0.62, self.winsize_v * 0.36, self.winsize_v * 0.1, self.winsize_h * 0.03))
