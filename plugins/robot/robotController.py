@@ -31,13 +31,13 @@ class Controller(object):
                                                     'last_measure': {}
                                                    }
                                   },
-                        db = None
+                        DataHandler = None
                 ):
         #load settings
         print settings
         self.settings = settings
         self.PH = ProjectHandler
-        self.db = db
+        self.DB = DataHandler
         #create event handlers
         #session init
         self.onStart = multiprocessing.Event()
@@ -77,22 +77,29 @@ class Controller(object):
 
     #launch process method
     def launch(self):
+        print("Robot launched from robotController")
         self.MainProcess.start()
 
     #process to run in a separate process
     def process(self):
+        print("START PROCESSS FROM robotController")
         #creates data alzer
         self.analyzer = analyzer.Analyzer(self.settings['UserProfile'])
         #create robot model
-        self.robot = robotModel.Robot(controller = self, settings = self.settings, db = self.db)
+        self.robot = robotModel.Robot(controller = self, settings = self.settings, db = self.DB)
         #init behavior
+        print"memory settingsssss"
+        print self.settings['useMemory']
+
         if not self.settings['useMemory']:
+
             self.robot.start_behavior()
         else:
+            print"STARTING MEMORY ROBOT BEHAVIOR"
             announce = self.robot.dialogs.sentenceAnnounce.replace("XX",str(5))
             announce = announce.replace("YY", str(1))
             text_to_say = self.robot.MemoryRobot.checkAbsence() + self.robot.MemoryRobot.checkPreviousSessionAlerts(announce,5,1)
-
+            print text_to_say
         #enter to the main programm loop
         while not self.onShutdown.is_set():
             """

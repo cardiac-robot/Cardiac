@@ -79,6 +79,7 @@ class Dialogs(object):
         #say bye sentences
         self.ByeSentence = 'Eso ha sido todo por hoy!! \\pau=20\\ No olvides ingresar la presión arterial y responder las preguntas al final! '
 
+        print "load dialogs finished"
 
     #returns a random motivation sentences depending on the therapy time
     def get_motivation_sentence(self):

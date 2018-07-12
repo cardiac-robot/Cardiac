@@ -33,10 +33,13 @@ class Robot(object):
         self.micro = 1000000
 
         if self.settings['useMemory']:
+            print "creating robot memory from model"
             self.MemoryRobot = RMEM.MemoryRobot(ProjectHandler = self.controller.PH,
                                                 settings = self.controller.settings,
                                                 DataHandler    = self.controller.DB)
-        #launch_robot
+                                                #session = self.session)
+
+                #launch_robot
         self.launch_robot()
 
 
@@ -46,13 +49,22 @@ class Robot(object):
         #load dialogs
         self.dialogs.load_dialogs()
         #create Session
+        print "CREATES SESSION FOM ROBOT MODEL"
         self.session = qi.Session()
         #connect the session to the robot
+        print("1")
         self.connect_session()
         #after connecting to the robot, get services and modules
+        print("2")
         self.get_services()
         #set routines
+        print("3")
         self.set_routines()
+        #pass session to the memory
+        print "launch robot"
+        if self.settings['useMemory']:
+            print("setting the session to the MemoryRobot")
+            self.MemoryRobot.set_session(self.session)
 #----------------------------Setup and initialization Methods--------------------------
     #load Dialogs
     #TODO: LOAD Dialogs from files
@@ -61,8 +73,10 @@ class Robot(object):
     #connect to the robot through session
     def connect_session(self):
         print self.settings['IpRobot']
+        print "tcp://" + self.settings['IpRobot'] + ":" + str(self.settings['port'])
+        print self.session
         self.session.connect("tcp://" + self.settings['IpRobot'] + ":" + str(self.settings['port']))
-
+        print("After connection")
 
     #get all module services
     def get_services(self):

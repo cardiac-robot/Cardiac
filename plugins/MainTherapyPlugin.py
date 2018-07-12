@@ -87,15 +87,18 @@ class MainTherapyPlugin(object):
             self.BorgTimer = threading.Timer(self.PH.GeneralSettings['therapy']['BorgSample'], self.request_borg)
         #if robot condition
         elif self.settings['mode'] == 1 or self.settings['mode'] ==2:
+            print("USERROBOT = TRUE")
             self.useRobot = True
             if self.settings['mode'] == 2:
+                print("USE MEMORY 0 TRUE")
                 self.useMemory = True
                 self.PH.GeneralSettings['robot']['useMemory'] = self.useMemory
             #get user profile
             self.PH.GeneralSettings['robot']['UserProfile'] = self.DB.General.SM.person
             #Create robot controller
             self.robotController = RC.Controller(ProjectHandler = self.PH,
-                                                 settings       = self.PH.GeneralSettings['robot']
+                                                 settings       = self.PH.GeneralSettings['robot'],
+                                                 DataHandler    = self.DB
                                                 )
             #create robot monitor thread
             self.RobotMonitorThread = RobotMonitorThread(self)
@@ -170,7 +173,9 @@ class MainTherapyPlugin(object):
         #robot controller
         if self.useRobot:
             #launch robot
+            print "deploy resources launch"
             self.robotController.launch()
+            print("robotController lounchjed from MainTherapypluWin")
             #launch robot monitor
             self.RobotMonitorThread.start()
         else:

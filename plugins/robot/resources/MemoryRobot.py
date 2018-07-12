@@ -19,32 +19,37 @@ import random # for making random choices for choosing the number of sentences b
 
 class MemoryRobot:
 
-    def __init__(self, p_name = None, useSpanish = True, ProjectHandler = None, DataHandler = None, settings = None):
+    def __init__(self,session = None , p_name = None, useSpanish = True, ProjectHandler = None, DataHandler = None, settings = None ):
 
         self.settings = settings
         self.PH = ProjectHandler
-
         self.DB = DataHandler
-
+        self.session = session
         self.loadSentencesForMemoryFeedback(useSpanish)
         self.setPerson(self.settings['UserProfile'])
         self.num_say_name = 0
 
-        self.connectToRobot()
+        #self.connectToRobot()
 
-    def connectToRobot(self, ip, port=9559):
-        self.robot_ip = ip
-        self.robot_port = port
-        self.session = qi.Session()
-        try:
-            self.session.connect("tcp://" + self.settings['IpRobot'] + ":" + str(self.settings['port']))
-        except RuntimeError:
-            logging.debug("Can't connect to Naoqi at ip \"" + ip + "\" on port " + str(port) +".\n"
-               "Please check your script arguments. Run with -h option for help.")
-            sys.exit(1)
+    def connectToRobot(self):
+        #self.robot_ip = ip
+        #self.robot_port = port
+
+        #try:
+        print ('connecting robot from MemoryRobot file')
+        #self.session.connect("tcp://" + self.settings['IpRobot'] + ":" + str(self.settings['port']))
+        #except RuntimeError:
+            #logging.debug("Can't connect to Naoqi at ip \"" + ip + "\" on port " + str(port) +".\n"
+             #  "Please check your script arguments. Run with -h option for help.")
+            #sys.exit(1)
+        print("Modules from te emmoryrobot  file")
         self.animatedSpeechProxy = self.session.service("ALAnimatedSpeech")
         self.tts = self.session.service("ALTextToSpeech")
         self.configuration = {"bodyLanguageMode":"contextual"}
+
+    def set_session(self, s):
+        self.session = s
+        self.connectToRobot()
 
     def say(self, sentence):
         self.tts.setVolume(0.85)
@@ -55,7 +60,7 @@ class MemoryRobot:
 
         #self.db_handler = db.DbHandler()
         #p = self.db_handler.get_person_data({"name":self.p_name})
-
+        self.p = self.person
         self.p_gender = str(self.p["gender"])
         self.p_age = int(self.p["age"])
         self.p_height = float(self.p["height"])
@@ -66,7 +71,7 @@ class MemoryRobot:
             self.p_times.append([tt.time().strftime('%H:%M:%S'), tt.isoweekday()])
 
     def loadSessionData(self):
-        #
+        print "loadSessionData start"
         s = self.DB.General.SM.get_all_sessions()
         #
         counter = 0
@@ -92,7 +97,11 @@ class MemoryRobot:
 
             counter = counter + 1
 
+        print "################"
+        print "number of sessions " + str(counter)
+        print "################"
         self.p_num_sessions = counter
+        print "loadSessionData finish"
 
     def setPerson(self, p):
         self.person = p

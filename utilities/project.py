@@ -21,7 +21,7 @@ class ProjectHandler(object):
         #flag for settings
         self.OnSettings = False
         #general settings variable
-        self.GeneralSettings = {'robot': {'IpRobot'       : "192.168.0.102",
+        self.GeneralSettings = {'robot': {'IpRobot'       : "192.168.1.2",
                                           'port'          : 9559,#9559
                                           'mode'          : 1,
                                           'name'          : "Palin",
