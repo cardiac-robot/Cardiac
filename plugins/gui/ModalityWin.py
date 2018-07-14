@@ -17,10 +17,6 @@ class ModalityWin(QtGui.QMainWindow):
         self.r_size = 0.7
         self.init_ui()
 
-        self.CloseButton.clicked.connect(self.close_button)
-        #self.robot.clicked.connect(self.robot_button)
-        #self.robot_memoria.clicked.connect(self.robot_memoria_button)
-
     def init_ui(self):
         self.winsize_h=int(self.screen_h * self.r_size)
         self.winsize_v=int(self.screen_v* self.r_size)
@@ -61,9 +57,6 @@ class ModalityWin(QtGui.QMainWindow):
         icon.addPixmap(QtGui.QPixmap(self.PH.paths["img"] + "exit_icon.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.CloseButton.setIcon(icon)
         self.CloseButton.setIconSize(QtCore.QSize(self.winsize_v * 0.04, self.winsize_h * 0.02))
-
-    def close_button(self):
-        self.close()
 
     #set internal signals
     def set_signals(self):

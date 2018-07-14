@@ -20,7 +20,6 @@ class RegisterWin(QtGui.QMainWindow):
         self.init_ui()
         #info variable
         self.info_reg = {}
-        self.CloseButton.clicked.connect(self.close_button)
 
     def init_ui(self):
         self.setWindowTitle('Sign in')
@@ -95,8 +94,6 @@ class RegisterWin(QtGui.QMainWindow):
         #set internal signals
         self.set_signals()
 
-    def close_button(self):
-        self.close()
 
     def set_signals(self):
         self.controlbuttons_reg['submit'].clicked.connect(self.submit_button)

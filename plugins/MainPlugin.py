@@ -41,6 +41,8 @@ class MainPlugin(object):
         self.RecognitionPlugin = RecognitionPlugin.RecognitionPlugin(ProjectHandler = self.PH, DataHandler = self.DB)
         #create therapy plugin
         self.MainTherapyPlugin  = MainTherapyPlugin.MainTherapyPlugin(ProjectHandler = self.PH, DataHandler = self.DB)
+        #create blood pressure plugin
+        #self.BloodPressurePlugin = BloodPressurePlugin.BloodPressurePlugin(ProjectHandler = self.PH, DataHandler = self.DB)
         #set signals
         self.set_signals()
         #count_down in another thread
@@ -97,6 +99,8 @@ class MainPlugin(object):
         self.SettingsPlugin.CancelConnect(f = self.MainMenuPlugin.LaunchView)
         #[2] OnData validation signal implementation
         self.SettingsPlugin.SettingsWin.onData.connect(self.MainMenuPlugin.LaunchView)
+        #[3] connect exit button to relaunch the Main Menu and close the Log in  window
+        self.SettingsPlugin.ExitConnect(f = self.MainMenuPlugin.LaunchView)
         """
         LOG IN STATE: the login process should open a LoginWin and have two signals
         [1]onNotRegistered: if not registered, the register window should be displayed and LoginWin closed
@@ -122,6 +126,7 @@ class MainPlugin(object):
         self.ModalityPlugin.ExitConnect(f = self.MainMenuPlugin.LaunchView)
 
 
+
         """
         RECOGNITION STATE: the recognition state, performs the recognition process and emmit two signals depending on the result
         [1] onStartTherapy: emmited when the recognition has been succesfully performed and is ready to start the therapy
@@ -133,6 +138,8 @@ class MainPlugin(object):
         self.RecognitionPlugin.RecognitionWin.onStartTherapy.connect(self.RecognitionPlugin.shutdown)
         #[2] connect to the register launch view method to perform the register process
         self.RecognitionPlugin.RecognitionWin.onNotRegistered.connect(self.RegisterPlugin.LaunchView)
+        #[3] connect exit button to relaunch the Main Menu and close the recognition window
+        self.RecognitionPlugin.ExitConnect(f = self.MainMenuPlugin.LaunchView)
         """
         THERAPY STATE
         """

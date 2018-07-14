@@ -17,7 +17,6 @@ class LogInWin(QtGui.QMainWindow):
         #set relative size
         self.r_size = 0.65
         self.init_ui()
-        self.CloseButton.clicked.connect(self.close_button)
 
 
     def init_ui(self):
@@ -54,8 +53,6 @@ class LogInWin(QtGui.QMainWindow):
 
         self.set_signals()
 
-    def close_button(self):
-        self.close()
 
     def set_signals(self):
         self.submit.clicked.connect(self.submit_button)

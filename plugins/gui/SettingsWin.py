@@ -27,8 +27,6 @@ class SettingsWin(QtGui.QMainWindow):
                              "ecg_port"    : None,
                              "ecg_sample"  : None,
                              "IpRobot"     : None}
-        self.CloseButton.clicked.connect(self.close_button)
-        #self.cancel.clicked.connect(self.cancel_button)
 
     def init_ui(self):
         self.setWindowTitle('Setting')
@@ -89,9 +87,6 @@ class SettingsWin(QtGui.QMainWindow):
 
         #set internal signals
         self.set_signals()
-
-    def close_button(self):
-        self.close()
 
     #set internal signals method
     def set_signals(self):

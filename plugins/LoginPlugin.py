@@ -9,6 +9,9 @@ class LoginPlugin(object):
         #create view
         self.LogInWin = LogInWin.LogInWin(ProjectHandler = self.PH)
         self.set_signals()
+        self.ExitConnect(f = self.onExitPressed)
+        
+
 
     def LaunchView(self):
         self.LogInWin.show()
@@ -35,3 +38,6 @@ class LoginPlugin(object):
 
     def ExitConnect(self,f):
         self.LogInWin.CloseButton.clicked.connect(f)
+
+    def onExitPressed(self,f):
+        self.LogInWin.close()

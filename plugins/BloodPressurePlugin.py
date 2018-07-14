@@ -14,6 +14,7 @@ class BloodPressurePlugin(object):
         #mode
         self.mode = None
 
+
     def set_signals(self):
         self.View.onValue.connect(self.get_blood_pressure)
 
@@ -36,3 +37,4 @@ class BloodPressurePlugin(object):
 
     def shutdown(self):
         self.View.close()
+

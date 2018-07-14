@@ -32,6 +32,13 @@ class RecognitionWin(QtGui.QMainWindow):
 
         self.setGeometry(self.screen_h / 2 - (self.winsize_h / 2), self.screen_v / 2 - (self.winsize_v / 2), self.winsize_h, self.winsize_v)
 
+        ## background label
+        self.label_background = QtGui.QLabel(self)
+        self.label_background.setGeometry(QtCore.QRect(0, 0, self.winsize_h, self.winsize_v))
+        self.label_background.setPixmap(QtGui.QPixmap(self.PH.paths["img"] + "Blue_background.png"))
+        self.label_background.setScaledContents(True)
+        
+
         self.ControlButtons = {}
         #start recog button
         self.ControlButtons['StartRecog'] =  QtGui.QPushButton('Start Recognition',self)
@@ -47,6 +54,14 @@ class RecognitionWin(QtGui.QMainWindow):
         font = QtGui.QFont()
         font.setPointSize(16)
         self.ControlButtons['submit'].setFont(font)
+        # close button
+        self.ControlButtons['CloseButton'] = QtGui.QCommandLinkButton(self)
+        self.ControlButtons['CloseButton'].setGeometry(QtCore.QRect(self.winsize_h * 0.95, self.winsize_v * 0.01, self.winsize_v * 0.045, self.winsize_h * 0.03))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(self.PH.paths["img"] + "exit_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.ControlButtons['CloseButton'].setIcon(icon)
+        self.ControlButtons['CloseButton'].setIconSize(QtCore.QSize(self.winsize_v * 0.4, self.winsize_h * 0.02))
+        
         ## Labels
         self.id_label = QtGui.QLabel(self)
         self.id_label.setGeometry(QtCore.QRect(self.winsize_h * 0.4, self.winsize_v * 0.3, self.winsize_h * 0.15, self.winsize_v * 0.05))
@@ -129,6 +144,8 @@ class RecognitionWin(QtGui.QMainWindow):
             self.hide()
         else:
             self.onEmptyField.emit()
+
+    
 
 
 

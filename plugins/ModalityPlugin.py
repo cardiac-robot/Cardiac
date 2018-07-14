@@ -12,6 +12,7 @@ class ModalityPlugin(object):
         self.ModalityWin = ModalityWin.ModalityWin(ProjectHandler = self.PH)
         #set signals
         self.set_signals()
+        self.ExitConnect(f = self.onExitPressed)
 
     #signal connection method
     def set_signals(self):
@@ -54,3 +55,6 @@ class ModalityPlugin(object):
 
     def ExitConnect(self,f):
         self.ModalityWin.CloseButton.clicked.connect(f)
+
+    def onExitPressed(self,f):
+        self.ModalityWin.close()

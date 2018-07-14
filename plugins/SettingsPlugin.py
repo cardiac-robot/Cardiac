@@ -11,6 +11,7 @@ class SettingsPlugin(object):
         self.SettingsWin = SettingsWin.SettingsWin(ProjectHandler = self.PH)
         #set singals
         self.set_signals()
+        self.ExitConnect(f = self.onExitPressed)
 
     #method to connect all signals
     def set_signals(self):
@@ -49,4 +50,10 @@ class SettingsPlugin(object):
 
     #method to close the window
     def shutdown(self):
+        self.SettingsWin.close()
+
+    def ExitConnect(self,f):
+        self.SettingsWin.CloseButton.clicked.connect(f)
+
+    def onExitPressed(self,f):
         self.SettingsWin.close()

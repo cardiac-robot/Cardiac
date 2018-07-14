@@ -19,6 +19,7 @@ class RegisterPlugin(object):
         self.RegisterWin.onData.connect(self.onDataReceived)
         self.RegisterWin.onEmptyField.connect(self.onEmptyData)
         self.CancelConnect(f = self.onCancelPressed)
+        self.ExitConnect(f = self.onExitPressed)
 
     #show the view window
     def LaunchView(self):
@@ -47,6 +48,9 @@ class RegisterPlugin(object):
 
     def ExitConnect(self,f):
         self.RegisterWin.CloseButton.clicked.connect(f)
+
+    def onExitPressed(self,f):
+        self.RegisterWin.close()
 
     def HideView(self):
         self.RegisterWin.hide()

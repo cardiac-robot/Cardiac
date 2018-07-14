@@ -16,6 +16,7 @@ class RecognitionPlugin(object):
         self.RecognitionWin = RecognitionWin.RecognitionWin(ProjectHandler = self.PH)
         #id variable
         self.id = ""
+        self.ExitConnect(f = self.onExitPressed)
 
     #creates all required objects to perform the recogntion
     def deploy_resources(self):
@@ -142,3 +143,11 @@ class RecognitionPlugin(object):
     def shutdown(self):
         #hide window
         self.RecognitionWin.hide()
+
+    def ExitConnect(self,f):
+        self.RecognitionWin.ControlButtons['CloseButton'].clicked.connect(f)
+
+    def onExitPressed(self,f):
+        self.RecognitionWin.close()
+
+
