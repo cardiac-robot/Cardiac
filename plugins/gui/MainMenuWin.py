@@ -28,7 +28,7 @@ class MainMenuWin(QtGui.QMainWindow):
         #
         self.label_background = QtGui.QLabel(self)
         self.label_background.setGeometry(QtCore.QRect(0, 0, self.winsize_h, self.winsize_v))
-        self.label_background.setPixmap(QtGui.QPixmap(self.PH.paths["img"] + "background_mainmenu.png"))
+        self.label_background.setPixmap(QtGui.QPixmap(self.PH.paths["img"] + "background_mainmenu2.png"))
         self.label_background.setScaledContents(True)
         #
         self.controlbuttons_main = {}
