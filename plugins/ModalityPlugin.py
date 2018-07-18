@@ -32,6 +32,8 @@ class ModalityPlugin(object):
     #callback function when on no robot button clicked
     def onNoRobot(self):
         print("no robot")
+        #close Modality window
+        self.ModalityWin.close()
         #set modality on the database
         self.DB.General.set_modality(0)
         #emit on modality set signal
@@ -40,6 +42,8 @@ class ModalityPlugin(object):
     #callback function when on no robot button clicked
     def onRobot(self):
         print("robot")
+        #close modality window
+        self.ModalityWin.close()
         #set modality on the database
         self.DB.General.set_modality(1)
         #emit on modality set signal
@@ -48,6 +52,8 @@ class ModalityPlugin(object):
     #callback function when on  memory robot button clicked
     def onMemoryRobot(self):
         print("memory robot")
+        #close Modality window
+        self.ModalityWin.close()
         #set modality on the database
         self.DB.General.set_modality(2)
         #emit on modality set signal

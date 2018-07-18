@@ -58,13 +58,6 @@ class ModalityWin(QtGui.QMainWindow):
         self.CloseButton.setIcon(icon)
         self.CloseButton.setIconSize(QtCore.QSize(self.winsize_v * 0.04, self.winsize_h * 0.02))
 
-    #set internal signals
-    def set_signals(self):
-        #close the window when any of the modality buttons is pressed
-        self.ControlButtons['no_robot'].clicked.connect(self.close)
-        self.ControlButtons['robot'].clicked.connect(self.close)
-        self.ControlButtons['robot_memory'].clicked.connect(self.close)
-
 
 def main():
     app = QtGui.QApplication(sys.argv)

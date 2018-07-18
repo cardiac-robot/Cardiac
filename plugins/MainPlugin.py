@@ -14,6 +14,7 @@ import SettingsPlugin
 import MainTherapyPlugin
 import LoginPlugin
 import RecognitionPlugin
+import BloodPressurePlugin
 
 
 
@@ -42,7 +43,7 @@ class MainPlugin(object):
         #create therapy plugin
         self.MainTherapyPlugin  = MainTherapyPlugin.MainTherapyPlugin(ProjectHandler = self.PH, DataHandler = self.DB)
         #create blood pressure plugin
-        #self.BloodPressurePlugin = BloodPressurePlugin.BloodPressurePlugin(ProjectHandler = self.PH, DataHandler = self.DB)
+        #self.BloodPressurePlugin  = BloodPressurePlugin.BloodPressurePlugin(ProjectHandler = self.PH, DataHandler = self.DB)
         #set signals
         self.set_signals()
         #count_down in another thread
@@ -141,8 +142,12 @@ class MainPlugin(object):
         #[3] connect exit button to relaunch the Main Menu and close the recognition window
         self.RecognitionPlugin.ExitConnect(f = self.MainMenuPlugin.LaunchView)
         """
-        THERAPY STATE
+        BLOO PRESURE STATE: the blood presure state, emit one signal when the exit button is pressed
+        #[1] connect exit button to relaunch the Main Menu and close the blood presure window
+        
+        self.BloodPressurePlugin.ExitConnect(f = self.MainMenuPlugin.LaunchView)
         """
+        
 
 
     #count_down to start the application

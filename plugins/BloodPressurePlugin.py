@@ -11,6 +11,7 @@ class BloodPressurePlugin(object):
         self.View = BloodPressureWin.BloodPressureWin(ProjectHandler = self.PH)
         #set set_signals
         self.set_signals()
+        #self.ExitConnect(f = self.onExitPressed)
         #mode
         self.mode = None
 
@@ -37,4 +38,15 @@ class BloodPressurePlugin(object):
 
     def shutdown(self):
         self.View.close()
+
+    """
+    def ExitConnect(self,f):
+        self.BloodPressureWin.exit_button.clicked.connect(f)
+
+    def onExitPressed(self,f):
+        self.BloodPressureWin.close()
+    """
+    
+
+
 

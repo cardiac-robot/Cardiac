@@ -1,6 +1,6 @@
 Type;Cause;value;Timestamp
-BloodPressure;initial;{'systolic': 90, 'diastolic': 60};2018-07-16 13:00:37.705000
-StartRecording;None;None;2018-07-16 13:00:39.270000
-Cooldown;None;None;2018-07-16 13:00:41.460000
-EndRecording;None;None;2018-07-16 13:00:44.057000
-BloodPressure;final;{'systolic': 90, 'diastolic': 60};2018-07-16 13:00:51.338000
+BloodPressure;initial;{'systolic': 90, 'diastolic': 60};2018-07-16 15:53:47.090000
+StartRecording;None;None;2018-07-16 15:53:50.028000
+Cooldown;None;None;2018-07-16 15:54:02.622000
+EndRecording;None;None;2018-07-16 15:54:13.711000
+BloodPressure;final;{'systolic': 90, 'diastolic': 60};2018-07-16 15:54:27.791000
