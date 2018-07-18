@@ -16,6 +16,7 @@ class Dialogs(object):
 
         #First introduction
         self.WelcomeSentence = "Hola, \\pau=400\\ mi nombre es Nano. \\pau=500\\ Te estaré acompañando en las terapias. \\pau=500\\ Estoy aqui para cuidar tus signos y ayudarte a mejorar en tu rehabilitación."
+        self.WelcomeSentenceMemory = "Hola XX, \\pau=400\\ mi nombre es Nano. \\pau=500\\ Te estaré acompañando en las terapias. \\pau=500\\ Estoy aqui para cuidar tus signos y ayudarte a mejorar en tu rehabilitación."
         #Announce sentence
         self.sentenceAnnounce = "Hoy, vamos a iniciar con una velocidad de XX millas por hora con una inclinación de YY"
         self.sentenceChange = "To complete"
@@ -23,6 +24,7 @@ class Dialogs(object):
 
         #Sentences used for feedbacks
         self.sentencesEarlyMotivation = ["\\bound=S\\ Animo! Apenas estamos empezando","Vamos a empezar bien hoy","Empieza caminando despacio"]
+
         self.earlyMotivationProvided = []
         self.sentencesMidMotivation = ["\\bound=S\\ Vamos! Puedes hacerlo","Anímate","Estás haciéndolo bien","Estoy seguro que puedes hacerlo","Continúa esforzándote!","Que bien lo \\emph=200\\ estás haciendo","Sigue \\bound=S\\ así!","Estás progresando!","Hoy lo estás haciendo mejor","No olvides respirar!","Sé que puedes hacerlo!","Excelente trabajo","Has mejorado"]
         self.midMotivationProvided = []
@@ -40,6 +42,7 @@ class Dialogs(object):
 
         #Sentences for Borg Scale
         self.sentenceBorgInitial = ["¿Según esta escala, qué tan cansado te sientes?","¿Mira la pantalla, que cansancio tienes?","¿Puedes completar la escala de cansancio?","¿Según esta escala, qué tan cansado estás?","¿Cómo te sientes? Responde según la escala","¿Cuál es tu nivel de cansancio?","¿Según esta escala, como te sientes?","¿Estás cansado?","¿Según esta escala, que cansancio tienes?","¿Según esta escala, cómo te sientes?"]
+        self.sentenceBorgInitialMemory = ["¿XX, \\pau=400\\ Según esta escala, qué tan cansado te sientes?","¿XX, \\pau=400\\ Mira la pantalla, que cansancio tienes?","¿XX \\pau=400\\ , Puedes completar la escala de cansancio?","¿Según esta escala, qué tan cansado estás, \\pau=200\\ XX ?","¿Cómo te sientes, \\pau=400\\ XX? Responde según la escala","¿Cuál es tu nivel de cansancio?","¿Según esta escala, como te sientes?","XX \\pau=400\\ ¿Estás cansado?","¿Según esta escala, que cansancio tienes?","¿Según esta escala, cómo te sientes?"]
         self.borgInitialProvided = []
         self.sentenceBorgSecond = "Dijiste que estás muy cansado pero tu frecuencia cardiaca se encuentra baja, ¿estás seguro que estás muy cansado?"
         self.sentenceBorgResponseLow = ["Gracias!!"]
@@ -52,6 +55,7 @@ class Dialogs(object):
 
         #Sentences for additional requests and thanks
         self.sentenceRequestLookForward = ["Mira al frente","Pon la vista al frente","Recuerda mirar al frente","No mires a tus pies","Levanta la cabeza","Continua mirando al frente"]
+        self.sentenceRequestLookForwardMemory = ["XX, \\pau=200\\ Mira al frente","Pon la vista al frente, \\pau=100\\ XX "," XX \\pau=200\\ Recuerda mirar al frente","No mires a tus pies \\pau=200\\ XX","Levanta la cabeza, \\pau=200\\ XX ","XX \\pau=200\\ ,Continua mirando al frente"]
         self.requestLookForwardProvided = []
         self.sentenceLookedForward = ["Bien hecho","Muy bien","Continua así","Bien"]
         self.lookedForwardProvided = []
@@ -100,7 +104,17 @@ class Dialogs(object):
         #timeElapsed = self.get_therapy_time()
         i = random.randint(0, len(self.sentenceBorgInitial) - 1)
         return self.sentenceBorgInitial[i]
+    def get_borg_memory_sentence(self):
+        i = random.randint(0, len(self.sentenceBorgInitialMemory) - 1)
+        return self.sentenceBorgInitialMemory[i]
 
+    def get_posture_correction_sentence(self):
+        i = random.randint(0, len(self.sentenceRequestLookForward) - 1)
+        return self.sentenceRequestLookForward[i]
+
+    def get_posture_correction_memory_sentence(self):
+        i = random.randint(0, len(self.sentenceRequestLookForwardMemory) - 1)
+        return self.sentenceRequestLookForwardMemory[i]
     #
     def get_borg_receive(self):
         i = random.randint(0, len(self.sentenceBorgResponseLow) - 1)

@@ -186,6 +186,7 @@ class RecogniserBN:
         self.robot_ip = ip
         self.robot_port = port
         self.session = qi.Session()
+        self.PH.set_robot_session(self.session)
 
         try:
 
@@ -1440,7 +1441,7 @@ class RecogniserBN:
             save_name = image_dir + p_id + "_" + (str(0)*(4-counter)) + str(orig_matches) + "-" + str(num_recog) +".jpg"
             os.rename(temp_image,save_name)
         else:
-            match_name = image_dir + "/" + p_id + "*.jpg"
+            match_name = image_dir + p_id + "*.jpg"
             num_matches = len(glob.glob(match_name)) + 1
             orig_matches = num_matches
             counter = 0
@@ -2100,6 +2101,11 @@ class RecogniserBN:
         for c in coef:
             accum = x * accum + c
         return accum
+
+
+    def shutdown(self):
+        if self.session:
+            self.session.close()
 if __name__ == "__main__":
 
     RB = RecogniserBN()

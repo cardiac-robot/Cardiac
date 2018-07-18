@@ -1,7 +1,10 @@
 import robotModel
 import resources.analyzer as analyzer
 import multiprocessing
+import threading
 import time
+import qi
+
 #import qi
 
 """
@@ -39,6 +42,8 @@ class Controller(object):
         self.PH = ProjectHandler
         self.DB = DataHandler
         #create event handlers
+        #self.session = qi.Session()
+        #self.session.connect("tcp://" + self.settings['IpRobot'] + ":" + str(self.settings['port']))
         #session init
         self.onStart = multiprocessing.Event()
         #shutdown session
@@ -73,7 +78,7 @@ class Controller(object):
         #set loop timing = 1 second
         self.ts = 1
         #create process
-        self.MainProcess = multiprocessing.Process(target = self.process)
+        self.MainProcess = threading.Thread(target = self.process)
 
     #launch process method
     def launch(self):
@@ -91,15 +96,8 @@ class Controller(object):
         print"memory settingsssss"
         print self.settings['useMemory']
 
-        if not self.settings['useMemory']:
+        self.robot.start_behavior()
 
-            self.robot.start_behavior()
-        else:
-            print"STARTING MEMORY ROBOT BEHAVIOR"
-            announce = self.robot.dialogs.sentenceAnnounce.replace("XX",str(5))
-            announce = announce.replace("YY", str(1))
-            text_to_say = self.robot.MemoryRobot.checkAbsence() + self.robot.MemoryRobot.checkPreviousSessionAlerts(announce,5,1)
-            print text_to_say
         #enter to the main programm loop
         while not self.onShutdown.is_set():
             """
@@ -165,6 +163,8 @@ class Controller(object):
                 elif r == 2:
                     #set event to request again the borg scale
                     self.onBorgConfirm.set()
+                    #clear last borg
+                    self.analyzer.clear_borg()
                     #ask for borg confirmation
                     self.robot.ask_borg_again()
 
@@ -197,6 +197,9 @@ class Controller(object):
             self.LoadSensorData.send(d)
             #trigger the event for data available
             self.onSensorData.set()
+
+    def correct_posture(self, d):
+        self.robot.correct_posture()
 
     #method to send borg value from GUI to the robot
     def send_borg(self, b):

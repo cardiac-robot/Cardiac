@@ -11,6 +11,8 @@ import gui.MainTherapyWin as MainTherapyWin
 #import child plugins
 import BloodPressurePlugin
 import EndQuestionPlugin
+
+import lib.estimateGaze as eG
 """
 main therapy controller, receives ProjectHandler and datanhandler
 receives a settings dict to set the interface in mode 0: no robot, 1:robot with no memory and 2: personalized robot
@@ -22,7 +24,8 @@ gets the data from sensor manager and forward it to the data handler and to the 
 
 class MainTherapyPlugin(object):
     def __init__(self, ProjectHandler = None, DataHandler  = None, settings  ={"mode"      : 0,
-                                                                               "BorgSample": 10
+                                                                               "BorgSample": 10,
+                                                                               "useCamera" : True
                                                                                } ):
         #load controller settings
         self.settings = settings
@@ -129,6 +132,11 @@ class MainTherapyPlugin(object):
         #request borg to the view
         self.View.onBorg.emit()
 
+    #request borg confirm
+    def request_borg_confirm(self):
+        self.DB.General.SM.load_event(t ="BorgConfirm", c = "Timeout", v ="none")
+        self.View.onBorg.emit()
+
     #receive borg from the interface and forward it to the event handler and robot
     def receive_borg(self):
         #read variable from the view
@@ -169,6 +177,15 @@ class MainTherapyPlugin(object):
         self.SensorManager.launch_sensors()
         #launch sensor monitor
         self.SensorMonitorThread.start()
+        #use camera for gaze estimation
+        if self.settings['useCamera']:
+            self.headEstimator = eG.GetGaze()
+            self.headThread=threading.Thread(target=self.headEstimator.start)
+            self.lowGazeCounter = 0
+            self.lowGazeRequested = True
+            self.lowGazeFeedback = True
+            self.timerGaze = threading.Timer(self.cooldownGaze, self.resetGaze)
+
 
         #robot controller
         if self.useRobot:
@@ -181,6 +198,51 @@ class MainTherapyPlugin(object):
         else:
             #launch borg timer
             self.BorgTimer.start()
+
+# Headgaze related functions
+    def headGaze(self, value):
+        if value:
+            self.lowGazeCounter += 1
+            if self.lowGazeCounter > 5 and not self.lowGazeRequested:
+                self.requestLook()
+                self.lowGazeRequested = True
+                self.lowGazeFeedback = False
+                self.timerGaze = threading.Timer(self.cooldownGaze, self.resetGaze)
+                self.timerGaze.start()
+        else:
+            self.lowGazeCounter = 0
+            if self.lowGazeRequested and not self.lowGazeFeedback:
+                self.feedbackLook()
+                self.lowGazeFeedback = True
+
+    #request look
+    def requestLook(self):
+        self.DB.General.SM.load_event(t ="RequestLook", c ="None", v = "None")
+        if self.useRobot:
+            self.robotController.correct_posture()
+            #self.say(self.sentenceRequestLookForward,self.requestLookForwardProvided)
+
+
+
+# Headgaze related functions
+    def headGaze(self, value):
+        if value:
+            self.lowGazeCounter += 1
+            if self.lowGazeCounter > 5 and not self.lowGazeRequested:
+                self.requestLook()
+                self.lowGazeRequested = True
+                self.lowGazeFeedback = False
+                self.timerGaze = threading.Timer(self.cooldownGaze, self.resetGaze)
+                self.timerGaze.start()
+        else:
+            self.lowGazeCounter = 0
+            if self.lowGazeRequested and not self.lowGazeFeedback:
+                self.feedbackLook()
+
+
+                self.lowGazeFeedback = True
+
+
 
     #callback method when cooldown is pressed
     def onCooldown(self):
@@ -228,18 +290,15 @@ class RobotMonitorThread(QtCore.QThread):
     def run(self):
         #main monitor loop
         while self.on:
-
             #if borgscale requested
             if self.c.robotController.onBorgRequest.is_set():
+                print('onBorgRequest received ftom RobotMonitorThread')
                 self.c.request_borg()
                 self.c.robotController.onBorgRequest.clear()
-            #if alert has triggered
-            #if self.c.onAlert.is_set():
-                #add event
 
-                #
-
-
+            if self.c.robotController.onBorgConfirm.is_set():
+                self.c.request_borg_confirm()
+                self.c.robotController.onBorgConfirm.clear()
 
             time.sleep(self.ts)
 

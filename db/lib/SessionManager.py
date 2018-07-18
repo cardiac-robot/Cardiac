@@ -75,6 +75,7 @@ class SessionManager(object):
 
             session_dict['events'] = session_event_list
             session_dict['sensors']= session_sensor_list
+            session_dict['average']= {'Speed': 3, 'Inclination': 1}
             all_sessions.append(dict(session_dict))
         else:
             print "0"

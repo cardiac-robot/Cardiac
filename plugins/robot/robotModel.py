@@ -35,9 +35,10 @@ class Robot(object):
         if self.settings['useMemory']:
             print "creating robot memory from model"
             self.MemoryRobot = RMEM.MemoryRobot(ProjectHandler = self.controller.PH,
-                                                settings = self.controller.settings,
-                                                DataHandler    = self.controller.DB)
-                                                #session = self.session)
+                                                settings       = self.controller.settings,
+                                                DataHandler    = self.controller.DB,
+                                                dialogs        = self.dialogs,
+                                                controller     = self.controller)
 
                 #launch_robot
         self.launch_robot()
@@ -52,19 +53,24 @@ class Robot(object):
         print "CREATES SESSION FOM ROBOT MODEL"
         self.session = qi.Session()
         #connect the session to the robot
-        print("1")
         self.connect_session()
         #after connecting to the robot, get services and modules
-        print("2")
-        self.get_services()
+        #self.session = self.controller.PH.get_robot_session()
+
+
         #set routines
-        print("3")
-        self.set_routines()
+
         #pass session to the memory
         print "launch robot"
         if self.settings['useMemory']:
             print("setting the session to the MemoryRobot")
             self.MemoryRobot.set_session(self.session)
+            self.MemoryRobot.get_services()
+            self.MemoryRobot.set_routines()
+            print('memory robot launched')
+        else:
+            self.get_services()
+            self.set_routines()
 #----------------------------Setup and initialization Methods--------------------------
     #load Dialogs
     #TODO: LOAD Dialogs from files
@@ -74,8 +80,12 @@ class Robot(object):
     def connect_session(self):
         print self.settings['IpRobot']
         print "tcp://" + self.settings['IpRobot'] + ":" + str(self.settings['port'])
-        print self.session
-        self.session.connect("tcp://" + self.settings['IpRobot'] + ":" + str(self.settings['port']))
+
+        ip = self.settings['IpRobot']
+        port = str(self.settings['port'])
+
+        self.session.connect("tcp://" + ip + ":" + str(port))
+
         print("After connection")
 
     #get all module services
@@ -136,16 +146,24 @@ class Robot(object):
             self.db.General.SM.load_event(t ="RobotWelcome", c ="Start", v="WelcomeSentence")
 
         #make the robot stand up
-        self.motion.wakeUp()
+
         #run behavior   cardio-7fad01
-        self.run_welcome_behavior()
-        #threading.Thread(target = self.run_welcome_behavior).start()
+        #self.run_welcome_behavior()
+        if self.settings['useMemory']:
+            self.MemoryRobot.motion.wakeUp()
+            threading.Thread(target = self.MemoryRobot.run_welcome_behavior).start()
+        else:
+            self.motion.wakeUp()
+            threading.Thread(target = self.run_welcome_behavior).start()
 
 
     #behavior fucntion
     def run_welcome_behavior(self):
         #run behavior manager
-        self.behavior.runBehavior("cardio-7fad01/Welcome")
+        if self.settings['useMemory']:
+            self.MemoryRobot.run_welcome_behavior()
+        else:
+            self.behavior.runBehavior("cardio-7fad01/Welcome")
         #start asyncronic routines
         self.start_routines()
 
@@ -173,6 +191,15 @@ class Robot(object):
         s = self.dialogs.get_borg_sentence()
         self.animatedSpeech.say(s)
 
+    def correct_posture(self):
+        if self.settings['useMemory']:
+            self.MemoryRobot.posture_correction_behavior()
+
+        else:
+            s = self.dialogs.get_posture_correction_sentence()
+            self.animatedSpeech.say(s)
+
+
     #alert fatigue
     def alertFatigue(self):
         if self.db:
@@ -182,15 +209,24 @@ class Robot(object):
 
     #borg scale receive
     def thanks_borg(self):
-        print("say_ thanks")
-        s = self.dialogs.get_borg_receive()
-        print s
-        self.animatedSpeech.say(s)
+        if self.settings['useMemory']:
+            s = self.dialogs.get_borg_receive()
+            self.MemoryRobot.animatedSpeech.say(s)
+        else:
+            s = self.dialogs.get_borg_receive()
+            self.animatedSpeech.say(s)
 
    #ask borg again behavior
     def ask_borg_again(self):
-        s = self.dialogs.ask_borg_again()
-        self.tts.say(s)
+
+        if self.settings['useMemory']:
+            s = self.dialogs.ask_borg_again()
+            self.MemoryRobot.tts.say(s)
+        else:
+            s = self.dialogs.ask_borg_again()
+            self.tts.say(s)
+
+
 
     #alert 1 behavior
     def alertHr1(self):
@@ -218,15 +254,23 @@ class Robot(object):
 
     #cooldown behavior
     def cooldown(self):
-        self.animatedSpeech.say(self.dialogs.cooldownSentence)
-        self.stop_routines()
+        if self.settings['useMemory']:
+            self.MemoryRobot.animatedSpeech.say(self.dialogs.cooldownSentence)
+            self.MemoryRobot.stop_routines()
+        else:
+            self.animatedSpeech.say(self.dialogs.cooldownSentence)
+            self.stop_routines()
 
 #------------------------------------------------------------------------
 
     #shutdown method, stop routines and get to rest position
     def shutdown(self):
-        self.animatedSpeech.say(self.dialogs.ByeSentence)
-        self.motion.rest()
+        if self.settings['useMemory']:
+            self.MemoryRobot.animatedSpeech.say(self.dialogs.ByeSentence)
+            self.MemoryRobot.motion.rest()
+        else:
+            self.animatedSpeech.say(self.dialogs.ByeSentence)
+            self.motion.rest()
 
 
 if __name__ == '__main__':

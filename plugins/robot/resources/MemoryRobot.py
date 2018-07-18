@@ -4,52 +4,152 @@ import threading
 import time
 import datetime
 import qi
-
+import functools
 import sys
 import os.path
-sys.path.append(
-     os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
-import db.database as db
+
+#sys.path.append(
+#     os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+#import db.database as db
 
 # sys.path.insert(0, '../db')
 # import database as db
-
+import dialogs
 import bisect
 import random # for making random choices for choosing the number of sentences between saying patient name in isSayName
 
-class MemoryRobot:
+class MemoryRobot(object):
 
-    def __init__(self,session = None , p_name = None, useSpanish = True, ProjectHandler = None, DataHandler = None, settings = None ):
+    def __init__(self,
+                 session        = None,
+                 p_name         = None,
+                 useSpanish     = True,
+                 ProjectHandler = None,
+                 DataHandler    = None,
+                 dialogs        = None,
+                 settings       = None,
+                 controller     = None):
 
+        #set settings
         self.settings = settings
+        #controller
+        self.controller = controller
+        #loaf ProjectHandler
         self.PH = ProjectHandler
+        #load datanhandler
         self.DB = DataHandler
-        self.session = session
+        #load dialog manager
+        self.dialogs = dialogs
+        #micro value
+        self.micro = 1000000
+        #load custom memory sentences
+        #TODO: migrate custom sentences to the dialog manager
         self.loadSentencesForMemoryFeedback(useSpanish)
+        #set person profile
         self.setPerson(self.settings['UserProfile'])
+        #?
         self.num_say_name = 0
 
-        #self.connectToRobot()
-
-    def connectToRobot(self):
-        #self.robot_ip = ip
-        #self.robot_port = port
-
-        #try:
-        print ('connecting robot from MemoryRobot file')
-        #self.session.connect("tcp://" + self.settings['IpRobot'] + ":" + str(self.settings['port']))
-        #except RuntimeError:
-            #logging.debug("Can't connect to Naoqi at ip \"" + ip + "\" on port " + str(port) +".\n"
-             #  "Please check your script arguments. Run with -h option for help.")
-            #sys.exit(1)
-        print("Modules from te emmoryrobot  file")
-        self.animatedSpeechProxy = self.session.service("ALAnimatedSpeech")
-        self.tts = self.session.service("ALTextToSpeech")
-        self.configuration = {"bodyLanguageMode":"contextual"}
-
     def set_session(self, s):
+        #load session from robot model
         self.session = s
-        self.connectToRobot()
+        #get services
+        self.get_services()
+
+    #set language method
+    def setLanguage(self, value):
+        self.tts.setLanguage(value)
+
+
+    def get_services(self):
+        #text to speech module service
+        self.tts = self.session.service("ALTextToSpeech")
+        #set language
+        self.setLanguage('Spanish')
+        #animated text to speech service
+        self.animatedSpeech = self.session.service("ALAnimatedSpeech")
+        #motion service
+        self.motion = self.session.service("ALMotion")
+        #posture service
+        self.posture = self.session.service("ALRobotPosture")
+        #behavior manager
+        self.behavior = self.session.service("ALBehaviorManager")
+        #tracker
+        self.tracker = self.session.service("ALTracker")
+        targetName = "Face"
+        faceWidth = 0.1
+        self.tracker.registerTarget(targetName, faceWidth)
+        self.tracker.track(targetName)
+
+    def set_routines(self):
+        print("settings memory routines")
+
+        motivate = functools.partial(self.motivation)
+        self.motivationTask = qi.PeriodicTask()
+        self.motivationTask.setCallback(motivate)
+        self.motivationTask.setUsPeriod(self.settings['MotivationTime']*self.micro)
+
+        borg = functools.partial(self.ask_borg)
+        self.borgTask = qi.PeriodicTask()
+        self.borgTask.setCallback(borg)
+        self.borgTask.setUsPeriod(self.settings['BorgTime'] * self.micro)
+
+
+    #start routine method
+    def start_routines(self):
+        self.motivationTask.start(True)
+        self.borgTask.start(True)
+
+    #setop created async routines
+    def stop_routines(self):
+        self.motivationTask.stop()
+        self.borgTask.stop()
+
+    #callback
+    def motivation(self):
+        print("motivation memory")
+        if self.DB:
+            self.DB.General.SM.load_event(t ="Motivation", c = "Timeout", v ="None")
+
+        s = self.dialogs.get_motivation_sentence()
+
+        self.animatedSpeech.say(s)
+
+    #callback
+    def ask_borg(self):
+        print("ask borg scale memory")
+        if self.controller:
+            print('set onBorgRequest event from memory robot')
+            self.controller.onBorgRequest.set()
+            print self.controller.onBorgRequest.is_set()
+
+        s = self.dialogs.get_borg_memory_sentence()
+        s = s.replace('XX', self.settings['UserProfile']['name'])
+        self.animatedSpeech.say(s)
+
+    def run_welcome_behavior(self):
+        s = self.dialogs.WelcomeSentenceMemory
+        s = s.replace("XX", self.settings['UserProfile']['name'])
+        self.animatedSpeech.say(s)
+
+        announce = self.dialogs.sentenceAnnounce.replace("XX",str(5))
+        announce = announce.replace("YY", str(1))
+        text_to_say = self.checkAbsence() + self.checkPreviousSessionAlerts(announce,5,1)
+        print "TEXT TO SAY...."
+        print text_to_say
+        self.animatedSpeech.say(text_to_say)
+
+        #start routines
+        self.start_routines()
+
+    def posture_correction_behavior(self):
+        s = self.dialogs.get_posture_correction_memory_sentence()
+        s = s.replace("XX", self.settings['UserProfile']['name'])
+        self.animatedSpeech.say(s)
+
+    #TODO: cooldown method
+
+
 
     def say(self, sentence):
         self.tts.setVolume(0.85)
@@ -234,45 +334,45 @@ class MemoryRobot:
         vals = [0,0,0] # [heart_rate_counter, blood_pressure_counter, borg_scale_counter]
 
         for s in last_session_events:
-            if s["type"] == "alert":
+            if s["Type"] == "alert":
                 if s["cause"] == "HR > HR2":
                     # "high heart rate"
                     vals[0] += 1
-                elif s["cause"] == "BP > BP2":
+                elif s["Cause"] == "BP > BP2":
                     # "high blood pressure"
                     vals[1] += 1
-                elif s["cause"] == "BS > BS2":
+                elif s["Cause"] == "BS > BS2":
                     # "tiredness"
                     vals[2] += 1
-                elif s["cause"] == "Combined HR":
+                elif s["Cause"] == "Combined HR":
                     vals[0] += 1
-                    if s["value"] == "BS1":
+                    if s["Value"] == "BS1":
                         # "slightly high heart rate and tiredness"
                         vals[2] += 1
-                    elif s["value"] == "BP1":
+                    elif s["Value"] == "BP1":
                         # "slightly high heart rate and blood pressure"
                         vals[1] += 1
                     else:
                         # "slightly high values"
                         vals[2] += 1
                         vals[1] += 1
-                elif s["cause"] == "Combined BP":
+                elif s["Cause"] == "Combined BP":
                     vals[1] += 1
-                    if s["value"] == "BS1":
+                    if s["Value"] == "BS1":
                         # "slightly high blood pressure and tiredness"
                         vals[2] += 1
-                    elif s["value"] == "HR1":
+                    elif s["Value"] == "HR1":
                         # "slightly high blood pressure and heart rate"
                         vals[0] += 1
                     else:
                         # "slightly high values"
                         vals[2] += 1
                         vals[0] += 1
-                elif s["cause"] == "warning":
-                    if s["value"] == "HR1":
+                elif s["Cause"] == "Warning":
+                    if s["Value"] == "HR1":
                         # "slightly high heart rate"
                         vals[0] += 1
-                    elif s["value"] == "BP1":
+                    elif s["Value"] == "BP1":
                         # "slightly high blood pressure"
                         vals[1] += 1
                     else:
@@ -307,10 +407,10 @@ class MemoryRobot:
         print last_session_avgs
         print "######################LAST SESSION AVGS ################################"
         # TODO: update it to use the avg session values (last value might be the slow down speed and inclination!!!)
-        if targetSpeed == int(last_session_avgs["speed"][-1]) and targetSlope == int(last_session_avgs["inclination"]):
+        if targetSpeed == int(last_session_avgs["Speed"]) and targetSlope == int(last_session_avgs["Inclination"]):
             session_announcement += self.session_intensity_same
             self.session_intensity = 0
-        elif targetSpeed > int(last_session_avgs["speed"][-1]) or targetSlope > int(last_session_avgs["inclination"]):
+        elif targetSpeed > int(last_session_avgs["Speed"]) or targetSlope > int(last_session_avgs["Inclination"]):
             session_announcement += self.session_intensity_more
             self.session_intensity = 1
         else:
@@ -332,11 +432,11 @@ class MemoryRobot:
             request_look_c = 0
             request_distance_c = 0
             for s_e in s_events:
-                if s_e["type"] == "alert":
+                if s_e["Type"] == "alert":
                     alerts_c += 1
-                elif s_e["type"] == "request_look":
+                elif s_e["Type"] == "request_look":
                     request_look_c += 1
-                elif s_e["type"] == "request_distance":
+                elif s_e["Type"] == "request_distance":
                     request_distance_c += 1
             self.p_events_counts.append([alerts_c, request_look_c, request_distance_c])
 

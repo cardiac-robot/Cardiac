@@ -16,6 +16,8 @@ class Analyzer(object):
         self.dataBuffer = []
         #borg scale buffer
         self.borgBuffer = []
+        #
+        self.isBorgConfirmed = False
 
     #load sensor data to the analyzer buffer
     def load_data(self,d):
@@ -30,6 +32,10 @@ class Analyzer(object):
     def load_borg(self, b):
         self.borgBuffer.append(b)
 
+    #remove last borg request for confirmation
+    def clear_borg(self):
+        self.borgBuffer = self.borgBuffer[:-1]
+        self.isBorgConfirmed = True
 
     #check borg scale:
     def check_borg(self):
@@ -44,7 +50,11 @@ class Analyzer(object):
                     return 1
                 else:
                     #ask again if patient provided the correct value
-                    return 2
+                    if self.isBorgConfirmed:
+                        self.isBorgConfirmed = False
+                        return 0
+                    else:
+                        return 2
 
         return 0
 

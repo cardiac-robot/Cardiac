@@ -148,6 +148,5 @@ class RecognitionPlugin(object):
         self.RecognitionWin.ControlButtons['CloseButton'].clicked.connect(f)
 
     def onExitPressed(self,f):
+        self.RecogniserBN.shutdown()
         self.RecognitionWin.close()
-
-
