@@ -24,6 +24,7 @@ def detect(detector,image,queue):
 
 class GetGaze():
     def __init__(self,controller = None):
+        print('GAZE ESTIMATOR CREATED')
         #get path to look for the predictor
         dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -31,10 +32,11 @@ class GetGaze():
         global detector
         detector = dlib.get_frontal_face_detector() #Face detector
 
-        self.predictor = dlib.shape_predictor(dir_path+"\shape_predictor_68_face_landmarks.dat") #Landmark identifier. Set the filename to whatever you named the downloaded file
+        self.predictor = dlib.shape_predictor(dir_path + "/shape_predictor_68_face_landmarks.dat") #Landmark identifier. Set the filename to whatever you named the downloaded file
 
-        #Get camera setings (resolution)
+        #self.go_on = True
         self.video_capture = cv2.VideoCapture(0)
+        #Get camera setings (resolution)
         ret, frame = self.video_capture.read()
         self.video_capture.release()
         size = frame.shape
@@ -68,12 +70,15 @@ class GetGaze():
 
     def start(self):
         #Queue to return the variable from the process
+        print("GAZE ESTIMATOR CREATED")
         queue = Queue()
 
         #Open video
         video_capture = cv2.VideoCapture(0)
         look_away =None
         while True:
+
+            print("ENTER WHILE GAZE ESTIMATOR")
             #Get an image
             ret, frame = video_capture.read()
 
@@ -123,8 +128,12 @@ class GetGaze():
                 else:
                     print "fine"
             else:
+                print("CONTROLLER GAZE ESTIMATOR")
                 if look_away:
+                    print("HEAD GAZE")
                     self.controller.headGaze(look_away)
+                else:
+                    print('fine fine fine')
 
             #Check if loop should be stopped
             if (cv2.waitKey(1) & 0xFF == ord('q')) or self.shouldStop: #Exit program when the user presses 'q'
@@ -133,6 +142,7 @@ class GetGaze():
     def stop(self):
         print "Stopping"
         self.shouldStop = True
+
 
 def main():
     gg =  GetGaze()

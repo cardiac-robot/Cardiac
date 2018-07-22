@@ -41,7 +41,7 @@ class MainTherapyPlugin(object):
         #end questionnaire plugin
         self.EndQuestionPlugin = EndQuestionPlugin.EndQuestionPlugin(ProjectHandler = self.PH, DataHandler = self.DB)
 
-
+        self.cooldownGaze = 55
 
     #set signals
     def set_signals(self):
@@ -179,13 +179,15 @@ class MainTherapyPlugin(object):
         self.SensorMonitorThread.start()
         #use camera for gaze estimation
         if self.settings['useCamera']:
-            self.headEstimator = eG.GetGaze()
+            self.headEstimator = eG.GetGaze(controller = self)
             self.headThread=threading.Thread(target=self.headEstimator.start)
             self.lowGazeCounter = 0
             self.lowGazeRequested = True
             self.lowGazeFeedback = True
             self.timerGaze = threading.Timer(self.cooldownGaze, self.resetGaze)
 
+            self.headThread.start()
+            self.timerGaze.start()
 
         #robot controller
         if self.useRobot:
@@ -199,21 +201,11 @@ class MainTherapyPlugin(object):
             #launch borg timer
             self.BorgTimer.start()
 
-# Headgaze related functions
-    def headGaze(self, value):
-        if value:
-            self.lowGazeCounter += 1
-            if self.lowGazeCounter > 5 and not self.lowGazeRequested:
-                self.requestLook()
-                self.lowGazeRequested = True
-                self.lowGazeFeedback = False
-                self.timerGaze = threading.Timer(self.cooldownGaze, self.resetGaze)
-                self.timerGaze.start()
-        else:
-            self.lowGazeCounter = 0
-            if self.lowGazeRequested and not self.lowGazeFeedback:
-                self.feedbackLook()
-                self.lowGazeFeedback = True
+
+
+
+    def resetGaze(self):
+        self.lowGazeRequested = False
 
     #request look
     def requestLook(self):
@@ -256,6 +248,10 @@ class MainTherapyPlugin(object):
             self.BorgTimer.cancel()
         if self.useRobot:
             self.robotController.onCooldown.set()
+
+        if self.settings['useCamera']:
+            self.headEstimator.stop()
+            self.timerGaze.cancel()
 
     #callback method to close all resources in a safe way
     def shutdown(self):

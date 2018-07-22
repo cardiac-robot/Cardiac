@@ -9,6 +9,7 @@ class TherapyWin(QtGui.QMainWindow):
     onBorgReceive  = QtCore.pyqtSignal()
     onSensorUpdate = QtCore.pyqtSignal()
     onAlert        = QtCore.pyqtSignal()
+    onThumbs       = QtCore.pyqtSignal()
 
 
 
@@ -228,11 +229,16 @@ class TherapyWin(QtGui.QMainWindow):
         self.pause_button['button'].clicked.connect(self.lock_pause)
         #unlock stop button
         self.pause_button['button'].clicked.connect(self.set_cooldown_state)
-
+        #
         self.stop_button['button'].clicked.connect(self.unlock_exit)
+        #
         self.stop_button['button'].clicked.connect(self.lock_stop)
         #unlock borg when signal triggered
+        #unlock thumbs
+        self.onThumbs.connect(self.unlock_thumbs)
+        #unlock borg
         self.onBorg.connect(self.unlock_borg)
+        #connect borg signal button
         self.connect_borg_to_signals()
         #signal to updat eidsplay
         self.onSensorUpdate.connect(self.update_feedback_display)

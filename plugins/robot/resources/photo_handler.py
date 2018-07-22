@@ -51,7 +51,7 @@ class ImageSender(object):
             os.system('pscp .\\' + self.local + ' nao@' + self.destIp + '://home//nao//dev//images//nao_image.jpg')
         elif self.PH.settings['sys'] == "linux2":
             print "pscp -pw bmd " + self.imgName + " nao@" + self.destIp + ":/home/nao/dev/images/nao_image.jpg"
-            os.system("pscp -pw bmd " + self.local + " nao@" + self.destIp + ":/home/nao/dev/images/nao_image.jpg")
+            os.system("pscp -pw nao " + self.local + " nao@" + self.destIp + ":/home/nao/dev/images/nao_image.jpg")
 
     #
     def get_image_path(self):

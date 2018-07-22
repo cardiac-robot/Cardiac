@@ -120,12 +120,13 @@ class Controller(object):
                 #if set alert
                 print "dta analysis result: " + str(r)
 
+                #call medical staff
                 if r == 2 :
                     #set events
                     self.onCallStaff.set()
                     #call the medical staff
                     self.robot.alertHr2()
-
+                #ask patient if evereything is well
                 elif r == 1:
                     #set events
                     self.onAlert.set()
@@ -198,7 +199,7 @@ class Controller(object):
             #trigger the event for data available
             self.onSensorData.set()
 
-    def correct_posture(self, d):
+    def correct_posture(self):
         self.robot.correct_posture()
 
     #method to send borg value from GUI to the robot

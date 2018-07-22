@@ -204,8 +204,12 @@ class Robot(object):
     def alertFatigue(self):
         if self.db:
             self.db.General.SM.load_event(t ="alarm_fatigue", c = "timeout", v ="none")
+
         #set alarm  event
-        self.tts.say(self.dialogs.sentenceWarning)
+        if self.settings['useMemory']:
+            self.MemoryRobot.tts.say(self.dialogs.sentenceWarning)
+        else:
+            self.tts.say(self.dialogs.sentenceWarning)
 
     #borg scale receive
     def thanks_borg(self):
