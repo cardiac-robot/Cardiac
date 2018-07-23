@@ -34,8 +34,8 @@ class ProjectHandler(object):
                                           'UserProfile'   : {}
                                          },
                                 'ecg'  : {"port" : 'COM8', "sample" : 1},
-                                'imu'  : {"port" : 'COM8', "sample" : 1},
-                                'laser': {"port" : 'COM8', "sample" : 1, 'crotch': 0.8},
+                                'imu'  : {"port" : '/dev/ttyACM0', "sample" : 1},
+                                'laser': {"port" : '/dev/ttyUSB0', "sample" : 1, 'crotch': 0.8},
                                 'therapy':{'BorgSample' : 20}
                                 }
         #paths dcitionary

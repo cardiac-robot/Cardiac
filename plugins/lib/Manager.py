@@ -83,7 +83,7 @@ class SensorManager(object):
         else:
             laser_data = {"speed": 4.1 + + random.randint(0,2), "cadence": 0.8, "steplenght":0.5}
 
-        self.data['imu'] = imu_data
+        self.data['imu'] = imu_data[0]
         self.data['laser'] = laser_data
         self.data['ecg'] = ecg_data
 
