@@ -25,14 +25,16 @@ def detect(detector,image,queue):
 class GetGaze():
     def __init__(self,controller = None):
         print('GAZE ESTIMATOR CREATED')
+        #Controller to feed back the results of the head gaze
+        self.controller = controller
         #get path to look for the predictor
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-
+        #dir_path = os.path.dirname(os.path.realpath(__file__))
+        dir_path = self.controller.PH.paths['sensor_lib']
         #Set up some required objects
         global detector
         detector = dlib.get_frontal_face_detector() #Face detector
 
-        self.predictor = dlib.shape_predictor(dir_path + "/shape_predictor_68_face_landmarks.dat") #Landmark identifier. Set the filename to whatever you named the downloaded file
+        self.predictor = dlib.shape_predictor(dir_path + "shape_predictor_68_face_landmarks.dat") #Landmark identifier. Set the filename to whatever you named the downloaded file
 
         #self.go_on = True
         self.video_capture = cv2.VideoCapture(0)
@@ -65,8 +67,7 @@ class GetGaze():
         #Stopping variable
         self.shouldStop = False
 
-        #Controller to feed back the results of the head gaze
-        self.controller = controller
+
 
     def start(self):
         #Queue to return the variable from the process

@@ -71,7 +71,7 @@ class SensorManager(object):
         if self.IMU:
             imu_data = self.imu.read_data()
         else:
-            imu_data  = 1.5 + random.randint(0,2)
+            imu_data  = [1.5 + random.randint(0,2), 0, 0]
 
         if self.ECG:
             ecg_data = self.ecg.read_data()

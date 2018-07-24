@@ -67,6 +67,7 @@ class RecognitionPlugin(object):
 
     #callback function to start recognition process, launched when the start recognition button is pressed
     def start_recog(self):
+        self.start_count()
         print("recognition started ")
         #connect to the robot
         self.RecogniserBN.connectToRobot(ip         = self.PH.GeneralSettings['robot']['IpRobot'],
@@ -89,10 +90,14 @@ class RecognitionPlugin(object):
         if self.identity_est != "0":
             print "Identity: " + self.identity_est
             self.id = self.identity_est
+            self.finish_count()
             self.RecognitionWin.onConfirm.emit()
         else:
             print "Emiting on failed recognition signal"
+            self.finish_count()
             self.RecognitionWin.onFailed.emit()
+
+
 
 
     #callback function called when the recognition has been carried out succesfuly
@@ -112,6 +117,17 @@ class RecognitionPlugin(object):
         self.RecogniserBN.confirmPersonIdentity(p_id = self.id)
         #emit on start therapy signal
         self.RecognitionWin.onStartTherapy.emit()
+
+    def start_count(self):
+        self.recog_init = time.time()
+
+    def finish_count(self):
+        self.recog_end = time.time()
+        t = self.recog_end - self.recog_init
+        print('###############################################################')
+        print('TIEMPO RECONOCIMIENTO')
+        print(t)
+        print('###############################################################')
 
 
     #callback function called when not recognized and need to find patient in the database

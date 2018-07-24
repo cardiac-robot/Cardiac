@@ -6,6 +6,8 @@ import time
 from PyQt4 import QtGui, QtCore
 #import gui component for the plugin
 import gui.WelcomeWin as WelcomeWin
+#import time
+import time
 #import plugins
 import MainMenuPlugin
 import ModalityPlugin
@@ -144,10 +146,10 @@ class MainPlugin(object):
         """
         BLOO PRESURE STATE: the blood presure state, emit one signal when the exit button is pressed
         #[1] connect exit button to relaunch the Main Menu and close the blood presure window
-        
+
         self.BloodPressurePlugin.ExitConnect(f = self.MainMenuPlugin.LaunchView)
         """
-        
+
 
 
     #count_down to start the application
@@ -163,6 +165,7 @@ class MainPlugin(object):
         #emit signal to close the entire system
         self.WelcomeWin.OnShutDown.emit()
 
+        
     #shutdown plugin
     def shutdown(self):
         self.WelcomeWin.close()

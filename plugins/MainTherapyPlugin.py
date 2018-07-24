@@ -172,7 +172,7 @@ class MainTherapyPlugin(object):
     def deploy_resources(self):
         #sensor manager
         #set sensors
-        self.SensorManager.set_sensors(ecg = False, imu = True, laser = True)
+        self.SensorManager.set_sensors(ecg = False, imu = False, laser = False)
         #launch sensors
         self.SensorManager.launch_sensors()
         #launch sensor monitor
@@ -241,7 +241,7 @@ class MainTherapyPlugin(object):
         #set cooldown event
         self.DB.General.SM.load_event(t ="Cooldown", c ="None", v = "None")
         #sleep laser an IMu sensor
-        self.SensorManager.sleep_sensors(ecg = False, imu = True, laser = True)
+        self.SensorManager.sleep_sensors(ecg = False, imu = False, laser = False)
         #if using no robot condition, cancel the timer
         if self.settings['mode'] == 0:
             #kill timer
