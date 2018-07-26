@@ -8,6 +8,7 @@ class RegisterWin(QtGui.QMainWindow):
     onEmptyField       = QtCore.pyqtSignal()
     onData             = QtCore.pyqtSignal()
     onAlreadyRegistered = QtCore.pyqtSignal()
+    onNotRegistered    = QtCore.pyqtSignal()
 
     def __init__(self,ProjectHandler):
         super(RegisterWin, self).__init__()

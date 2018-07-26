@@ -25,6 +25,10 @@ class RegisterPlugin(object):
     def LaunchView(self):
         self.RegisterWin.show()
 
+    def LaunchViewMemoryMode(self):
+        self.onMemory = True
+        self.RegisterWin.show()
+
     def onDataReceived(self):
         print self.RegisterWin.info_reg
         #register the user
@@ -33,6 +37,10 @@ class RegisterPlugin(object):
         if self.DB.General.UserStatus['registered']:
             #if patient already found in the database emit signal
             self.RegisterWin.onAlreadyRegistered.emit()
+        else:
+            if self.onMemory:
+                self.RegisterWin.onNotRegistered.emit()
+
         self.shutdown()
 
 

@@ -118,6 +118,19 @@ class RecognitionPlugin(object):
         #emit on start therapy signal
         self.RecognitionWin.onStartTherapy.emit()
 
+    def onNotRegisteredCallback(self):
+
+        #self.id = self.DB.General.SM.UserStatus['id']
+        self.person = self.DB.General.SM.person
+        print(self.person)
+        p = [self.person['id'], self.person['name'], self.person['gender'],self.person['age'], self.person['height'], [] ]
+
+        self.RecogniserBN.setPersonToAdd(personToAdd = p)
+        self.RecogniserBN.confirmPersonIdentity(p_id = self.person['id'])
+        #self.RecogniserBN.addPersonToBN(person = p)
+        #self.RecogniserBN.recog_results = self.RecognpiserBN.recognisePerson()
+        #self.RecogniserBN.nonweighted_evidence = self.RecogniserBN.fillNonweightedEvidence(self.RecogniserBN.recog_results)
+
     def start_count(self):
         self.recog_init = time.time()
 

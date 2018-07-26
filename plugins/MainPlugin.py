@@ -93,6 +93,8 @@ class MainPlugin(object):
         self.RegisterPlugin.RegisterWin.onData.connect(self.MainMenuPlugin.LaunchView)
         #[3] connect exit button to relaunch the Main Menu and close the Register window
         self.RegisterPlugin.ExitConnect(f = self.MainMenuPlugin.LaunchView)
+
+        self.RegisterPlugin.RegisterWin.onNotRegistered.connect(self.RecognitionPlugin.onNotRegisteredCallback)
         """
         SETTINGS STATE: settings has similar behavior as the Register, has two signals
         [1] CancelConnect: when settings process has been canceled, the window should close and reopen main menu
@@ -140,9 +142,10 @@ class MainPlugin(object):
         #[1] connect recogntition shutdown method to start the therapy
         self.RecognitionPlugin.RecognitionWin.onStartTherapy.connect(self.RecognitionPlugin.shutdown)
         #[2] connect to the register launch view method to perform the register process
-        self.RecognitionPlugin.RecognitionWin.onNotRegistered.connect(self.RegisterPlugin.LaunchView)
+        self.RecognitionPlugin.RecognitionWin.onNotRegistered.connect(self.RegisterPlugin.LaunchViewMemoryMode)
         #[3] connect exit button to relaunch the Main Menu and close the recognition window
         self.RecognitionPlugin.ExitConnect(f = self.MainMenuPlugin.LaunchView)
+
         """
         BLOO PRESURE STATE: the blood presure state, emit one signal when the exit button is pressed
         #[1] connect exit button to relaunch the Main Menu and close the blood presure window
@@ -165,7 +168,7 @@ class MainPlugin(object):
         #emit signal to close the entire system
         self.WelcomeWin.OnShutDown.emit()
 
-        
+
     #shutdown plugin
     def shutdown(self):
         self.WelcomeWin.close()
