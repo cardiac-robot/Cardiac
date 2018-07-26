@@ -5,6 +5,7 @@ import robot.RecognitionMemory as RM
 #import ISE
 import robot.resources.photo_handler as PHOTO
 import time
+import datetime
 
 class RecognitionPlugin(object):
     def __init__(self, ProjectHandler = None, DataHandler = None):
@@ -123,7 +124,7 @@ class RecognitionPlugin(object):
         #self.id = self.DB.General.SM.UserStatus['id']
         self.person = self.DB.General.SM.person
         print(self.person)
-        p = [self.person['id'], self.person['name'], self.person['gender'],self.person['age'], self.person['height'], [] ]
+        p = [self.person['id'], self.person['name'], self.person['gender'],int(self.person['age']), float(self.person['height']), [datetime.datetime.now()] ]
 
         self.RecogniserBN.setPersonToAdd(personToAdd = p)
         self.RecogniserBN.confirmPersonIdentity(p_id = self.person['id'])
