@@ -1,12 +1,12 @@
 Type;Cause;value;Timestamp
-BloodPressure;initial;{'systolic': 90, 'diastolic': 60};2018-07-26 17:38:28.534294
-StartRecording;None;None;2018-07-26 17:38:29.573079
-RobotWelcome;Start;WelcomeSentence;2018-07-26 17:38:33.533701
-Motivation;Timeout;None;2018-07-26 17:39:00.363116
-BorgRequest;Timeout;none;2018-07-26 17:39:00.728214
-BorgReceive;Clicked;6;2018-07-26 17:39:11.430596
-RequestLook;None;None;2018-07-26 17:39:26.252399
-Cooldown;None;None;2018-07-26 17:39:32.125401
-EndRecording;None;None;2018-07-26 17:39:45.924198
-BloodPressure;final;{'systolic': 90, 'diastolic': 60};2018-07-26 17:39:49.649729
-Questions;None;{'satisfaction': 0, 'motivation': 0};2018-07-26 17:39:51.560646
+BloodPressure;initial;{'systolic': 90, 'diastolic': 60};2018-07-26 18:51:54.376610
+StartRecording;None;None;2018-07-26 18:51:55.581635
+RobotWelcome;Start;WelcomeSentence;2018-07-26 18:51:58.370427
+Motivation;Timeout;None;2018-07-26 18:52:25.257234
+BorgRequest;Timeout;none;2018-07-26 18:52:25.306047
+BorgReceive;Clicked;6;2018-07-26 18:52:33.239671
+Motivation;Timeout;None;2018-07-26 18:53:28.258968
+Cooldown;None;None;2018-07-26 18:53:33.925936
+EndRecording;None;None;2018-07-26 18:53:40.700462
+BloodPressure;final;{'systolic': 90, 'diastolic': 60};2018-07-26 18:53:57.811496
+Questions;None;{'satisfaction': 0, 'motivation': 0};2018-07-26 18:53:59.288463
