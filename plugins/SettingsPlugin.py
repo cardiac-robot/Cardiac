@@ -1,6 +1,9 @@
 """SETTINGS PLUGIN"""
 import gui.SettingsWin as SettingsWin
 import robot.RecognitionMemory as RM
+import os
+import shutil
+
 class SettingsPlugin(object):
     def __init__(self, ProjectHandler, DataHandler):
         #load ProjectHandler settings
@@ -19,6 +22,7 @@ class SettingsPlugin(object):
         self.SettingsWin.onEmptyField.connect(self.onEmptyData)
         self.CancelConnect(f = self.onCancelPressed)
         self.clearMemoryBNConnect(f = self.onClearMemoryBN)
+        self.clearDatabaseConnect(f = self.onClearDatabase)
 
     #launch view interface
     def LaunchView(self):
@@ -40,6 +44,8 @@ class SettingsPlugin(object):
     def CancelConnect(self, f):
         self.SettingsWin.ControlButtons['cancel'].clicked.connect(f)
 
+    def clearDatabaseConnect(self, f):
+        self.SettingsWin.ControlButtons['clear_db'].clicked.connect(f)
     #method to provide the connect mechanism to the clearMemoryBN button
     def clearMemoryBNConnect(self, f):
         self.SettingsWin.ControlButtons['clearMemoryBN'].clicked.connect(f)
@@ -47,6 +53,10 @@ class SettingsPlugin(object):
     def onCancelPressed(self):
         print("cancel")
         self.SettingsWin.close()
+
+    def onClearDatabase(self):
+        self.DB.General.clear_database(mem = False, gen = True)
+
 
     def onClearMemoryBN(self):
         self.BN = RM.RecogniserBN(
@@ -62,7 +72,15 @@ class SettingsPlugin(object):
                                       DataHandler              = self.DB
                                   )
         self.BN.resetFiles()
+        #remove pictures
+        path = self.PH.paths['recog_img']
+        if os.path.exists(path):
+            for f in os.listdir(path):
+                f = os.path.join(path,f)
+                os.remove(f)
+
         print('Memory files reset')
+
 
 
     #method to hide the window

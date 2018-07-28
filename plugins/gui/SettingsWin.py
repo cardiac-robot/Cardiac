@@ -64,6 +64,15 @@ class SettingsWin(QtGui.QMainWindow):
         self.ControlButtons['clearMemoryBN'].setIcon(icon)
         self.ControlButtons['clearMemoryBN'].setIconSize(QtCore.QSize(self.winsize_v * 0.16, self.winsize_h * 0.04))
 
+        #clear db button
+        #memory button
+        self.ControlButtons['clear_db'] =  QtGui.QCommandLinkButton(self)
+        self.ControlButtons['clear_db'].setGeometry(QtCore.QRect(self.winsize_h*0.55, self.winsize_v*0.85, self.winsize_v*0.17, self.winsize_h*0.05))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(self.PH.paths["img"] + "cancel_settings.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.ControlButtons['clear_db'].setIcon(icon)
+        self.ControlButtons['clear_db'].setIconSize(QtCore.QSize(self.winsize_v * 0.16, self.winsize_h * 0.04))
+
         # close button
         self.CloseButton = QtGui.QCommandLinkButton(self)
         self.CloseButton.setGeometry(QtCore.QRect(self.winsize_h * 0.95, self.winsize_v * 0.01, self.winsize_v * 0.045, self.winsize_h * 0.03))
