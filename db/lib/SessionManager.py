@@ -13,6 +13,11 @@ class SessionManager(object):
         self.UserStatus = UserStatus
         #date
         self.date = datetime.datetime.now()
+        #
+        self.memory = False
+
+    def set_memory_db(self, v = True):
+        self.memory = v
 
     def load_sensor_data(self, hr = 0,speed =0,cadence = 0, sl =0, inclination = 0 ):
         data = str(hr) + ";" + str(speed) + ";" +str(cadence) + ";" +str(sl) + ";" +str(inclination) + ";"+ str(datetime.datetime.now()) +'\n'
@@ -126,6 +131,8 @@ class SessionManager(object):
             t = [datetime.datetime.strptime(i,'%Y-%m-%d %H:%M:%S.%f') for i in times]
             #return list of time attendance
             return t
+        else:
+            return 0
 
     def find_time_slot(self, week_day, p_time, period):
         tp = p_time.split(":")
@@ -144,7 +151,11 @@ class SessionManager(object):
 
     def create_session(self):
         #get path
-        p = self.PH.paths['data']
+        if not self.memory:
+            p = self.PH.paths['data']
+        else:
+            p = self.PH.paths['memory_data']
+
         #create user folder if not existing
         user_folder = p + "/" + str(self.UserStatus['id'])
         #load to the project handler
@@ -197,7 +208,10 @@ class SessionManager(object):
                        "weight" : weight,
                        "crotch" : crotch,
                        "disease": disease,
-                       "id"     : id_number
+                       "id"     : id_number,
+                       'alarm1' : 120,
+                       'alarm2' : 150,
+                       'borg_threshold': 12
                        }
         print self.person
         #saves user in the db if not exists
@@ -216,7 +230,11 @@ class SessionManager(object):
         #saves patient if not exists: returns True if found in database and False otherwise
         if not self.UserStatus['registered']:
             #enters if not registers and perform the register process
-            path = self.PH.paths['general']
+            if not self.memory:
+                path = self.PH.paths['general']
+            else:
+                path = self.PH.paths['memory_general']
+
             if os.path.exists(path + "/Patients.csv"):
                 #open file to read an write
                 f = open(path + "/Patients.csv", 'a')
@@ -254,7 +272,11 @@ class SessionManager(object):
     #method to check if user is already on the database
     def check_user(self):
         #load general path
-        path = self.PH.paths['general']
+        if not self.memory:
+            path = self.PH.paths['general']
+        else:
+            path = self.PH.paths['memory_general']
+
         #check if patiens file exits
         if os.path.exists(path + "/Patients.csv"):
             f = open(path + "/Patients.csv", 'r')

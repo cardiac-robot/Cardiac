@@ -1,9 +1,0 @@
-Type;Cause;value;Timestamp
-BloodPressure;initial;{'systolic': 90, 'diastolic': 60};2018-06-14 11:17:19.033266
-StartRecording;None;None;2018-06-14 11:17:19.861698
-BorgRequest;Timeout;none;2018-06-14 11:17:38.411386
-BorgReceive;Clicked;6;2018-06-14 11:17:46.396897
-Cooldown;None;None;2018-06-14 11:19:35.891552
-EndRecording;None;None;2018-06-14 11:19:45.854995
-BloodPressure;final;{'systolic': 90, 'diastolic': 60};2018-06-14 11:20:01.741321
-Questions;None;{'satisfaction': 8, 'motivation': 6};2018-06-14 11:20:03.117498

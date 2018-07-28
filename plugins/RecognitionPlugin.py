@@ -21,6 +21,8 @@ class RecognitionPlugin(object):
 
     #creates all required objects to perform the recogntion
     def deploy_resources(self):
+
+        self.DB.set_memory(True)
         #create image sender
         self.ISE = PHOTO.ImageSender(
                                      ip             = self.PH.GeneralSettings['robot']['IpRobot'],
@@ -150,6 +152,7 @@ class RecognitionPlugin(object):
 
     #callback function called when not recognized and need to find patient in the database
     def idReceived(self, id_recog = None):
+        self.DB.set_memory(True)
         #get the label conent
         if not id_recog:
             EmitOnRegister = True

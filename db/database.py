@@ -31,6 +31,11 @@ class database(object):
         #create Robot data manager
         self.Backup = BDB.Backup(ProjectHandler = self.PH)
 
+    def set_memory(self, v = True):
+        self.General.set_memory_db(v)
+
+
+
 
 class General(object):
     def __init__(self, ProjectHandler = None):
@@ -42,6 +47,15 @@ class General(object):
         self.SM = SM.SessionManager(ProjectHandler = self.PH, UserStatus = self.UserStatus)
         #therapy status
         self.TherapyStatus = {"user": "none", "mode":0}
+
+        self.memory = False
+
+    def set_memory_db(self, x = False):
+        print "#############!!!!!!!!!!!!!!!!!!!!!!!!########################"
+        print x
+        print "#############!!!!!!!!!!!!!!!!!!!!!!!!########################"
+        self.memory = x
+        self.SM.set_memory_db(v = x)
 
     #register user in db
     def register(self, user = None):
@@ -76,7 +90,12 @@ class General(object):
 
     #get all patients
     def get_all_patients(self):
-        path = self.PH.paths['general']
+        if not self.memory:
+            path = self.PH.paths['general']
+        else:
+            path = self.PH.paths['memory_general']
+
+
         if os.path.exists(path + "/Patients.csv"):
             #open file to read an write
             f = open(path + "/Patients.csv", 'r')
@@ -98,13 +117,18 @@ class General(object):
     def get_all_times(self):
 
         Times = {}
-
-        dirs = next(os.walk(self.PH.paths['data']))[1]
+        if not self.memory:
+            dirs = next(os.walk(self.PH.paths['data']))[1]
+            root_path = self.PH.paths['data'] +"/"
+        else:
+            dirs = next(os.walk(self.PH.paths['memory_data']))[1]
+            root_path = self.PH.paths['memory_data'] +"/"
 
         for d in dirs:
-            path = self.PH.paths['data'] +"/"+ d
+            path = root_path + d
             l = self.SM.load_user_times(p = path)
-            Times[d] = l
+            if not l == 0:
+                Times[d] = l
 
         return Times
 

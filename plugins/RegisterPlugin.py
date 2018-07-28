@@ -24,10 +24,16 @@ class RegisterPlugin(object):
 
     #show the view window
     def LaunchView(self):
+        print ("launching from not memory")
+        self.DB.set_memory(False)
+        print("show")
         self.RegisterWin.show()
 
+
     def LaunchViewMemoryMode(self):
+        print "launching from memoryview"
         self.onMemory = True
+        self.DB.set_memory(True)
         self.RegisterWin.show()
 
     def onDataReceived(self):

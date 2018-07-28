@@ -68,6 +68,7 @@ class Analyzer(object):
             #calculates the average of the hr
             m = np.mean([ i['ecg'] for i in self.dataBuffer])
             #compare second alarm
+            print self.profile
             if m > self.profile['alarm2']:
                 return 2
             #compare first alarm
