@@ -12,6 +12,7 @@ class RegisterPlugin(object):
         self.RegisterWin = RegisterWin.RegisterWin(ProjectHandler = self.PH)
         #set signals
         self.set_signals()
+        self.onMemory = False
 
 
 

@@ -465,6 +465,8 @@ class RecogniserBN:
                 if name_param == "T":
                     # add the remaining times in the database to the curve (when creating df, only the first time in the times of the person was added, so that
                     # the data is not repeated for face, age, gender, and height (which would bias the network). This way, I only add the remaining times to the time curve only
+                    print("computeRangeCPTfromDF LINE 468")
+                    print counter
                     for t_counter in range(1, len(self.times[counter])): # start from self.times[counter][1] as 0 is used
 
                         curve_pdf = self.computeProbValues(name_param, self.findTimeSlot(self.times[counter][t_counter]))
@@ -794,32 +796,34 @@ class RecogniserBN:
         p = self.DB.General.get_all_patients()
         #db_handler = db.DbHandler(testMode = self.testMode)
         #p = db_handler.get_all_patients()
+        print p
         counter_p = 0
-        for a in p:
-#             name_person = str(a["name"])
-#             name_person = name_person.replace(" ","_")
-#             self.i_labels.append(name_person)
-            print 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
-            #print(a.get('id_number'))
-            #print(a
-            self.i_labels.append(str(a[0]))
-            self.names.append(str(a[1]))
-            self.genders.append(str(a[2]))
-            self.ages.append(int(a[3]))
-            self.heights.append(float(a[4]))
+        if p:
+            for a in p:
+        #             name_person = str(a["name"])
+        #             name_person = name_person.replace(" ","_")
+        #             self.i_labels.append(name_person)
+                print 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+                #print(a.get('id_number'))
+                #print(a
+                self.i_labels.append(str(a[0]))
+                self.names.append(str(a[1]))
+                self.genders.append(str(a[2]))
+                self.ages.append(int(a[3]))
+                self.heights.append(float(a[4]))
 
-        print 'calling addUnknown'
-        all_times = self.DB.General.get_all_times()
-        for key in all_times:
-            times_patients = []
-            user_times = all_times[key]
-            if user_times:
-                times_patients = [[i.time().strftime('%H:%M:%S'), i.isoweekday()] for i in user_times]
-                self.times.append(times_patients)
+            print 'calling addUnknown'
+            all_times = self.DB.General.get_all_times()
+            for key in all_times:
+                times_patients = []
+                user_times = all_times[key]
+                if user_times:
+                    times_patients = [[i.time().strftime('%H:%M:%S'), i.isoweekday()] for i in user_times]
+                    self.times.append(times_patients)
 
-        """for tt in a["times"]:
-            times_patients.append([tt.time().strftime('%H:%M:%S'), tt.isoweekday()])
-        self.times.append(times_patients)"""
+            """for tt in a["times"]:
+                times_patients.append([tt.time().strftime('%H:%M:%S'), tt.isoweekday()])
+            self.times.append(times_patients)"""
 
         counter_p = counter_p + 1
         print "labels from loadDB"
@@ -965,6 +969,7 @@ class RecogniserBN:
 
         # P(A|I)
         print('COUNTER: .........................')
+        print self.ages
         print self.ages[counter]
         age_curve_pdf = self.getCurve(mean = self.ages[counter], stddev = self.stddev_age, min_value = self.age_min, max_value = self.age_max, weight = self.weights[2])
         self.r_bn.cpt(self.A)[{'I':self.i_labels[counter]}] = age_curve_pdf[:]
@@ -977,6 +982,7 @@ class RecogniserBN:
         time_curve_total_pdf = []
         print"before for"
         print counter
+        print self.times
         print "#####end####"
         for t_counter in range(0, len(self.times[counter])):
             print "t_counter from addLikelihoods"
@@ -1395,13 +1401,15 @@ class RecogniserBN:
             self.loadBN(self.recog_file, self.csv_file, self.initial_recognition_file)
 #         person[0] = person[0].replace(" ","_")
         if person[0] in self.i_labels:
-            logging.debug("The patient is already in the database.")
+            print("The patient is already in the database.")
         else:
+
             self.updateData(person)
             if self.isDBinCSV:
                 self.saveDBToCSV(self.db_file, person)
 
         if self.num_people == 2:
+            print "Enter num_people == 2"
             self.r_bn=gum.BayesNet('RecogniserBN')
             self.addNodes()
             self.addArcs()
@@ -1783,6 +1791,9 @@ class RecogniserBN:
         df_names_registering = pandas.read_csv(csv_file, usecols=["I", "R"], dtype={"I": object})
         occurrences = df_names_registering.I.value_counts()
         num_unknown_occurrences = df_names_registering.R.values.sum()
+        print('setNumOccurrences')
+        print self.num_occurrences
+        print occurrences
         for val, cnt in occurrences.iteritems():
             print 'wwwwwwwwwwwwwwwwwwwwwwwww'
             print(self.i_labels)

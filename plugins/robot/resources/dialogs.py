@@ -55,7 +55,7 @@ class Dialogs(object):
 
         #Sentences for additional requests and thanks
         self.sentenceRequestLookForward = ["Mira al frente","Pon la vista al frente","Recuerda mirar al frente","No mires a tus pies","Levanta la cabeza","Continua mirando al frente"]
-        self.sentenceRequestLookForwardMemory = ["XX, \\pau=200\\ Mira al frente","Pon la vista al frente, \\pau=100\\ XX "," XX \\pau=200\\ Recuerda mirar al frente","No mires a tus pies \\pau=200\\ XX","Levanta la cabeza, \\pau=200\\ XX ","XX \\pau=200\\ ,Continua mirando al frente"]
+        self.sentenceRequestLookForwardMemory = ["XX, \\pau=200\\ Mira al frente","Pon la vista al frente, \\pau=100\\ XX "," \\pau=200\\Recuerda mirar al frente","No mires a tus pies","Levanta la cabeza","Continua mirando al frente"]
         self.requestLookForwardProvided = []
         self.sentenceLookedForward = ["Bien hecho","Muy bien","Continua así","Bien"]
         self.lookedForwardProvided = []

@@ -6,8 +6,8 @@ import robot.RecognitionMemory as RM
 import robot.resources.photo_handler as PHOTO
 import time
 import datetime
-
 class RecognitionPlugin(object):
+
     def __init__(self, ProjectHandler = None, DataHandler = None):
         #load project_Handler
         self.PH = ProjectHandler
@@ -128,6 +128,10 @@ class RecognitionPlugin(object):
 
         self.RecogniserBN.setPersonToAdd(personToAdd = p)
         self.RecogniserBN.confirmPersonIdentity(p_id = self.person['id'])
+
+        self.RecognitionWin.onStartTherapy.emit()
+
+
         #self.RecogniserBN.addPersonToBN(person = p)
         #self.RecogniserBN.recog_results = self.RecognpiserBN.recognisePerson()
         #self.RecogniserBN.nonweighted_evidence = self.RecogniserBN.fillNonweightedEvidence(self.RecogniserBN.recog_results)
