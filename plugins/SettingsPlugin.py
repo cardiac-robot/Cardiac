@@ -1,6 +1,6 @@
 """SETTINGS PLUGIN"""
 import gui.SettingsWin as SettingsWin
-
+import robot.RecognitionMemory as RM
 class SettingsPlugin(object):
     def __init__(self, ProjectHandler, DataHandler):
         #load ProjectHandler settings
@@ -18,6 +18,7 @@ class SettingsPlugin(object):
         self.SettingsWin.onData.connect(self.onDataReceived)
         self.SettingsWin.onEmptyField.connect(self.onEmptyData)
         self.CancelConnect(f = self.onCancelPressed)
+        self.clearMemoryBNConnect(f = self.onClearMemoryBN)
 
     #launch view interface
     def LaunchView(self):
@@ -39,10 +40,30 @@ class SettingsPlugin(object):
     def CancelConnect(self, f):
         self.SettingsWin.ControlButtons['cancel'].clicked.connect(f)
 
+    #method to provide the connect mechanism to the clearMemoryBN button
+    def clearMemoryBNConnect(self, f):
+        self.SettingsWin.ControlButtons['clearMemoryBN'].clicked.connect(f)
     #callback function when cancel button has been pressed
     def onCancelPressed(self):
         print("cancel")
         self.SettingsWin.close()
+
+    def onClearMemoryBN(self):
+        self.BN = RM.RecogniserBN(
+                                      image_sender             = None,
+                                      testMode                 = False,
+                                      recog_file               = self.PH.paths['recognition']    + "/RecogniserBN.bif",
+                                      csv_file                 = self.PH.paths['recognition']    + "/RecogniserBN.csv",
+                                      initial_recognition_file = self.PH.paths['recognition']    + "/InitialRecognition.csv",
+                                      analysis_file            = self.PH.paths['recog_analysis'] + "/Analysis.json",
+                                      db_file                  = self.PH.paths['recognition']    + "/db.csv",
+                                      comparison_file          = self.PH.paths['recog_analysis'] + "/Comparison.csv",
+                                      ProjectHandler           = self.PH,
+                                      DataHandler              = self.DB
+                                  )
+        self.BN.resetFiles()
+        print('Memory files reset')
+
 
     #method to hide the window
     def HideView(self):

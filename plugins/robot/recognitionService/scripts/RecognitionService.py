@@ -56,7 +56,7 @@ class RecognitionService(object):
         self.s.ALMotion.setBreathEnabled("Legs", False)
         self.s.ALAutonomousLife.setRobotOffsetFromFloor(self.robotOffsetFromFloorInMeters)
         self.s.ALAnimatedSpeech.setBodyLanguageMode(2) # contextual
-        self.s.ALVideoDevice.setActiveCamera(1)
+        self.s.ALVideoDevice.setActiveCamera(0)
         self.useSpanish = useSpanish
         if self.useSpanish:
             self.s.ALTextToSpeech.setLanguage("Spanish")
