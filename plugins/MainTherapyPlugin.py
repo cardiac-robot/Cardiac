@@ -107,6 +107,8 @@ class MainTherapyPlugin(object):
             self.RobotMonitorThread = RobotMonitorThread(self)
 
 
+        #create timer display thread
+        self.TimerDisplayThread = TimerDisplayThread(self)
 
 
         ##create view component
@@ -175,6 +177,8 @@ class MainTherapyPlugin(object):
         self.SensorManager.set_sensors(ecg = False, imu = False, laser = False)
         #launch sensors
         self.SensorManager.launch_sensors()
+        #launch timer
+        self.TimerDisplayThread.start()
         #launch sensor monitor
         self.SensorMonitorThread.start()
         #use camera for gaze estimation
@@ -255,6 +259,8 @@ class MainTherapyPlugin(object):
 
     #callback method to close all resources in a safe way
     def shutdown(self):
+        #stop timer
+        self.TimerDisplayThread.shutdown()
         #stop event
         self.DB.General.SM.load_event(t ="EndRecording", c ="None", v = "None")
         #kill sensor manager
@@ -334,8 +340,38 @@ class SensorMonitorThread(QtCore.QThread):
 
             time.sleep(self.ts)
 
+
+
     def shutdown(self):
         self.on = False
+
+
+# timer display thread
+class TimerDisplayThread(QtCore.QThread):
+    def __init__(self, controller):
+        super(TimerDisplayThread,self).__init__()
+        #Flags
+        self.c = controller
+        self.go_on = True
+
+    def run(self):
+        self.time_secs=0
+        self.time_mins=0
+        while self.go_on:
+            self.time_secs=self.time_secs+1
+            if self.time_secs>59:
+                self.time_secs=0
+                self.time_mins=self.time_mins+1
+
+        print(self.time_secs)
+        print(self.time_mins)
+        fun= lambda time : str(time) if time>9 else '0'+str(time)
+        self.c.View.time_lcd.display(fun(self.time_mins)+':'+fun(self.time_secs))
+
+    def shutdown(self):
+        self.go_on = False
+
+
 
 
 
