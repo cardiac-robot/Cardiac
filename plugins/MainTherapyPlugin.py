@@ -353,6 +353,7 @@ class TimerDisplayThread(QtCore.QThread):
         #Flags
         self.c = controller
         self.go_on = True
+        self.Ts = 1
 
     def run(self):
         self.time_secs=0
@@ -363,11 +364,12 @@ class TimerDisplayThread(QtCore.QThread):
                 self.time_secs=0
                 self.time_mins=self.time_mins+1
 
-        print(self.time_secs)
-        print(self.time_mins)
-        fun= lambda time : str(time) if time>9 else '0'+str(time)
-        self.c.View.time_lcd.display(fun(self.time_mins)+':'+fun(self.time_secs))
+            print(self.time_secs)
+            print(self.time_mins)
+            fun= lambda time : str(time) if time>9 else '0'+str(time)
+            self.c.View.time_lcd.display(fun(self.time_mins)+':'+fun(self.time_secs))
 
+            time.sleep(self.Ts)
     def shutdown(self):
         self.go_on = False
 

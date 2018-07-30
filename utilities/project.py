@@ -68,29 +68,7 @@ class ProjectHandler(object):
             for key in self.paths:
                 self.paths[key] = self.paths[key].replace('/', '\\')
 
-            '''
-            self.paths = {
-            				'db'  			  : '\\db\\',
-            				'backup'		  : '\\db\\backup\\',
-            				'data'			  : '\\db\\data\\',
-                            'general'         : '\\db\\general\\',
-                            'robot_db'        : '\\db\\robot\\',
-                            'db_lib'          : '\\db\\lib\\',
-                            'current_user'    : '\\',
-                            'current_session' : '\\',
-            				'plugin'		  : '\\plugins\\',
-            			    'gui' 			  : '\\plugins\\gui\\',
-            				'img'             : '\\plugins\\gui\\img\\',
-                            'recognition'     : '\\db\\recognition\\',
-                            'recog_analysis'  : '\\db\\recognition\\AnalysisFolder\\',
-                            'recog_img'       : '\\db\\recognition\\images\\',
-            				'sensor_lib'      : '\\plugins\\lib\\',
-            				'robotController' : '\\plugins\\robot\\',
-                            'robotBehaviors'  : '\\plugins\\robot\\behaviors\\',
-                            'robotResources'  : '\\plugins\\robot\\resources\\',
-                            'utilities'       : '\\utilities\\'
-            				}
-            '''
+            
         #print all info generated
         if log:
             self.print_info()
