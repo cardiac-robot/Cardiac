@@ -65,6 +65,10 @@ class ProjectHandler(object):
 					 }
          #paths dcitionary
         if self.settings['sys'] == 'win32':
+            for key in self.paths:
+                self.paths[key] = self.paths[key].replace('/', '\\')
+
+            '''
             self.paths = {
             				'db'  			  : '\\db\\',
             				'backup'		  : '\\db\\backup\\',
@@ -86,7 +90,7 @@ class ProjectHandler(object):
                             'robotResources'  : '\\plugins\\robot\\resources\\',
                             'utilities'       : '\\utilities\\'
             				}
-
+            '''
         #print all info generated
         if log:
             self.print_info()

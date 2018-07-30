@@ -139,6 +139,7 @@ class MainPlugin(object):
         """
         #[1] connect launch view method for the therapy win
         self.RecognitionPlugin.RecognitionWin.onStartTherapy.connect(self.MainTherapyPlugin.LaunchView)
+        self.RecognitionPlugin.RecognitionWin.onStartTherapy.connect(self.MainMenuPlugin.HideView)
         #[1] connect recogntition shutdown method to start the therapy
         self.RecognitionPlugin.RecognitionWin.onStartTherapy.connect(self.RecognitionPlugin.shutdown)
         #[2] connect to the register launch view method to perform the register process
