@@ -21,7 +21,7 @@ if __name__ == '__main__':
         #get resolution
         user32=ctypes.windll.user32
         resolution = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
-        res = {'width': int(resolution[0]), 'height': int(resolution[1])}
+        res = {'width': 1.8*int(resolution[0]), 'height': 1.5*int(resolution[1])}
 
     #linux case
     elif s == 'linux2':
