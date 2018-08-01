@@ -22,7 +22,7 @@ class TherapyWin(QtGui.QMainWindow):
         self.screen_h = self.PH.settings['res']['width']
         self.screen_v = self.PH.settings['res']['height']
         #set relative size
-        self.r_size = 0.8
+        self.r_size = 1
         #get setup
         self.setupUi(self)
         #self.show()
