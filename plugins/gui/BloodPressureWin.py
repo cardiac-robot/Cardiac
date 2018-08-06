@@ -51,7 +51,7 @@ class BloodPressureWin(QtGui.QMainWindow):
         self.diastolic_spin.setRange(0,300)
         self.diastolic_spin.setValue(60)
         #%%
-        self.acquire_button=self.create_textured_button([0.4,0.6,0.2,0.2], self.PH.paths['img'] + "submit_icon.png")
+        self.acquire_button=self.create_textured_button([0.4,0.6,0.2,0.2], self.PH.paths['img'] + "submit_icon2.png")
         #%%exit button
         self.exit_button=self.create_textured_button([0.95,0.02,0.035,0.035], self.PH.paths['img'] + "exit_icon.png")
         #%%

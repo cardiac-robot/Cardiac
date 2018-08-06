@@ -42,12 +42,12 @@ class RecognitionWin(QtGui.QMainWindow):
         self.ControlButtons = {}
         #start recog button
         self.ControlButtons['StartRecog'] =  QtGui.QPushButton('Start Recognition',self)
-        self.ControlButtons['StartRecog'].setGeometry(QtCore.QRect(self.winsize_v*0.11, self.winsize_h*0.1, self.winsize_v*0.5, self.winsize_h*0.3))
+        self.ControlButtons['StartRecog'].setGeometry(QtCore.QRect(self.winsize_h*0.11, self.winsize_v*0.1, self.winsize_v*0.5, self.winsize_h*0.3))
         #buttons for identity validation
         self.ControlButtons['Yes'] =  QtGui.QPushButton('SI',self)
-        self.ControlButtons['Yes'].setGeometry(QtCore.QRect(self.winsize_v*0.8, self.winsize_h*0.4, self.winsize_v*0.2, self.winsize_h*0.1))
+        self.ControlButtons['Yes'].setGeometry(QtCore.QRect(self.winsize_h*0.8, self.winsize_v*0.4, self.winsize_v*0.2, self.winsize_h*0.1))
         self.ControlButtons['No'] =  QtGui.QPushButton('NO',self)
-        self.ControlButtons['No'].setGeometry(QtCore.QRect(self.winsize_v*1.2, self.winsize_h*0.4, self.winsize_v*0.2, self.winsize_h*0.1))
+        self.ControlButtons['No'].setGeometry(QtCore.QRect(self.winsize_h*1.2, self.winsize_v*0.4, self.winsize_v*0.2, self.winsize_h*0.1))
         #id submit button
         self.ControlButtons['submit'] = QtGui.QPushButton('Submit',self)
         self.ControlButtons['submit'].setGeometry(self.winsize_h*0.39, self.winsize_v*0.45, self.winsize_v*0.4, self.winsize_h*0.08)
