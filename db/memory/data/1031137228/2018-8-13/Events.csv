@@ -1,0 +1,9 @@
+Type;Cause;value;Timestamp
+BloodPressure;initial;{'systolic': 90, 'diastolic': 60};2018-08-13 18:04:09.180809
+StartRecording;None;None;2018-08-13 18:04:11.381756
+RobotWelcome;Start;WelcomeSentence;2018-08-13 18:04:15.047928
+Cooldown;None;None;2018-08-13 18:04:16.041771
+EndRecording;None;None;2018-08-13 18:04:17.389300
+BloodPressure;final;{'systolic': 90, 'diastolic': 60};2018-08-13 18:04:21.908554
+Questions;None;{'satisfaction': 9, 'motivation': 9};2018-08-13 18:04:24.511614
+Motivation;Timeout;None;2018-08-13 18:04:45.904058
