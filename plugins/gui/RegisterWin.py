@@ -105,7 +105,7 @@ class RegisterWin(QtGui.QMainWindow):
 
     def submit_button(self):
         if not(self.controllabels['name'].text() =="")and not(self.controllabels['age'].text() =="") and not(self.controllabels['height'].text() =="") and not(self.controllabels['weight'].text() =="") and not(self.controllabels['height_c'].text() =="") and not(self.controllabels['id'].text() =="")and not(self.controllabels['patology'].text() ==""):
-            if(str(self.controllabels['name'].text()).isalpha() == True) and (str(self.controllabels['age'].text()).isdigit() == True) and (str(self.controllabels['height'].text()).isdigit() == True) and (str(self.controllabels['weight'].text()).isdigit() == True) and (str(self.controllabels['height_c'].text()).isdigit() == True) and (str(self.controllabels['id'].text()).isdigit() == True) and (str(self.controllabels['patology'].text()).isalpha() == True):
+            if(" " in str(self.controllabels['name'].text())== True ) and (str(self.controllabels['name'].text()).isdigit() == False) and (str(self.controllabels['age'].text()).isdigit() == True) and (str(self.controllabels['height'].text()).isdigit() == True) and (str(self.controllabels['weight'].text()).isdigit() == True) and (str(self.controllabels['height_c'].text()).isdigit() == True) and (str(self.controllabels['id'].text()).isdigit() == True) and (str(self.controllabels['patology'].text()).isalpha() == True):
                 self.info_reg['name'] = str(self.controllabels['name'].text())
                 self.info_reg['age'] = str(self.controllabels['age'].text())
                 self.info_reg['height'] = str(self.controllabels['height'].text())
@@ -119,7 +119,7 @@ class RegisterWin(QtGui.QMainWindow):
 
         if not (str(self.controllabels['name'].text()).isalpha() == True) and not (self.controllabels['name'].text() ==""):
             msgBox = QtGui.QMessageBox()
-            msgBox.setText('Ingrese solo letras')
+            msgBox.setText('Ingrese solo letras nombre')
             msgBox.setWindowTitle('Warning')
             ret = msgBox.exec_()
 
