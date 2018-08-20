@@ -46,7 +46,3 @@ class BloodPressurePlugin(object):
     def onExitPressed(self,f):
         self.BloodPressureWin.close()
     """
-    
-
-
-

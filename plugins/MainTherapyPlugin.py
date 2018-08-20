@@ -48,7 +48,7 @@ class MainTherapyPlugin(object):
         #blood pressure plugin
         self.BloodPressurePlugin.View.onStartTherapy.connect(self.View.show)
         self.BloodPressurePlugin.View.onFinishTherapy.connect(self.EndQuestionPlugin.LaunchView)
-
+        self.BloodPressurePlugin.View.close_connect(self.shutdown)
 
         #set on start clicked signal
         self.View.play_button['button'].clicked.connect(self.onStart)
@@ -267,6 +267,8 @@ class MainTherapyPlugin(object):
         self.SensorManager.shutdown()
         #kill sensor monitor thread
         self.SensorMonitorThread.shutdown()
+
+        self.BloodPressurePlugin.shutdown()
         #if using robot, kill all robot resources
         if self.useRobot:
             #kill robot

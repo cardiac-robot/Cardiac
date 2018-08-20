@@ -1700,12 +1700,19 @@ class RecogniserBN:
             self.recog_results = self.recognisePerson()
             print self.recog_results
             print('after recognized person 1677')
+            print('###########  num_people: ' + str(self.num_people))
             self.nonweighted_evidence = self.fillNonweightedEvidence(self.recog_results)
             if self.num_people > 1:
+                print('set identity')
                 self.ie = self.setEvidence(self.recog_results)
+
                 self.identity_prob_list = np.array(self.ie.posterior(self.I)[:])
+                print(self.identity_prob_list)
                 self.identity_est = self.getEstimatedIdentity(self.identity_prob_list)
+                print("SET IDENTITY MDF")
+                print(self.identity_est)
             else:
+
                 print(' 1626')
                 self.identity_est = self.getEstimatedIdentity()
                 self.identity_prob_list = [1.0] # for unknown

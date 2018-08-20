@@ -81,6 +81,8 @@ class BloodPressureWin(QtGui.QMainWindow):
         self.bp = {'systolic': self.systolic_spin.value(), 'diastolic' : self.diastolic_spin.value()}
         self.onValue.emit()
 
+    def close_connect(self, f):
+        self.exit_button['button'].clicked.connect(f)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
