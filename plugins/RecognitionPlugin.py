@@ -32,6 +32,7 @@ class RecognitionPlugin(object):
                                      ProjectHandler = self.PH)
 
         #create recogniser bayesian network
+        '''
         self.RecogniserBN  = RM.RecogniserBN(
                                               image_sender             = self.ISE,
                                               testMode                 = False,
@@ -45,7 +46,10 @@ class RecognitionPlugin(object):
                                               DataHandler              = self.DB
                                               )
 
-
+        '''
+        self.RecogniserBN = RM.RecogniserBN()
+        #set path files
+        self.RecogniserBN.setFilePaths(recog_folder = self.PH.paths['recognition'] +)
         #set signals
         self.set_signals()
 
@@ -74,15 +78,19 @@ class RecognitionPlugin(object):
         print("recognition started ")
         #connect to the robot
         self.RecogniserBN.connectToRobot(ip         = self.PH.GeneralSettings['robot']['IpRobot'],
-                                         useSpanish = True)
+                                         useSpanish = True,
+                                         imagePath  =self.PH.paths['recognition'])
 
-        #init session
+        #set SessionVar session
+        self.RecogniserBN.setSessionVar()
+        '''
         #TODO: revisar función y text to say
         self.RecogniserBN.initSession(isRegistered    = True,
                                       isMemoryRobot   = True,
                                       isAddPersonToDB = False,
                                       isDBinCSV       = False,
                                       personToAdd     = [])
+        '''
         #take photo
         self.ISE.takePhoto()
         #send photo to the robot
@@ -110,6 +118,10 @@ class RecognitionPlugin(object):
         self.RecogniserBN.confirmPersonIdentity(p_id = self.id)
         #call id received function to set the user in the database
         self.idReceived(id_recog = self.id)
+        #save BN
+        self.RecogniserBN.saveBN()
+        #save face detection DB
+        self.RecogniserBN.saveFaceDetectionDB(recog_folder = self.PH.paths['recognition'])
         #emit on start therapy
         self.RecognitionWin.onStartTherapy.emit()
 
@@ -118,6 +130,10 @@ class RecognitionPlugin(object):
     def onRegisteredCallback(self):
         #confirm person identity with the recognized person
         self.RecogniserBN.confirmPersonIdentity(p_id = self.id)
+        #save BN
+        self.RecogniserBN.saveBN()
+        #save face detection DB
+        self.RecogniserBN.saveFaceDetectionDB(recog_folder = self.PH.paths['recognition'])
         #emit on start therapy signal
         self.RecognitionWin.onStartTherapy.emit()
 
@@ -127,10 +143,13 @@ class RecognitionPlugin(object):
         self.person = self.DB.General.SM.person
         print(self.person)
         p = [self.person['id'], self.person['name'], self.person['gender'],int(self.person['age']), float(self.person['height']), [datetime.datetime.now()] ]
-
         self.RecogniserBN.setPersonToAdd(personToAdd = p)
         self.RecogniserBN.confirmPersonIdentity(p_id = self.person['id'])
-
+        #save BN
+        self.RecogniserBN.saveBN()
+        #save face detection DB
+        self.RecogniserBN.saveFaceDetectionDB(recog_folder = self.PH.paths['recognition'])
+        #emit signal 
         self.RecognitionWin.onStartTherapy.emit()
 
 

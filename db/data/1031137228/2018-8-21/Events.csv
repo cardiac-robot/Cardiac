@@ -1,0 +1,7 @@
+Type;Cause;value;Timestamp
+BloodPressure;initial;{'systolic': 90, 'diastolic': 60};2018-08-21 12:11:47.362338
+StartRecording;None;None;2018-08-21 12:11:48.480336
+Cooldown;None;None;2018-08-21 12:11:53.457200
+EndRecording;None;None;2018-08-21 12:11:54.225760
+BloodPressure;final;{'systolic': 90, 'diastolic': 60};2018-08-21 12:11:56.723690
+Questions;None;{'satisfaction': 0, 'motivation': 0};2018-08-21 12:11:58.530632
