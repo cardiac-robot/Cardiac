@@ -40,9 +40,8 @@ class WelcomeWin(QtGui.QMainWindow):
         self.winsize_h=int(self.screen_h * self.r_size)
         self.winsize_v=int(self.screen_v* self.r_size)
         #define position and size of the window
-        #self.setGeometry(self.screen_v/2 - (self.winsize_v/2) , self.screen_h/2 - (self.winsize_h/2),self.winsize_h, self.winsize_v)
-        self.centralwidget = QtGui.QWidget(self)
-        self.resize(self.winsize_h,self.winsize_v)
+        self.setGeometry(self.screen_h/2 - (self.winsize_h/2) , self.screen_v/2 - (self.winsize_v/2),self.winsize_h, self.winsize_v)
+        #self.resize(self.winsize_h,self.winsize_v)
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         #setting backgroung image
         self.label_background = QtGui.QLabel(self)

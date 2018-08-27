@@ -41,7 +41,7 @@ class TherapyWin(QtGui.QMainWindow):
         self.winsize_h=int(self.screen_h * self.r_size)
         self.winsize_v=int(self.screen_v* self.r_size)
         #
-        MainWindow.resize(self.winsize_h,self.winsize_v)
+        self.setGeometry(self.screen_h / 2 - (self.winsize_h / 2), self.screen_v / 2 - (self.winsize_v / 2), self.winsize_h, self.winsize_v)
         #Eliminating window's resize options.
         MainWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.centralwidget = QtGui.QWidget(MainWindow)

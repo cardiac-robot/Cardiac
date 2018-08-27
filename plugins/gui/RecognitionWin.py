@@ -37,32 +37,23 @@ class RecognitionWin(QtGui.QMainWindow):
         self.label_background.setGeometry(QtCore.QRect(0, 0, self.winsize_h, self.winsize_v))
         self.label_background.setPixmap(QtGui.QPixmap(self.PH.paths["img"] + "Blue_background.png"))
         self.label_background.setScaledContents(True)
-        
+
 
         self.ControlButtons = {}
         #start recog button
         self.ControlButtons['StartRecog'] =  QtGui.QPushButton('Start Recognition',self)
-        self.ControlButtons['StartRecog'].setGeometry(QtCore.QRect(self.winsize_h*0.11, self.winsize_v*0.1, self.winsize_v*0.5, self.winsize_h*0.3))
+        self.ControlButtons['StartRecog'].setGeometry(QtCore.QRect(self.winsize_v*0.11, self.winsize_h*0.1, self.winsize_v*0.5, self.winsize_h*0.3))
         #buttons for identity validation
-        self.ControlButtons['Yes'] =  QtGui.QPushButton(self)
-        self.ControlButtons['Yes'].setGeometry(QtCore.QRect(self.winsize_h*0.4, self.winsize_v*0.4, self.winsize_v*0.2, self.winsize_h*0.1))
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(self.PH.paths["img"] + "yes_recog.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.ControlButtons['Yes'].setIcon(icon)
-        self.ControlButtons['Yes'].setIconSize(QtCore.QSize(self.winsize_v * 0.1, self.winsize_h * 0.09))
-        self.ControlButtons['No'] =  QtGui.QPushButton(self)
-        self.ControlButtons['No'].setGeometry(QtCore.QRect(self.winsize_h*0.8, self.winsize_v*0.4, self.winsize_v*0.2, self.winsize_h*0.1))
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(self.PH.paths["img"] + "no_recog.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.ControlButtons['No'].setIcon(icon)
-        self.ControlButtons['No'].setIconSize(QtCore.QSize(self.winsize_v * 0.1, self.winsize_h * 0.09))
+        self.ControlButtons['Yes'] =  QtGui.QPushButton('SI',self)
+        self.ControlButtons['Yes'].setGeometry(QtCore.QRect(self.winsize_v*0.8, self.winsize_h*0.4, self.winsize_v*0.2, self.winsize_h*0.1))
+        self.ControlButtons['No'] =  QtGui.QPushButton('NO',self)
+        self.ControlButtons['No'].setGeometry(QtCore.QRect(self.winsize_v*1.2, self.winsize_h*0.4, self.winsize_v*0.2, self.winsize_h*0.1))
         #id submit button
-        self.ControlButtons['submit'] = QtGui.QPushButton(self)
+        self.ControlButtons['submit'] = QtGui.QPushButton('Submit',self)
         self.ControlButtons['submit'].setGeometry(self.winsize_h*0.39, self.winsize_v*0.45, self.winsize_v*0.4, self.winsize_h*0.08)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(self.PH.paths["img"] + "submit_recog.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.ControlButtons['submit'].setIcon(icon)
-        self.ControlButtons['submit'].setIconSize(QtCore.QSize(self.winsize_v * 0.3, self.winsize_h * 0.07))
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        self.ControlButtons['submit'].setFont(font)
         # close button
         self.ControlButtons['CloseButton'] = QtGui.QCommandLinkButton(self)
         self.ControlButtons['CloseButton'].setGeometry(QtCore.QRect(self.winsize_h * 0.95, self.winsize_v * 0.01, self.winsize_v * 0.045, self.winsize_h * 0.03))
@@ -70,7 +61,7 @@ class RecognitionWin(QtGui.QMainWindow):
         icon.addPixmap(QtGui.QPixmap(self.PH.paths["img"] + "exit_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.ControlButtons['CloseButton'].setIcon(icon)
         self.ControlButtons['CloseButton'].setIconSize(QtCore.QSize(self.winsize_v * 0.4, self.winsize_h * 0.02))
-        
+
         ## Labels
         self.id_label = QtGui.QLabel(self)
         self.id_label.setGeometry(QtCore.QRect(self.winsize_h * 0.4, self.winsize_v * 0.3, self.winsize_h * 0.15, self.winsize_v * 0.05))
@@ -154,7 +145,7 @@ class RecognitionWin(QtGui.QMainWindow):
         else:
             self.onEmptyField.emit()
 
-    
+
 
 
 

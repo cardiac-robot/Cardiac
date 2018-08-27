@@ -27,10 +27,7 @@ class RegisterWin(QtGui.QMainWindow):
 
         self.winsize_h=int(self.screen_h * self.r_size)
         self.winsize_v=int(self.screen_v* self.r_size)
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        self.centralwidget = QtGui.QWidget(self)
-        self.resize(self.winsize_h,self.winsize_v)
-        #self.setGeometry(self.screen_h / 2 - (self.winsize_h / 2), self.screen_v / 2 - (self.winsize_v / 2), self.winsize_h, self.winsize_v)
+        self.setGeometry(self.screen_h / 2 - (self.winsize_h / 2), self.screen_v / 2 - (self.winsize_v / 2), self.winsize_h, self.winsize_v)
 
         ## Background label
         self.label_background = QtGui.QLabel(self)
@@ -105,7 +102,7 @@ class RegisterWin(QtGui.QMainWindow):
 
     def submit_button(self):
         if not(self.controllabels['name'].text() =="")and not(self.controllabels['age'].text() =="") and not(self.controllabels['height'].text() =="") and not(self.controllabels['weight'].text() =="") and not(self.controllabels['height_c'].text() =="") and not(self.controllabels['id'].text() =="")and not(self.controllabels['patology'].text() ==""):
-            if (str(self.controllabels['name'].text()).isalpha() == True) and (str(self.controllabels['age'].text()).isdigit() == True) and (str(self.controllabels['height'].text()).isdigit() == True) and (str(self.controllabels['weight'].text()).isdigit() == True) and (str(self.controllabels['height_c'].text()).isdigit() == True) and (str(self.controllabels['id'].text()).isdigit() == True) and (str(self.controllabels['patology'].text()).isalpha() == True):
+            if (str(self.controllabels['name'].char()).isalpha() == True) and (str(self.controllabels['age'].text()).isdigit() == True) and (str(self.controllabels['height'].text()).isdigit() == True) and (str(self.controllabels['weight'].text()).isdigit() == True) and (str(self.controllabels['height_c'].text()).isdigit() == True) and (str(self.controllabels['id'].text()).isdigit() == True) and (str(self.controllabels['patology'].text()).isalpha() == True):
                 self.info_reg['name'] = str(self.controllabels['name'].text())
                 self.info_reg['age'] = str(self.controllabels['age'].text())
                 self.info_reg['height'] = str(self.controllabels['height'].text())
