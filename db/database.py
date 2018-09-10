@@ -161,32 +161,36 @@ class General(object):
         if gen:
             #get data path
             folder = self.PH.paths['data']
-            #remove each dir
-            for f in os.listdir(folder):
-                f = os.path.join(folder, f)
-                shutil.rmtree(f)
-            print("DATA folder removed")
-            #clear patients.csv files
+            if os.path.exists(folder):
+                #remove each dir
+                for f in os.listdir(folder):
+                    f = os.path.join(folder, f)
+                    shutil.rmtree(f)
+                print("DATA folder removed")
+                #clear patients.csv files
             path = self.PH.paths['general']
             if os.path.exists(path + "/Patients.csv"):
                 f = open(path + "/Patients.csv", 'w+')
                 f.write("Id;Name;Gender;Age;Height;Weight;Crotch;Disease\n")
                 f.close()
 
+        #aca
         if mem:
             #get data path
             folder = self.PH.paths['memory_data']
-            #remove each dir
-            for f in os.listdir(folder):
-                f = os.path.join(folder, f)
-                shutil.rmtree(f)
-            print("DATA memory folder removed")
-            #clear patients.csv file
+            if os.path.exists(folder):
+                #remove each dir
+                for f in os.listdir(folder):
+                    f = os.path.join(folder, f)
+                    shutil.rmtree(f)
+                print("DATA memory folder removed")
+                #clear patients.csv file
             path = self.PH.paths['memory_general']
             if os.path.exists(path + "/Patients.csv"):
                 f = open(path + "/Patients.csv", 'w+')
                 f.write("Id;Name;Gender;Age;Height;Weight;Crotch;Disease\n")
                 f.close()
+
 
 
 if __name__=='__main__':

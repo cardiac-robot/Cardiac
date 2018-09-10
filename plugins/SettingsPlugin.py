@@ -55,10 +55,12 @@ class SettingsPlugin(object):
         self.SettingsWin.close()
 
     def onClearDatabase(self):
+        #mem= memory , gen=general
         self.DB.General.clear_database(mem = False, gen = True)
-
-
+        #solo habia que poner true a esta, las imagenes si las borra y eso si funcionaba
     def onClearMemoryBN(self):
+        # aca borra todo el contenido de Data en memory
+        self.DB.General.clear_database(mem = True, gen = False)
         self.BN = RM.RecogniserBN(
                                       image_sender             = None,
                                       testMode                 = False,
