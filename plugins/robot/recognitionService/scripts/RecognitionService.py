@@ -19,7 +19,7 @@ class RecognitionService(object):
     def __init__(self, qiapp):
         # generic activity boilerplate
         self.mylogger = qi.Logger("mylogger")
-        self.mylogger.info("TESTING")
+        self.mylogger.info("TESTING2.0")
         self.qiapp = qiapp
         self.versionV = "1.0"
         self.events = stk.events.EventHelper(qiapp.session)
@@ -223,7 +223,7 @@ class RecognitionService(object):
 
     @qi.bind(returnType=qi.Void, paramsType=[])
     def onPeopleDetected(self, strVarName, value):
-        self.logger.info("onPeopleDetected enter")
+        self.logger.info("onPeopleDetected enter2.0")
         self.peopleDetected.signal.disconnect(self.idPeopleDetected)
         self.peopleDetected = None
         self.idPeopleDetected = -1
@@ -298,6 +298,7 @@ class RecognitionService(object):
         else:
             results = self.faceResults
         if not results:
+            self.logger.info("No results")
             # if face recognition fails, then fill the values such that they would not change the overall recognition
             faceAccuracy = self.prob_threshold
             people_db = self.s.ALFaceDetection.getLearnedFacesList()
@@ -312,11 +313,15 @@ class RecognitionService(object):
             genderWithConfidence = ["Female", 0.5]
             ageWithConfidence = [35, 0]
         else:
+            self.logger.info("Results: TRUE")
             if results[0][5]:
+                self.logger.info("HOLA")
                 faceWithConfidence = results[0][5] # faces with confidences
+                self.logger.info(type(FaceWithConfidence))
                 for counter in range(0, len(faceWithConfidence)):
                     faceWithConfidence[counter][1] = float("{0:.3f}".format(faceWithConfidence[counter][1]))
             else:
+                self.logger.info("FALSE")
                 faceWithConfidence = []
             faceAccuracy = float("{0:.3f}".format(results[0][0][6])) # accuracy of the face detection algorithm
             faceWithConfidence = [faceAccuracy, faceWithConfidence]
