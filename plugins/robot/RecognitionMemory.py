@@ -1461,6 +1461,7 @@ class RecogniserBN:
                     counter += 1
                     break
             save_name = image_dir + "/" + p_id + "_" + (str(0)*(4-counter)) + str(orig_matches) + ".jpg"
+
             print('Os rename ' +  temp_image + ' ' + save_name)
             os.rename(temp_image,save_name)
 

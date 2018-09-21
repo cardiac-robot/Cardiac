@@ -18,7 +18,7 @@ class ImageSender(object):
     def __init__(self,
                  ip = '192.168.1.7',
                  path = '//home//nao//dev//images//',
-                 name = 'took.jpg',
+                 name = 'nao_image.jpg',
                  tempPath = '//',
                  ProjectHandler = None):
         #load ProjectHandler
@@ -29,7 +29,7 @@ class ImageSender(object):
         self.destIp = ip
         self.destPath = path
         self.tempPath = self.PH.paths['recognition']
-        self.local = self.tempPath + "/took.jpg"
+        self.local = self.tempPath + "nao_image.jpg"
 
 
     #
@@ -50,8 +50,12 @@ class ImageSender(object):
         if self.PH.settings['sys'] == "win32":
             os.system('pscp .\\' + self.local + ' nao@' + self.destIp + '://home//nao//dev//images//nao_image.jpg')
         elif self.PH.settings['sys'] == "linux2":
-            print "pscp -pw bmd " + self.imgName + " nao@" + self.destIp + ":/home/nao/dev/images/nao_image.jpg"
-            os.system("pscp -pw nao " + self.local + " nao@" + self.destIp + ":/home/nao/dev/images/nao_image.jpg")
+            print "scp -p nao " + self.local + " nao@" + self.destIp + ":/home/nao/dev/images/nao_image.jpg"
+            #os.system("scp -p nao " + self.local + " nao@" + self.destIp + ":/home/nao/dev/images/nao_image.jpg")
+	    print("nuevo")
+	    command = "sshpass -p 'nao' scp " + self.local + " nao@" + self.destIp + ":/home/nao/dev/images/"
+	    print command
+            os.system(command)
 
     #
     def get_image_path(self):

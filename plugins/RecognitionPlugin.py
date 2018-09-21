@@ -27,7 +27,7 @@ class RecognitionPlugin(object):
         self.ISE = PHOTO.ImageSender(
                                      ip             = self.PH.GeneralSettings['robot']['IpRobot'],
                                      path           = self.PH.GeneralSettings['robot']['nao_image'],
-                                     name           = 'took.jpg',
+                                     name           = 'nao_image.jpg',
                                      tempPath       = self.PH.paths['recognition'],
                                      ProjectHandler = self.PH)
 
