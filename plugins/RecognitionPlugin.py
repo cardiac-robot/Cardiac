@@ -86,7 +86,9 @@ class RecognitionPlugin(object):
         #take photo
         self.ISE.takePhoto()
         #send photo to the robot
-        self.ISE.sendPhoto()
+        res = self.ISE.sendPhoto()
+        #TODO: validate res from image transfering 
+        
         #start recognition
         self.identity_est = self.RecogniserBN.startRecognition()
         #validation

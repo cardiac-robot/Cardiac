@@ -34,6 +34,7 @@ class ImageSender(object):
 
     #
     def takePhoto(self):
+        
         self.cam = cv2.VideoCapture(0)
         if self.cam.isOpened():
             s,img = self.cam.read()
@@ -47,15 +48,24 @@ class ImageSender(object):
             self.cam.release()
     #
     def sendPhoto(self):
+        #if running on windows
         if self.PH.settings['sys'] == "win32":
-            os.system('pscp .\\' + self.local + ' nao@' + self.destIp + '://home//nao//dev//images//nao_image.jpg')
+            command = 'pscp .\\' + self.local + ' nao@' + self.destIp + '://home//nao//dev//images//nao_image.jpg'
+            print command
+            res = os.system(command)
+            print "response code: " + str(res)
+        
+        #if running on Linux
         elif self.PH.settings['sys'] == "linux2":
-            print "scp -p nao " + self.local + " nao@" + self.destIp + ":/home/nao/dev/images/nao_image.jpg"
+            #transfer file changed 
+            #print "scp -p nao " + self.local + " nao@" + self.destIp + ":/home/nao/dev/images/nao_image.jpg"
             #os.system("scp -p nao " + self.local + " nao@" + self.destIp + ":/home/nao/dev/images/nao_image.jpg")
-	    print("nuevo")
-	    command = "sshpass -p 'nao' scp " + self.local + " nao@" + self.destIp + ":/home/nao/dev/images/"
-	    print command
-            os.system(command)
+    	    command = "sshpass -p 'nao' scp " + self.local + " nao@" + self.destIp + ":/home/nao/dev/images/"
+    	    print command
+            res = os.system(command)
+            print "response code: " + str(res)
+
+        return res  
 
     #
     def get_image_path(self):
