@@ -29,27 +29,19 @@ class RecognitionPlugin(object):
                                      path           = self.PH.GeneralSettings['robot']['nao_image'],
                                      name           = 'took.jpg',
                                      tempPath       = self.PH.paths['recognition'],
-                                     ProjectHandler = self.PH)
+                                     ProjectHandler = self.PH
+                                     )
 
         #create recogniser bayesian network
-        '''
-        self.RecogniserBN  = RM.RecogniserBN(
-                                              image_sender             = self.ISE,
-                                              testMode                 = False,
-                                              recog_file               = self.PH.paths['recognition']    + "/RecogniserBN.bif",
-                                              csv_file                 = self.PH.paths['recognition']    + "/RecogniserBN.csv",
-                                              initial_recognition_file = self.PH.paths['recognition']    + "/InitialRecognition.csv",
-                                              analysis_file            = self.PH.paths['recog_analysis'] + "/Analysis.json",
-                                              db_file                  = self.PH.paths['recognition']    + "/db.csv",
-                                              comparison_file          = self.PH.paths['recog_analysis'] + "/Comparison.csv",
-                                              ProjectHandler           = self.PH,
-                                              DataHandler              = self.DB
-                                              )
-
-        '''
         self.RecogniserBN = RM.RecogniserBN()
+        #set custom variables and parameters
+        self.RecogniserBN.CardiacSetVariables(self,
+                                              ProjectHandler = self.PH,
+                                              DataHandler    = self.DB,
+                                              PhotoHandler   = self.ISE
+                                              )
         #set path files
-        self.RecogniserBN.setFilePaths(recog_folder = self.PH.paths['recognition'] +)
+        self.RecogniserBN.CardiacSetFilePaths()
         #set signals
         self.set_signals()
 
@@ -80,7 +72,8 @@ class RecognitionPlugin(object):
         self.RecogniserBN.connectToRobot(ip         = self.PH.GeneralSettings['robot']['IpRobot'],
                                          useSpanish = True,
                                          imagePath  =self.PH.paths['recognition'])
-
+        #set SessionConst session
+        self.RecogniserBN.setSessionConstant()
         #set SessionVar session
         self.RecogniserBN.setSessionVar()
         '''
@@ -94,11 +87,23 @@ class RecognitionPlugin(object):
         #take photo
         self.ISE.takePhoto()
         #send photo to the robot
-        self.ISE.sendPhoto()
+        res = self.ISE.sendPhoto()
+        #TODO:validate res from image transfering
+
         #start recognition
         self.identity_est = self.RecogniserBN.startRecognition()
         #validation
-        if self.identity_est != "0":
+        if self.identity_est =="":
+            #take photo
+            self.ISE.takePhoto()
+            #send photo to the robot
+            res = self.ISE.sendPhoto()
+            #TODO:validate res from image transfering
+
+            #start recognition
+            self.identity_est = self.RecogniserBN.startRecognition()
+
+        elif self.identity_est != "0":
             print "Identity: " + self.identity_est
             self.id = self.identity_est
             self.finish_count()
