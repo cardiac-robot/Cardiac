@@ -231,43 +231,88 @@ class SessionManager(object):
         if not self.UserStatus['registered']:
             #enters if not registers and perform the register process
             if not self.memory:
+
                 path = self.PH.paths['general']
+
+                if os.path.exists(path + "/Patients.csv"):
+                    #open file to read an write
+                    f = open(path + "/Patients.csv", 'a')
+                    #save new user information
+                    f.write(self.person['id']          +";"+
+                            self.person['name']        +";"+
+                            self.person['gender']      +";"+
+                            str(self.person['age'])    +";"+
+                            str(self.person['height']) +";"+
+                            str(self.person['weight']) +";"+
+                            str(self.person['crotch']) +";"+
+                            self.person['disease']     +'\n'
+                            )
+                    #close the file
+                    f.close()
+                else:
+                    f = open(path + "/Patients.csv", 'w+')
+                    f.write("Id;Name;Gender;Age;Height;Weight;Crotch;Disease\n")
+                    f.close()
+
+                    f = open(path + "/Patients.csv", 'a')
+                    #save new user information
+                    f.write(self.person['id']          +";"+
+                            self.person['name']        +";"+
+                            self.person['gender']      +";"+
+                            str(self.person['age'])    +";"+
+                            str(self.person['height']) +";"+
+                            str(self.person['weight']) +";"+
+                            str(self.person['crotch']) +";"+
+                            self.person['disease']     +'\n'
+                            )
+                    #close the file
+                    f.close()
+
             else:
+                t = datetime.datetime.now()
+                #TODO: check format
+                times = str(t.year)+"-"+str(t.month)+"-"+str(t.day)
+
                 path = self.PH.paths['memory_general']
 
-            if os.path.exists(path + "/Patients.csv"):
-                #open file to read an write
-                f = open(path + "/Patients.csv", 'a')
-                #save new user information
-                f.write(self.person['id']          +";"+
-                        self.person['name']        +";"+
-                        self.person['gender']      +";"+
-                        str(self.person['age'])    +";"+
-                        str(self.person['height']) +";"+
-                        str(self.person['weight']) +";"+
-                        str(self.person['crotch']) +";"+
-                        self.person['disease']     +'\n'
-                        )
-                #close the file
-                f.close()
-            else:
-                f = open(path + "/Patients.csv", 'w+')
-                f.write("Id;Name;Gender;Age;Height;Weight;Crotch;Disease\n")
-                f.close()
+                if os.path.exists(path + "/Patients.csv"):
+                    #open file to read an write
+                    f = open(path + "/Patients.csv", 'a')
+                    #save new user information
+                    f.write(self.person['id']          +";"+
+                            self.person['name']        +";"+
+                            self.person['gender']      +";"+
+                            str(self.person['age'])    +";"+
+                            str(self.person['height']) +";"+
+                            str(self.person['weight']) +";"+
+                            str(self.person['crotch']) +";"+
+                            self.person['disease']     +";"+
+                            times                      +";"+  #first therapy time
+                            " "                         +'\n'  #occurrences
+                            )
+                    #close the file
+                    f.close()
 
-                f = open(path + "/Patients.csv", 'a')
-                #save new user information
-                f.write(self.person['id']          +";"+
-                        self.person['name']        +";"+
-                        self.person['gender']      +";"+
-                        str(self.person['age'])    +";"+
-                        str(self.person['height']) +";"+
-                        str(self.person['weight']) +";"+
-                        str(self.person['crotch']) +";"+
-                        self.person['disease']     +'\n'
-                        )
-                #close the file
-                f.close()
+                else:
+                    f = open(path + "/Patients.csv", 'w+')
+                    f.write("Id;Name;Gender;Age;Height;Weight;Crotch;Disease\n")
+                    f.close()
+
+                    f = open(path + "/Patients.csv", 'a')
+                     #save new user information
+                    f.write(self.person['id']          +";"+
+                            self.person['name']        +";"+
+                            self.person['gender']      +";"+
+                            str(self.person['age'])    +";"+
+                            str(self.person['height']) +";"+
+                            str(self.person['weight']) +";"+
+                            str(self.person['crotch']) +";"+
+                            self.person['disease']     +";"+
+                            times                      +";"+  #first therapy time
+                            ""                         +'\n'  #occurrences
+                            )
+                    #close the file
+                    f.close()
 
     #method to check if user is already on the database
     def check_user(self):

@@ -22,6 +22,8 @@ import lib.BackupDatabase as BDB
 import os
 import shutil
 
+
+#Main database class that integrates all storage and data resources
 class database(object):
     def __init__(self, ProjectHandler = None):
         print("database created and launched")
@@ -75,13 +77,14 @@ class General(object):
     def login(self, i):
         p = {"name"   : "",
              "gender" : "",
-                       "age"    : "",
-                       "height" : "",
-                       "weight" : "",
-                       "crotch" : "",
-                       "disease": "",
-                       "id"     : i
-                       }
+             "age"    : "",
+             "height" : "",
+             "weight" : "",
+             "crotch" : "",
+             "disease": "",
+             "id"     : i
+            }
+
         self.SM.set_person(p  = p)
         #self.DB.General.SM.set_User(US  =)
         status = self.SM.check_user()
@@ -185,7 +188,7 @@ class General(object):
             path = self.PH.paths['memory_general']
             if os.path.exists(path + "/Patients.csv"):
                 f = open(path + "/Patients.csv", 'w+')
-                f.write("Id;Name;Gender;Age;Height;Weight;Crotch;Disease\n")
+                f.write("id;name;gender;age;height;weight;crotch;disease;times;occurrences\n")
                 f.close()
 
 
