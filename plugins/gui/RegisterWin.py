@@ -54,7 +54,6 @@ class RegisterWin(QtGui.QMainWindow):
 
         self.CloseButton = QtGui.QCommandLinkButton(self)
         self.CloseButton.setGeometry(QtCore.QRect(self.winsize_h * 0.95, self.winsize_v * 0.01, self.winsize_v * 0.045, self.winsize_h * 0.03))
-        self.CloseButton.setStyleSheet("background-color: rgb(255, 255, 255);")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(self.PH.paths["img"] + "exit_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.CloseButton.setIcon(icon)
@@ -102,7 +101,22 @@ class RegisterWin(QtGui.QMainWindow):
 
     def submit_button(self):
         if not(self.controllabels['name'].text() =="")and not(self.controllabels['age'].text() =="") and not(self.controllabels['height'].text() =="") and not(self.controllabels['weight'].text() =="") and not(self.controllabels['height_c'].text() =="") and not(self.controllabels['id'].text() =="")and not(self.controllabels['patology'].text() ==""):
-            if (str(self.controllabels['name'].text()).isalpha() == True) and (str(self.controllabels['age'].text()).isdigit() == True) and (str(self.controllabels['height'].text()).isdigit() == True) and (str(self.controllabels['weight'].text()).isdigit() == True) and (str(self.controllabels['height_c'].text()).isdigit() == True) and (str(self.controllabels['id'].text()).isdigit() == True) and (str(self.controllabels['patology'].text()).isalpha() == True):
+            self.info_reg['name'] = str(self.controllabels['name'].text())
+            self.info_reg['patology'] = str(self.controllabels['patology'].text())
+            b = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '@', '#', '$', '%','&','/']
+            c = 0
+            for i in range(0,len(self.info_reg['name'])):
+                if self.info_reg['name'][i] in b:
+                    c = c+1
+            print(c)
+            c_name = c
+            c = 0
+            for i in range(0,len(self.info_reg['patology'])):
+                if self.info_reg['name'][i] in b:
+                    c = c+1
+            print(c)
+            c_patology = c
+            if (c_name == 0) and (c_patology == 0) and (str(self.controllabels['age'].text()).isdigit() == True) and (str(self.controllabels['height'].text()).isdigit() == True) and (str(self.controllabels['weight'].text()).isdigit() == True) and (str(self.controllabels['height_c'].text()).isdigit() == True) and (str(self.controllabels['id'].text()).isdigit() == True):
                 self.info_reg['name'] = str(self.controllabels['name'].text())
                 self.info_reg['age'] = str(self.controllabels['age'].text())
                 self.info_reg['height'] = str(self.controllabels['height'].text())
@@ -114,7 +128,7 @@ class RegisterWin(QtGui.QMainWindow):
                 print(self.info_reg)
 
 
-        if not (str(self.controllabels['name'].text()).isalpha() == True) and not (self.controllabels['name'].text() ==""):
+        if (c_name > 0) and not (self.controllabels['name'].text() ==""):
             msgBox = QtGui.QMessageBox()
             msgBox.setText('Ingrese solo letras nombre')
             msgBox.setWindowTitle('Warning')
@@ -151,7 +165,7 @@ class RegisterWin(QtGui.QMainWindow):
             ret = msgBox.exec_()
 
 
-        if not (str(self.controllabels['patology'].text()).isalpha() == True) and not (self.controllabels['patology'].text() ==""):
+        if (c_patology > 0) and not (self.controllabels['patology'].text() ==""):
             msgBox = QtGui.QMessageBox()
             msgBox.setText('Ingrese solo letras')
             msgBox.setWindowTitle('Warning')

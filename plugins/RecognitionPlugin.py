@@ -74,7 +74,7 @@ class RecognitionPlugin(object):
         print("recognition started ")
         #connect to the robot
         self.RecogniserBN.connectToRobot(ip         = self.PH.GeneralSettings['robot']['IpRobot'],
-                                         useSpanish = True)
+                                         useSpanish = False)
 
         #init session
         #TODO: revisar función y text to say
@@ -87,8 +87,8 @@ class RecognitionPlugin(object):
         self.ISE.takePhoto()
         #send photo to the robot
         res = self.ISE.sendPhoto()
-        #TODO: validate res from image transfering 
-        
+        #TODO: validate res from image transfering
+
         #start recognition
         self.identity_est = self.RecogniserBN.startRecognition()
         #validation
