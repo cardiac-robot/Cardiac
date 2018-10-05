@@ -36,16 +36,20 @@ class RegisterPlugin(object):
         self.DB.set_memory(True)
         self.RegisterWin.show()
 
+
     def onDataReceived(self):
         print self.RegisterWin.info_reg
-        #register the user
+        #register the user, deprecated, memory code register the user in the db csv file
         self.DB.General.register(user = self.RegisterWin.info_reg)
-        #check the register status
-        if self.DB.General.UserStatus['registered']:
-            #if patient already found in the database emit signal
-            self.RegisterWin.onAlreadyRegistered.emit()
+        #Verify mode
+        if not self.onMemory
+            #check the register status
+            if self.DB.General.UserStatus['registered']:
+                #if patient already found in the database emit signal
+                self.RegisterWin.onAlreadyRegistered.emit()
+
         else:
-            if self.onMemory:
+            if not self.DB.General.UserStatus['registered']:
                 self.RegisterWin.onNotRegistered.emit()
 
         self.shutdown()

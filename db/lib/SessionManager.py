@@ -267,15 +267,16 @@ class SessionManager(object):
                             )
                     #close the file
                     f.close()
-
+            #if memory
             else:
                 t = datetime.datetime.now()
                 #TODO: check format
-                times = str(t.year)+"-"+str(t.month)+"-"+str(t.day)
-
+                times = [str(t.hour)+":"+str(t.minute)+":"+str(t.second),str(t.weekday() + 1)]
                 path = self.PH.paths['memory_general']
 
                 if os.path.exists(path + "/Patients.csv"):
+                    print("database exists")
+                    '''
                     #open file to read an write
                     f = open(path + "/Patients.csv", 'a')
                     #save new user information
@@ -288,16 +289,19 @@ class SessionManager(object):
                             str(self.person['crotch']) +";"+
                             self.person['disease']     +";"+
                             times                      +";"+  #first therapy time
-                            " "                         +'\n'  #occurrences
+                            "[0,0,0]"                         +'\n'  #occurrences
                             )
                     #close the file
                     f.close()
+                    '''
 
                 else:
+                    print("database does not exist")
                     f = open(path + "/Patients.csv", 'w+')
-                    f.write("Id;Name;Gender;Age;Height;Weight;Crotch;Disease\n")
+                    f.write("Id;Name;Gender;Age;Height;Weight;Crotch;Disease;times;occurrences\n")
                     f.close()
-
+                    print("database created")
+                    '''
                     f = open(path + "/Patients.csv", 'a')
                      #save new user information
                     f.write(self.person['id']          +";"+
@@ -313,6 +317,7 @@ class SessionManager(object):
                             )
                     #close the file
                     f.close()
+                    '''
 
     #method to check if user is already on the database
     def check_user(self):

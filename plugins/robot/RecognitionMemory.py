@@ -2395,8 +2395,8 @@ class RecogniserBN:
         df = pandas.DataFrame.from_items([('id', [person[0]]),
                                           ('name', [person[1]]),
                                           ('gender', [person[2]]),
-#                                           ('age', [person[3]]),
-                                          ('birthYear', [person[3]]),
+                                          ('age', [person[3]]),
+                                          #('birthYear', [person[3]]),
                                           ('height', [person[4]]),
                                           ('times', [person[5]]),
                                           ('occurrence', [self.occurrences[self.i_labels.index(person[0])]])])
