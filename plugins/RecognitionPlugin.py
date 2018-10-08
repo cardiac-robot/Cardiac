@@ -146,8 +146,12 @@ class RecognitionPlugin(object):
 
         #self.id = self.DB.General.SM.UserStatus['id']
         self.person = self.DB.General.SM.person
+        t = datetime.datetime.now()
+        #TODO: check format
+        times = [str(t.hour)+":"+str(t.minute)+":"+str(t.second),str(t.weekday() + 1)]
+        
         print(self.person)
-        p = [self.person['id'], self.person['name'], self.person['gender'],int(self.person['age']), float(self.person['height']), [datetime.datetime.now()] ]
+        p = [self.person['id'], self.person['name'], self.person['gender'],int(self.person['age']), float(self.person['height']), [times]]
         self.RecogniserBN.setPersonToAdd(personToAdd = p)
         self.RecogniserBN.confirmPersonIdentity(p_id = self.person['id'])
         #save BN
