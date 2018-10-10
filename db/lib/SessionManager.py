@@ -321,7 +321,9 @@ class SessionManager(object):
 
     #method to check if user is already on the database
     def check_user(self):
+        print "Enter check user"
         #load general path
+        print "self.memory " + str(self.memory)
         if not self.memory:
             path = self.PH.paths['general']
         else:
@@ -332,13 +334,17 @@ class SessionManager(object):
             f = open(path + "/Patients.csv", 'r')
             #read all lines of the file and load it into a list
             lines = f.readlines()
+            print lines
             #close file
             f.close()
             #skip the headers
             patients = lines[1:]
             #check patient lists
             for p in patients:
-                pl = p.split(";")
+                if self.memory:
+                    pl = p.split(",")
+                else:
+                    pl = p.split(";")
                 if pl[0] == self.person['id']:
                     #load personf info
                     self.person['name']           = pl[1]

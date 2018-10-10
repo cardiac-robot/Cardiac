@@ -234,6 +234,20 @@ class RecogniserBN:
         self.conf_matrix_file         = recog_folder + self.conf_matrix_file
         self.recog_folder             = recog_folder
 
+    def CardiacPrintPaths(self):
+        print "**********************************************"
+        print self.recog_file
+        print self.recogniser_csv_file
+        print self.initial_recognition_file
+        print self.analysis_file
+        print self.db_file
+        print self.comparison_file
+        print self.image_save_dir
+        print self.stats_file
+        print self.conf_matrix_file
+        print self.recog_folder
+        print "**********************************************"
+
     #---------------------------------------------FUNCTIONS FOR SETTING PARAMETERS OF THE SYSTEM---------------------------------------------#
 
     def setWeights(self, face_weight, gender_weight, age_weight, height_weight, time_weight):
@@ -1139,15 +1153,19 @@ class RecogniserBN:
         IMPORTANT: call setSessionConstant and setSessionVar and take picture before calling this function
         """
         identity_est = self.recognise(isRegistered = self.isRegistered, recog_results_from_file = recog_results_from_file)
+        print ("recognise function out.... identity est")
+        print identity_est
 
         if self.isMemoryRobot and self.isRegistered and not self.isMemoryOnRobot:
             if identity_est == "":
                 textToSay = self.noFaceInImage
                 # TODO: take another picture from tablet
                 if recog_results_from_file is None and self.isSpeak:
+                    print "STARTRECOGNITION IMAGE REQUEST"
                     self.say(textToSay)
                     #take photo from the cardiac app
                     res = self.CardiacTakeSendImage()
+
                     #start recognition
                     self.startRecognition(recog_results_from_file = recog_results_from_file)
 
@@ -1164,6 +1182,7 @@ class RecogniserBN:
         return identity_est
 
     def confirmPersonIdentity(self, p_id = None, recog_results_from_file = None, isRobotLearning = True):
+        print "Enter confirmPersonIdentity"
         """
         After the user confirms or enters the identity, the information is fed back to the system for updating the parameters.
         Calls setPersonIdentity method. If isSpeak, the system will give feedback depending if the user is correctly recognised or not.
@@ -1171,17 +1190,21 @@ class RecogniserBN:
         IMPORTANT: call startRecognition before calling this function, and then ask for name from the person"""
         # TODO: add more phrases for the welcome, and I am sorry phrases
         c_time_t = time.time()
-
+        print("setPersonIdentity")
         name = self.setPersonIdentity(isRegistered = self.isRegistered, p_id = p_id, recog_results_from_file = recog_results_from_file, isRobotLearning=isRobotLearning)
-
+        print "************************************Name: " + str(name)
         if self.isMemoryRobot:
+            print "isMemoryRobot TRUE"
             if name == "":
+                print "confirmPersonIdentity name== "" "
                 textToSay = self.noFaceInImage
                 if recog_results_from_file is None and self.isSpeak:
                     self.say(textToSay)
                 self.confirmPersonIdentity(p_id = p_id, recog_results_from_file = recog_results_from_file, isRobotLearning=isRobotLearning)
             identity_say = name.split() #TODO: change split character if necessary
+
             if p_id is not None:
+                print p_id
                 if self.isRegistered:
                     falseRecognitionSentence = random.choice(self.falseRecognition)
                     textToSay = falseRecognitionSentence.replace("XX", str(identity_say[0]))
@@ -1191,10 +1214,13 @@ class RecogniserBN:
                     else:
                         textToSay = self.registrationPhrase.replace("XX", str(identity_say[0]))
             else:
+                print p_id
                 correctRecognition = random.choice(self.correctRecognition)
                 textToSay = correctRecognition.replace("XX", str(identity_say[0]))
 
             if recog_results_from_file is None and self.isSpeak:
+                print recog_results_from_file
+                print textToSay
                 self.say(textToSay)
 
         calc_time = time.time() - self.start_recog_time
@@ -1213,6 +1239,7 @@ class RecogniserBN:
     #---------------------------------------------FUNCTIONS FOR RECOGNITION---------------------------------------------#
 
     def recognise(self, isRegistered = True, recog_results_from_file = None):
+        print("Recognise function enter")
         """
         Recognise the user using the network:
         (1) Load BN if not already loaded
@@ -1365,6 +1392,7 @@ class RecogniserBN:
 
 
     def setPersonIdentity(self, isRegistered = True, p_id = None, recog_results_from_file = None, isRobotLearning = True):
+        print "setPersonIdentity"
         """
         This method saves the information from the recognise function with the actual identity of the person:
         (1) Initial recognition values are saved
@@ -1385,6 +1413,7 @@ class RecogniserBN:
         isPrevSavedToAnalysis = False
         start_set_person = time.time()
         if self.isSaveRecogFiles:
+            print "1"
             # (1) initial recognition file is saved here, because in the case that the recognition was ignored (either due to wrong input from the user
             # or because of timeout), the data will not be written unless there is a confirmation.
             if self.isMultipleRecognitions:
@@ -1395,45 +1424,58 @@ class RecogniserBN:
 
         end_save_init_recog_time = time.time()
         if self.isDebugMode:
+            print "2"
             print "time to save initial recognition:" + str(end_save_init_recog_time-start_set_person)
         if p_id is None:
+            print "3"
             p_id = self.identity_est
+
         if self.isAlreadyRegistered(p_id):
+            print "4"
             self.userAlreadyRegistered = True
             if not isRegistered:
                 logging.debug("The user is already registered.")
         else:
+            print "5"
             self.userAlreadyRegistered = False
             if isRegistered:
                 isRegistered = False
                 self.isRegistered = False
         if self.isDebugMode:
+            print "6"
             print "time to check if user is in db: " + str(time.time()-end_save_init_recog_time)
 
         if not isRegistered:
             # NOTE: make sure previous images are saved here! (If the images are not saved during enrollment by the robot, call saveImageAfterRecognition(isRegistered, p_id) to save them here)
-
+            print "7"
             if self.userAlreadyRegistered:
+                print "8"
                 # (2)
                 self.learnPerson(self.userAlreadyRegistered, p_id, isRobotLearning)
                 if self.isDebugMode:
                     print "time to learn:" + str(time.time() - end_check_user_registered)
             else:
+                print "9"
                 if self.num_people > 1 and self.update_prob_unknown_method == "evidence":
                     # (3)
+                    print "10"
                     if self.isMultipleRecognitions:
+                        print "10.1"
                         for num_recog in range(0, self.num_mult_recognitions):
                             self.updateProbabilities(self.unknown_var, self.ie_list[num_recog], self.evidence_list[num_recog], num_recog)
                     else:
+                        print "10.2"
                         self.updateProbabilities(self.unknown_var, self.ie, self.evidence_list[0])
 
                 time_after_update_unknown = time.time()
                 self.learnPerson(self.userAlreadyRegistered, p_id, isRobotLearning)
+                print "after learnPerson"
                 if self.isDebugMode:
                     print "time to learn:" + str(time.time() - time_after_update_unknown)
 
             if self.num_people > 1:
                 # (4)
+                print "11"
                 start_save_analysis_time = time.time()
                 if self.isLogMode and self.isSaveRecogFiles:
                     self.analysis_data_list = []
@@ -1448,6 +1490,7 @@ class RecogniserBN:
 
             if self.isAddPersonToDB:
                 # (5)
+                print "12"
                 start_add_person_time = time.time()
                 self.addPersonToBN(self.personToAdd)
                 time.sleep(0.1)
@@ -1506,8 +1549,10 @@ class RecogniserBN:
                         return ""
 
             else:
+                print "13"
                 self.recog_results = self.recognisePerson()
                 if not self.recog_results:
+                    print "14"
                     self.recog_results = self.recognisePerson() # try again, ALFaceDetection is unreliable, it doesn't work sometimes. It is good to run it again to make sure it doesn't recognise a face
                     if not self.recog_results:
                         print "Image is discarded. No face detected in the image"
@@ -1518,6 +1563,7 @@ class RecogniserBN:
 
 
         else:
+            print "15"
             start_learn_time = time.time()
             self.learnPerson(isRegistered, p_id, isRobotLearning)
             if self.isDebugMode:
@@ -2156,6 +2202,8 @@ class RecogniserBN:
             writer.writerow(["I_real", "I_est", "F_est", "I_prob", "F_prob", "Calc_time", "R", "Quality", "Highest_I_prob", "Highest_F_prob"])
         if os.path.isdir(self.image_save_dir):
             shutil.rmtree(self.image_save_dir)
+
+        print("create image dirs")
         os.makedirs(self.image_save_dir)
         os.makedirs(self.image_save_dir + "Known_True")
         os.makedirs(self.image_save_dir + "Known_False")
@@ -2163,6 +2211,7 @@ class RecogniserBN:
         os.makedirs(self.image_save_dir + "Unknown_True")
         os.makedirs(self.image_save_dir + "Unknown_False")
         os.makedirs(self.image_save_dir + "discarded")
+        print ("image dirs created")
 
     def learnFromFile(self, db_list=None, init_list=None, recogs_list=None,
                             db_file = None, init_recog_file = None, final_recog_file = None,
@@ -2946,7 +2995,7 @@ class RecogniserBN:
         multiple recognitions: str(self.num_recognitions + 1) + "_" + p_id + "_" + str(orig_matches) + "-" + str(num_saves) +".jpg"
         """
         # TODO: check with windows (/ might need to be \ instead)
-
+        print "Enter saveImageToTablet"
         if self.isMemoryOnRobot:
             image_dir = self.image_save_dir
 
@@ -2955,14 +3004,21 @@ class RecogniserBN:
             else:
                 temp_image = self.imagePath
         else:
+            print"directories"
             cur_dir = os.path.dirname(os.path.realpath(__file__))
-            temp_dir = os.path.abspath(os.path.join(cur_dir, '../..', 'cam')) + "/"
-            image_dir = os.path.abspath(os.path.join(cur_dir, '', 'images')) + "/"
+            #temp_dir = os.path.abspath(os.path.join(cur_dir, '../..', 'cam')) + "/"
+            #image_dir = os.path.abspath(os.path.join(cur_dir, '', 'images')) + "/"
+            temp_dir = self.recog_folder
+            image_dir = self.image_save_dir
 
+            print cur_dir
+            print temp_dir
+            print image_dir
+            print "************************************************8"
             if self.imageToCopy is not None:
                 temp_image = self.imageToCopy
             else:
-                temp_image = temp_dir + "temp.jpg"
+                temp_image = temp_dir + "nao_image.jpg"
 
         if isDiscardedImage:
             image_dir += "discarded/"
@@ -3010,6 +3066,8 @@ class RecogniserBN:
             else:
                 save_name = image_dir + str(self.num_recognitions + 1) + "_" + p_id + "_" + str(orig_matches) + ".jpg"
 
+        print temp_image
+        print save_name
         shutil.copy2(temp_image,save_name)
 
         image_id = str(self.num_recognitions + 1) + "_" + p_id + "_" + str(orig_matches)
@@ -3104,10 +3162,13 @@ class RecogniserBN:
 
     def learnPerson(self, isRegistered, p_id, isRobotLearning):
         """Learn image for the face recognition dataset (NAOqi)"""
+        print "enter learnPerson"
         self.p_id = p_id
         self.image_id = None
         if self.recog_results_from_file is None and isRobotLearning:
+            print "1.1"
             if isRegistered:
+                print "1.2"
                 if self.isMultipleRecognitions:
                     # Parallel learning takes longer than sequential learning
     #                 pool = ThreadPool(self.num_mult_recognitions)
@@ -3122,6 +3183,7 @@ class RecogniserBN:
                 else:
                     learn_face_success = self.recog_service.addPictureToPerson(p_id)
             else:
+                print"1.3"
                 if not self.isMemoryOnRobot:
                     # registerPersonOnRobot is called in recognitionModule if self.isMemoryOnRobot
                     if self.isMultipleRecognitions:
@@ -3132,16 +3194,23 @@ class RecogniserBN:
                                 counter = 1
                                 while not learn_face_success and counter < 3:
                                     # TODO: take picture
+                                    print "TAKE OHOTO FROM LEARN FUNCTION"
                                     res = self.CardiacTakeSendImage()
                                     learn_face_success = self.recog_service.registerPerson(p_id)
+                                    counter = counter + 1
                     else:
+                        print "1.4"
                         learn_face_success = self.recog_service.registerPerson(p_id)
                         counter = 1
                         while not learn_face_success and counter < 3:
                             # take another picture from tablet and send to robot
                             # TODO: try this!
+                            print "TAKE PHOTO FROM LEARN PERSON "
                             res = self.CardiacTakeSendImage()
                             learn_face_success = self.recog_service.registerPerson(p_id)
+                            print "learn_face_success: "+ str(learn_face_success)
+                            counter = counter + 1
+                            print "Counter " + str(counter)
                 elif isRobotLearning:
                     if self.isMultipleRecognitions:
                         for num_recog in [item for item in range(0, self.def_num_mult_recognitions) if item not in self.discarded_data]:
@@ -3159,6 +3228,9 @@ class RecogniserBN:
         """Save face recognition database to the recognition folder (NAOqi)"""
         db_path = self.face_service.getUsedDatabase()
         db_dest = recog_folder + "faceDB"
+        print db_path
+        print db_dest
+        #TODO copy  from robot to the tablet ???? with copy2 ??
         shutil.copy2(db_path, db_dest)
 
     def useFaceDetectionDB(self, facedb):

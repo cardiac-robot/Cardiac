@@ -38,9 +38,11 @@ class RegisterPlugin(object):
 
 
     def onDataReceived(self):
+        print("DATA received to RegisterPlugin")
         print self.RegisterWin.info_reg
         #register the user, deprecated, memory code register the user in the db csv file
         self.DB.General.register(user = self.RegisterWin.info_reg)
+        print("after register from registerPlugin")
         #Verify mode
         if not self.onMemory:
             #check the register status
@@ -49,6 +51,7 @@ class RegisterPlugin(object):
                 self.RegisterWin.onAlreadyRegistered.emit()
 
         else:
+            print("register from memory")
             if not self.DB.General.UserStatus['registered']:
                 self.RegisterWin.onNotRegistered.emit()
 

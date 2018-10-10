@@ -76,6 +76,8 @@ class RecognitionPlugin(object):
         self.RecogniserBN.setSessionConstant(isDBinCSV = True)
         #set SessionVar session
         self.RecogniserBN.setSessionVar()
+
+        self.RecogniserBN.CardiacPrintPaths()
         '''
         #TODO: revisar función y text to say
         self.RecogniserBN.initSession(isRegistered    = True,
@@ -118,7 +120,6 @@ class RecognitionPlugin(object):
 
     #callback function called when the recognition has been carried out succesfuly
     def onSuccessCallback(self):
-
         #confirm person identity
         self.RecogniserBN.confirmPersonIdentity(p_id = self.id)
         #call id received function to set the user in the database
@@ -133,32 +134,42 @@ class RecognitionPlugin(object):
     #callback function called when not recognized and need to indicate the id (submit button pressed)
     #and was found in the database
     def onRegisteredCallback(self):
+
         #confirm person identity with the recognized person
+        print "confirmPersonIdentity"
         self.RecogniserBN.confirmPersonIdentity(p_id = self.id)
         #save BN
+        print "saveBN"
         self.RecogniserBN.saveBN()
         #save face detection DB
+        print "saveFaceDetectionDB"
         self.RecogniserBN.saveFaceDetectionDB(recog_folder = self.PH.paths['recognition'])
         #emit on start therapy signal
+        print "emitting onStartTherapy"
         self.RecognitionWin.onStartTherapy.emit()
 
     def onNotRegisteredCallback(self):
-
+        print"OnNorregisteredCallback"
         #self.id = self.DB.General.SM.UserStatus['id']
         self.person = self.DB.General.SM.person
+        print "person: "+ str(self.person)
         t = datetime.datetime.now()
         #TODO: check format
         times = [str(t.hour)+":"+str(t.minute)+":"+str(t.second),str(t.weekday() + 1)]
 
-        print(self.person)
         p = [self.person['id'], self.person['name'], self.person['gender'],int(self.person['age']), float(self.person['height']), [times]]
+        print "setPersonToAdd"
         self.RecogniserBN.setPersonToAdd(personToAdd = p)
+        print "confirmPersonIdentity"
         self.RecogniserBN.confirmPersonIdentity(p_id = self.person['id'])
         #save BN
+        print "saveBN"
         self.RecogniserBN.saveBN()
         #save face detection DB
+        print "saveFaceDetectionDB"
         self.RecogniserBN.saveFaceDetectionDB(recog_folder = self.PH.paths['recognition'])
         #emit signal
+        print "emitting onStartTherapy"
         self.RecognitionWin.onStartTherapy.emit()
 
 

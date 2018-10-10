@@ -82,17 +82,19 @@ class SettingsPlugin(object):
         #set path files
         self.BN.CardiacSetFilePaths()
 
+        self.BN.CardiacPrintPaths()
+
         self.BN.resetFiles()
         #remove pictures
+        """
         path = self.PH.paths['recog_img']
         if os.path.exists(path):
             for f in os.listdir(path):
                 print f
                 f = os.path.join(path,f)
                 os.remove(f)
-
+        """
         print('Memory files reset')
-
 
 
     #method to hide the window
