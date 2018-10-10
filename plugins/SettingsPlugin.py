@@ -59,6 +59,7 @@ class SettingsPlugin(object):
 
 
     def onClearMemoryBN(self):
+        '''
         self.BN = RM.RecogniserBN(
                                       image_sender             = None,
                                       testMode                 = False,
@@ -71,11 +72,22 @@ class SettingsPlugin(object):
                                       ProjectHandler           = self.PH,
                                       DataHandler              = self.DB
                                   )
+        '''
+        self.BN = RM.RecogniserBN()
+        self.BN.CardiacSetVariables(
+                                              ProjectHandler = self.PH,
+                                              DataHandler    = self.DB,
+                                              PhotoHandler   = None
+                                              )
+        #set path files
+        self.BN.CardiacSetFilePaths()
+
         self.BN.resetFiles()
         #remove pictures
         path = self.PH.paths['recog_img']
         if os.path.exists(path):
             for f in os.listdir(path):
+                print f
                 f = os.path.join(path,f)
                 os.remove(f)
 

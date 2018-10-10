@@ -52,11 +52,25 @@
         <File name="1094954671_0004" src="scripts/images/1094954671_0004.jpg" />
         <File name="1094954671_0005" src="scripts/images/1094954671_0005.jpg" />
         <File name="record" src="scripts/record.csv" />
+        <File name="libfacedetection_2_4_2_25_nao" src="libfacedetection_2_4_2_25_nao.so" />
+        <File name="InitialRecognition" src="scripts/InitialRecognition.csv" />
+        <File name="1015467983_0001" src="scripts/images/1015467983_0001.jpg" />
+        <File name="1015467983_0002" src="scripts/images/1015467983_0002.jpg" />
+        <File name="1026295355_0001" src="scripts/images/1026295355_0001.jpg" />
+        <File name="1026295355_0002" src="scripts/images/1026295355_0002.jpg" />
+        <File name="1032447820_0001" src="scripts/images/1032447820_0001.jpg" />
+        <File name="1032447820_0002" src="scripts/images/1032447820_0002.jpg" />
+        <File name="photo_handler" src="scripts/photo_handler.py" />
     </Resources>
     <Topics />
     <IgnoredPaths>
-        <Path src="scripts/.ipynb_checkpoints/TryCode-checkpoint.ipynb" />
-        <Path src="scripts/.ipynb_checkpoints/RecognitionMemory-checkpoint.ipynb" />
         <Path src="scripts/RecognitionMemory.ipynb" />
+        <Path src="scripts/.ipynb_checkpoints/RecognitionMemory-checkpoint.ipynb" />
+        <Path src="scripts/.ipynb_checkpoints/TryCode-checkpoint.ipynb" />
     </IgnoredPaths>
+    <Translations auto-fill="en_US">
+        <Translation name="translation_en_US" src="translations/translation_en_US.ts" language="en_US" />
+        <Translation name="translation_es_ES" src="translations/translation_es_ES.ts" language="es_ES" />
+        <Translation name="translation_es_US" src="translations/translation_es_US.ts" language="es_US" />
+    </Translations>
 </Package>

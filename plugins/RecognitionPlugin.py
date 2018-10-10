@@ -35,7 +35,7 @@ class RecognitionPlugin(object):
         #create recogniser bayesian network
         self.RecogniserBN = RM.RecogniserBN()
         #set custom variables and parameters
-        self.RecogniserBN.CardiacSetVariables(self,
+        self.RecogniserBN.CardiacSetVariables(
                                               ProjectHandler = self.PH,
                                               DataHandler    = self.DB,
                                               PhotoHandler   = self.ISE
@@ -70,10 +70,10 @@ class RecognitionPlugin(object):
         print("recognition started ")
         #connect to the robot
         self.RecogniserBN.connectToRobot(ip         = self.PH.GeneralSettings['robot']['IpRobot'],
-                                         useSpanish = True,
+                                         useSpanish = False,
                                          imagePath  =self.PH.paths['recognition'])
         #set SessionConst session
-        self.RecogniserBN.setSessionConstant()
+        self.RecogniserBN.setSessionConstant(isDBinCSV = True)
         #set SessionVar session
         self.RecogniserBN.setSessionVar()
         '''
@@ -149,7 +149,7 @@ class RecognitionPlugin(object):
         t = datetime.datetime.now()
         #TODO: check format
         times = [str(t.hour)+":"+str(t.minute)+":"+str(t.second),str(t.weekday() + 1)]
-        
+
         print(self.person)
         p = [self.person['id'], self.person['name'], self.person['gender'],int(self.person['age']), float(self.person['height']), [times]]
         self.RecogniserBN.setPersonToAdd(personToAdd = p)
@@ -158,7 +158,7 @@ class RecognitionPlugin(object):
         self.RecogniserBN.saveBN()
         #save face detection DB
         self.RecogniserBN.saveFaceDetectionDB(recog_folder = self.PH.paths['recognition'])
-        #emit signal 
+        #emit signal
         self.RecognitionWin.onStartTherapy.emit()
 
 

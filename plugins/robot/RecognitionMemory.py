@@ -202,7 +202,7 @@ class RecogniserBN:
     def CardiacSetVariables(self, ProjectHandler = None, DataHandler = None, PhotoHandler = None):
         """Set custom variables necessary to bind the Cardiac application to the memory code"""
         self.CardiacPH           = ProjectHandler  #project handler object that provides access to paths and all project settings
-        self.CardiacDB           = DataHandler     #Data handler that provides access to the database 
+        self.CardiacDB           = DataHandler     #Data handler that provides access to the database
         self.CardiacPhotoHandler = PhotoHandler    #Photo handler send images to the robot from the cardiac application
         #parameters
         self.useSpanish = True
@@ -221,8 +221,8 @@ class RecogniserBN:
 
     def CardiacSetFilePaths(self):
         """Changes the directory to save the custom files in cardiac application"""
-        recog_folder                  = self.PH.paths['recognition']
-        database_folder               = self.PH.paths['memory_general']
+        recog_folder                  = self.CardiacPH.paths['recognition']
+        database_folder               = self.CardiacPH.paths['memory_general']
         self.recog_file               = recog_folder + self.recog_file
         self.recogniser_csv_file      = recog_folder + self.recogniser_csv_file
         self.initial_recognition_file = recog_folder + self.initial_recognition_file
@@ -354,7 +354,6 @@ class RecogniserBN:
 
     def loadBN(self, recog_file, recogniser_csv_file, initial_recognition_file):
         """Load Bayesian Network and database or create a new BN  if it doesn't exist (from scratch or learn from data files if they exist)"""
-
         self.recog_file = recog_file
         self.recogniser_csv_file = recogniser_csv_file
         start_load_bn = time.time()
@@ -1147,11 +1146,11 @@ class RecogniserBN:
                 # TODO: take another picture from tablet
                 if recog_results_from_file is None and self.isSpeak:
                     self.say(textToSay)
-                    #take photo from the cardiac app                   
+                    #take photo from the cardiac app
                     res = self.CardiacTakeSendImage()
                     #start recognition
                     self.startRecognition(recog_results_from_file = recog_results_from_file)
-            
+
             elif identity_est == self.unknown_var:
                 textToSay = self.unknownPerson
             else:
@@ -2129,6 +2128,7 @@ class RecogniserBN:
 
     def resetFiles(self):
         """Removes the files/folders and rewrites empty files/folders."""
+        print self.recog_file
         if os.path.isfile(self.recog_file):
             os.remove(self.recog_file)
         if os.path.isfile(self.recogniser_csv_file):
@@ -2145,8 +2145,8 @@ class RecogniserBN:
             os.remove(self.db_file)
         with open(self.db_file, 'wb') as outcsv:
             writer = csv.writer(outcsv)
-#             writer.writerow(["id", "name", "gender", "age", "height", "times", "occurrence"])
-            writer.writerow(["id", "name", "gender", "birthYear", "height", "times", "occurrence"])
+            writer.writerow(["id", "name", "gender", "age", "height", "times", "occurrence"])
+            #writer.writerow(["id", "name", "gender", "birthYear", "height", "times", "occurrence"])
         analysis_dir = self.analysis_file.replace("/Analysis.json","")
         if os.path.isdir(analysis_dir):
             shutil.rmtree(analysis_dir)

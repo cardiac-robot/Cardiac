@@ -42,7 +42,7 @@ class RegisterPlugin(object):
         #register the user, deprecated, memory code register the user in the db csv file
         self.DB.General.register(user = self.RegisterWin.info_reg)
         #Verify mode
-        if not self.onMemory
+        if not self.onMemory:
             #check the register status
             if self.DB.General.UserStatus['registered']:
                 #if patient already found in the database emit signal

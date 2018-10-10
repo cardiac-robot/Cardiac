@@ -37,6 +37,16 @@ class RecognitionWin(QtGui.QMainWindow):
         self.label_background.setGeometry(QtCore.QRect(0, 0, self.winsize_h, self.winsize_v))
         self.label_background.setPixmap(QtGui.QPixmap(self.PH.paths["img"] + "Blue_background.png"))
         self.label_background.setScaledContents(True)
+        ## background label
+        self.label_background2 = QtGui.QLabel(self)
+        self.label_background2.setGeometry(QtCore.QRect(0, 0, self.winsize_h, self.winsize_v))
+        self.label_background2.setPixmap(QtGui.QPixmap(self.PH.paths["img"] + "background_recognition2.png"))
+        self.label_background2.setScaledContents(True)
+        ## background label
+        self.label_background3 = QtGui.QLabel(self)
+        self.label_background3.setGeometry(QtCore.QRect(0, 0, self.winsize_h, self.winsize_v))
+        self.label_background3.setPixmap(QtGui.QPixmap(self.PH.paths["img"] + "background_recognition3.png"))
+        self.label_background3.setScaledContents(True)
 
 
         self.ControlButtons = {}
@@ -44,16 +54,26 @@ class RecognitionWin(QtGui.QMainWindow):
         self.ControlButtons['StartRecog'] =  QtGui.QPushButton('Start Recognition',self)
         self.ControlButtons['StartRecog'].setGeometry(QtCore.QRect(self.winsize_v*0.11, self.winsize_h*0.1, self.winsize_v*0.5, self.winsize_h*0.3))
         #buttons for identity validation
-        self.ControlButtons['Yes'] =  QtGui.QPushButton('SI',self)
-        self.ControlButtons['Yes'].setGeometry(QtCore.QRect(self.winsize_v*0.8, self.winsize_h*0.4, self.winsize_v*0.2, self.winsize_h*0.1))
-        self.ControlButtons['No'] =  QtGui.QPushButton('NO',self)
-        self.ControlButtons['No'].setGeometry(QtCore.QRect(self.winsize_v*1.2, self.winsize_h*0.4, self.winsize_v*0.2, self.winsize_h*0.1))
+        self.ControlButtons['Yes'] =  QtGui.QCommandLinkButton(self)
+        self.ControlButtons['Yes'].setGeometry(QtCore.QRect(self.winsize_h*0.8, self.winsize_v*0.4, self.winsize_v*0.2, self.winsize_h*0.1))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap( self.PH.paths["img"] + "yes_recog.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.ControlButtons['Yes'].setIcon(icon)
+        self.ControlButtons['Yes'].setIconSize(QtCore.QSize(self.winsize_v * 0.2, self.winsize_h * 0.09))
+        self.ControlButtons['No'] =  QtGui.QCommandLinkButton(self)
+        self.ControlButtons['No'].setGeometry(QtCore.QRect(self.winsize_h*1.2, self.winsize_v*0.4, self.winsize_v*0.2, self.winsize_h*0.1))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap( self.PH.paths["img"] + "no_recog.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.ControlButtons['No'].setIcon(icon)
+        self.ControlButtons['No'].setIconSize(QtCore.QSize(self.winsize_v * 0.2, self.winsize_h * 0.09))
         #id submit button
-        self.ControlButtons['submit'] = QtGui.QPushButton('Submit',self)
-        self.ControlButtons['submit'].setGeometry(self.winsize_h*0.39, self.winsize_v*0.45, self.winsize_v*0.4, self.winsize_h*0.08)
-        font = QtGui.QFont()
-        font.setPointSize(16)
-        self.ControlButtons['submit'].setFont(font)
+        self.ControlButtons['submit'] = QtGui.QCommandLinkButton(self)
+        self.ControlButtons['submit'].setGeometry(self.winsize_h * 0.39, self.winsize_v * 0.65, self.winsize_v * 0.4,self.winsize_h * 0.05)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap( self.PH.paths["img"] + "submit.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.ControlButtons['submit'].setIcon(icon)
+        self.ControlButtons['submit'].setIconSize(QtCore.QSize(self.winsize_v * 0.4, self.winsize_h * 0.04))
+
         # close button
         self.ControlButtons['CloseButton'] = QtGui.QCommandLinkButton(self)
         self.ControlButtons['CloseButton'].setGeometry(QtCore.QRect(self.winsize_h * 0.95, self.winsize_v * 0.01, self.winsize_v * 0.045, self.winsize_h * 0.03))
@@ -62,17 +82,10 @@ class RecognitionWin(QtGui.QMainWindow):
         self.ControlButtons['CloseButton'].setIcon(icon)
         self.ControlButtons['CloseButton'].setIconSize(QtCore.QSize(self.winsize_v * 0.4, self.winsize_h * 0.02))
 
-        ## Labels
-        self.id_label = QtGui.QLabel(self)
-        self.id_label.setGeometry(QtCore.QRect(self.winsize_h * 0.4, self.winsize_v * 0.3, self.winsize_h * 0.15, self.winsize_v * 0.05))
-        self.id_label.setText("ID:")
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.id_label.setFont(font)
 
-        #Line Edit
+        ## Line Edit
         self.id_text = QtGui.QLineEdit(self)
-        self.id_text.setGeometry(QtCore.QRect(self.winsize_h * 0.45, self.winsize_v * 0.3, self.winsize_h * 0.15, self.winsize_v * 0.05))
+        self.id_text.setGeometry(QtCore.QRect(self.winsize_h * 0.395, self.winsize_v * 0.49, self.winsize_v * 0.37, self.winsize_h * 0.05))
 
         #call initial state method
         self.set_initial_state()
@@ -116,23 +129,32 @@ class RecognitionWin(QtGui.QMainWindow):
     def lock_confirmation(self):
         self.ControlButtons['Yes'].hide()
         self.ControlButtons['No'].hide()
+        self.label_background2.hide()
+        self.label_background3.hide()
+        self.label_background.show()
+
+
 
     #widget control function
     def unlock_confirmation(self):
         self.ControlButtons['Yes'].show()
         self.ControlButtons['No'].show()
+        self.label_background.hide()
+        self.label_background3.hide()
+        self.label_background2.show()
 
     #widget control function
     def lock_id_request(self):
         self.ControlButtons['submit'].hide()
-        self.id_label.hide()
         self.id_text.hide()
 
     #widget control function
     def unlock_id_request(self):
         self.ControlButtons['submit'].show()
-        self.id_label.show()
         self.id_text.show()
+        self.label_background.hide()
+        self.label_background2.hide()
+        self.label_background3.show()
 
     #callback function for id validation
     def submit_button(self):
