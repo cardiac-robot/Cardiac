@@ -47,24 +47,26 @@ class MainTherapyPlugin(object):
     def set_signals(self):
         #blood pressure plugin
         self.BloodPressurePlugin.View.onStartTherapy.connect(self.View.show)
+        #connect the end questionnaire to the on finishTherapy signal
         self.BloodPressurePlugin.View.onFinishTherapy.connect(self.EndQuestionPlugin.LaunchView)
+        #connect shutdown method when blood pressure close_connect is emmited
         self.BloodPressurePlugin.View.close_connect(self.shutdown)
-
         #set on start clicked signal
         self.View.play_button['button'].clicked.connect(self.onStart)
         #set on cooldown clicked signal
         self.View.pause_button['button'].clicked.connect(self.onCooldown)
         #set on stop clicked signal
         self.View.stop_button['button'].clicked.connect(self.shutdown)
+        
         self.View.exit_button['button'].clicked.connect(self.launch_final_bpm)
         #set on alamarms clicked signals
-
 
         #set on borg clicked signal
         self.View.onBorgReceive.connect(self.receive_borg)
         #set on everything is alright signal YES
 
         #set on everything is alright signal NO
+        
         #robot signals
 
 
@@ -88,6 +90,7 @@ class MainTherapyPlugin(object):
         if self.settings['mode'] == 0:
             #set timer for the borgscale
             self.BorgTimer = threading.Timer(self.PH.GeneralSettings['therapy']['BorgSample'], self.request_borg)
+        
         #if robot condition
         elif self.settings['mode'] == 1 or self.settings['mode'] ==2:
             print("USERROBOT = TRUE")
@@ -128,7 +131,7 @@ class MainTherapyPlugin(object):
     #Emit signal to request the borg scale
     def request_borg(self):
         #set request borg event
-        self.DB.General.SM.load_event(t ="BorgRequest", c = "Timeout", v ="none")
+        self.DB.General.SM.load_event(t = "BorgRequest", c = "Timeout", v ="none")
         #set event borg request
         print "borg request"
         #request borg to the view
@@ -136,7 +139,7 @@ class MainTherapyPlugin(object):
 
     #request borg confirm
     def request_borg_confirm(self):
-        self.DB.General.SM.load_event(t ="BorgConfirm", c = "Timeout", v ="none")
+        self.DB.General.SM.load_event(t = "BorgConfirm", c = "Timeout", v ="none")
         self.View.onBorg.emit()
 
     #receive borg from the interface and forward it to the event handler and robot
@@ -144,7 +147,7 @@ class MainTherapyPlugin(object):
         #read variable from the view
         b = self.View.borg_data
         #set event borg received
-        self.DB.General.SM.load_event(t ="BorgReceive", c ="Clicked", v = str(b))
+        self.DB.General.SM.load_event(t ="BorgReceive", c = "Clicked", v = str(b))
         print "borg: " + str(b)
         #if using robot, send the value
         if self.useRobot:

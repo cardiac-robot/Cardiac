@@ -73,6 +73,9 @@ class ImageSender(object):
         print self.local
         return self.local
 
+
+
+    #method to send the face detection recognition file from the robot to the pc
     def get_db_recog_file(self, dest, src):
         if self.PH.settings['sys'] == "win32":
             print "TO IMPLEMENT IN windows"
