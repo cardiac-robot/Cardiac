@@ -73,6 +73,16 @@ class ImageSender(object):
         print self.local
         return self.local
 
+    def get_db_recog_file(self, dest, src):
+        if self.PH.settings['sys'] == "win32":
+            print "TO IMPLEMENT IN windows"
+
+        elif self.PH.settings['sys'] == "linux2":
+            command = "sshpass -p 'nao' scp " + " nao@" + self.destIp + ":" + src + " " + dest 
+            print command
+            res = os.system(command)
+            print "response code: " + str(res)
+
 
 '''
 ImageServer Object:

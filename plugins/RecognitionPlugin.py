@@ -71,7 +71,7 @@ class RecognitionPlugin(object):
         #connect to the robot
         self.RecogniserBN.connectToRobot(ip         = self.PH.GeneralSettings['robot']['IpRobot'],
                                          useSpanish = False,
-                                         imagePath  =self.PH.paths['recognition'])
+                                         imagePath  = "/home/nao/dev/images/nao_image.jpg")
         #set SessionConst session
         self.RecogniserBN.setSessionConstant(isDBinCSV = True)
         #set SessionVar session

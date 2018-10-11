@@ -175,6 +175,7 @@ class RecogniserBN:
         self.isLogMode = False # save Analysis.json if True
 
         """ROBOT PARAMETERS"""
+        self.isCardiacApp = False
         self.useSpanish = False # speak Spanish (for Colombia experiments)
         self.isSpeak = True # if False, the robot will not speak
         self.isMemoryRobot = True # is memory used or not (if False, calculations in confirmPersonIdentity will be skipped, and the identity will not be demanded)
@@ -205,6 +206,7 @@ class RecogniserBN:
         self.CardiacDB           = DataHandler     #Data handler that provides access to the database
         self.CardiacPhotoHandler = PhotoHandler    #Photo handler send images to the robot from the cardiac application
         #parameters
+        self.isCardiacApp = True
         self.useSpanish = True
         self.isImageFromTablet = True
         self.db_file = "Patients.csv"
@@ -3227,11 +3229,15 @@ class RecogniserBN:
     def saveFaceDetectionDB(self, recog_folder):
         """Save face recognition database to the recognition folder (NAOqi)"""
         db_path = self.face_service.getUsedDatabase()
-        db_dest = recog_folder + "faceDB"
+        #db_dest = recog_folder + "faceDB"
+        db_dest = recog_folder
         print db_path
         print db_dest
         #TODO copy  from robot to the tablet ???? with copy2 ??
-        shutil.copy2(db_path, db_dest)
+        if self.isCardiacApp:
+            self.CardiacPhotoHandler.get_db_recog_file(dest = db_dest, src = db_path)
+        else:
+            shutil.copy2(db_path, db_dest)
 
     def useFaceDetectionDB(self, facedb):
         """Use the specified facedb ('faceDB') in the current directory and recog_folder (NAOqi)"""
