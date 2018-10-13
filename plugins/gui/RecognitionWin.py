@@ -152,6 +152,8 @@ class RecognitionWin(QtGui.QMainWindow):
     def unlock_id_request(self):
         self.ControlButtons['submit'].show()
         self.id_text.show()
+        self.ControlButtons['Yes'].hide()
+        self.ControlButtons['No'].hide()
         self.label_background.hide()
         self.label_background2.hide()
         self.label_background3.show()
