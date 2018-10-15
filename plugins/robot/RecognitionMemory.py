@@ -135,8 +135,8 @@ class RecogniserBN:
 
         """OPTIMISED PARAMETERS"""
         self.face_recog_threshold = 0.4 # threshold of the face recognition (optimised for NAOqi ALFaceDetection recognition)
-        self.quality_threshold = 0.037 # threshold for the quality of the identity estimate (quality = highest_prob - second_highest_prob * num_people) (optimised, see weights for description)
-        self.weights = [1.0, 0.044, 0.538, 0.136, 0.906] # [face_weight, gender_weight, age_weight, height_weight, time_weight] (optimised weights for hybrid normalisation with no online learning on IMDB dataset with Nall_uniformT -uniform time)
+        self.quality_threshold = 0.013 # threshold for the quality of the identity estimate (quality = highest_prob - second_highest_prob * num_people) (optimised, see weights for description)
+        self.weights = [1.0, 0.19, 0.589, 0.15, 0.34] # [face_weight, gender_weight, age_weight, height_weight, time_weight] (optimised weights for hybrid normalisation with no online learning on IMDB dataset with Nall_uniformT -uniform time)
         self.update_prob_method = "none" # method for online learning: none, evidence (MMIBN-OL), sum, avg
         self.update_prob_unknown_method = "none" # method for online learning for unknown state: none, evidence (MMIBN-OL), sum, avg
         # self.update_partial_params = ["T"] # online learning for only specified parameters! self.update_partial_params = None if all parameters are to be learned
