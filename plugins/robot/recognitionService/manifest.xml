@@ -22,6 +22,6 @@
   <robotRequirement/>
  </requirements>
  <services>
-  <service execStart="/usr/bin/python2 scripts/RecognitionService.py" autorun="true" name="RecognitionService"/>
+  <service name="RecognitionService" autorun="true" execStart="/usr/bin/python2 scripts/RecognitionService.py"/>
  </services>
 </package>

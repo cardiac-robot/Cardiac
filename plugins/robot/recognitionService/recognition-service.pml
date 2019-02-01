@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Package name="recognition_service" format_version="4">
+<Package name="recognition_service" format_version="5">
     <Manifest src="manifest.xml" />
     <BehaviorDescriptions />
     <Dialogs />
@@ -65,8 +65,8 @@
     <Topics />
     <IgnoredPaths>
         <Path src="scripts/RecognitionMemory.ipynb" />
-        <Path src="scripts/.ipynb_checkpoints/RecognitionMemory-checkpoint.ipynb" />
         <Path src="scripts/.ipynb_checkpoints/TryCode-checkpoint.ipynb" />
+        <Path src="scripts/.ipynb_checkpoints/RecognitionMemory-checkpoint.ipynb" />
     </IgnoredPaths>
     <Translations auto-fill="en_US">
         <Translation name="translation_en_US" src="translations/translation_en_US.ts" language="en_US" />

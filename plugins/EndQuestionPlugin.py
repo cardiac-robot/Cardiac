@@ -18,6 +18,7 @@ class EndQuestionPlugin(object):
 
     def LaunchView(self):
         self.View.show()
+        print  "launch EndQuestionWin"
 
     def shutdown(self):
         self.View.close()

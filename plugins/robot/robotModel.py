@@ -151,7 +151,8 @@ class Robot(object):
         #self.run_welcome_behavior()
         if self.settings['useMemory']:
             self.MemoryRobot.motion.wakeUp()
-            threading.Thread(target = self.MemoryRobot.run_welcome_behavior).start()
+            #threading.Thread(target = self.MemoryRobot.run_welcome_behavior).start()
+            self.MemoryRobot.run_welcome_behavior()
         else:
             self.motion.wakeUp()
             threading.Thread(target = self.run_welcome_behavior).start()

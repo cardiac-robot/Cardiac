@@ -592,7 +592,7 @@ class MemoryRobot(object):
             self.session_intensity_comment_bad = "but the session intensity was higher"
 
 if __name__ == "__main__":
-    useSpanish = False
+    useSpanish = True
 
     targetSpeed = 30
     targetSlope = 3

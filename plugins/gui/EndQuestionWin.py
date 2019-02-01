@@ -21,6 +21,8 @@ class EndQuestionWin(QtGui.QMainWindow):
 
         self.isMotivation = False
         self.isSatisfaction = False
+        print "EndQuestionWin created"
+        #self.show()
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")

@@ -50,7 +50,8 @@ class MainTherapyPlugin(object):
         #connect the end questionnaire to the on finishTherapy signal
         self.BloodPressurePlugin.View.onFinishTherapy.connect(self.EndQuestionPlugin.LaunchView)
         #connect shutdown method when blood pressure close_connect is emmited
-        self.BloodPressurePlugin.View.close_connect(self.shutdown)
+        self.EndQuestionPlugin.View.exit_button['button'].clicked.connect(self.close)
+        #self.BloodPressurePlugin.View.close_connect(self.shutdown)
         #set on start clicked signal
         self.View.play_button['button'].clicked.connect(self.onStart)
         #set on cooldown clicked signal
@@ -184,6 +185,18 @@ class MainTherapyPlugin(object):
         self.TimerDisplayThread.start()
         #launch sensor monitor
         self.SensorMonitorThread.start()
+        #robot controller
+        if self.useRobot:
+            #launch robot
+            print "deploy resources launch"
+            self.robotController.launch()
+            print("robotController lounchjed from MainTherapypluWin")
+            #launch robot monitor
+            self.RobotMonitorThread.start()
+        else:
+            #launch borg timer
+            self.BorgTimer.start()
+        
         #use camera for gaze estimation
         if self.settings['useCamera']:
             self.headEstimator = eG.GetGaze(controller = self)
@@ -196,17 +209,7 @@ class MainTherapyPlugin(object):
             self.headThread.start()
             self.timerGaze.start()
 
-        #robot controller
-        if self.useRobot:
-            #launch robot
-            print "deploy resources launch"
-            self.robotController.launch()
-            print("robotController lounchjed from MainTherapypluWin")
-            #launch robot monitor
-            self.RobotMonitorThread.start()
-        else:
-            #launch borg timer
-            self.BorgTimer.start()
+        
 
 
 
@@ -271,7 +274,7 @@ class MainTherapyPlugin(object):
         #kill sensor monitor thread
         self.SensorMonitorThread.shutdown()
 
-        self.BloodPressurePlugin.shutdown()
+        #self.BloodPressurePlugin.shutdown()
         #if using robot, kill all robot resources
         if self.useRobot:
             #kill robot
@@ -279,9 +282,17 @@ class MainTherapyPlugin(object):
             #kill robot monitor thread
             self.RobotMonitorThread.shutdown()
         #finish session
+        #self.DB.General.SM.finish_session()
+
+    def close(self):
+
+        self.BloodPressurePlugin.shutdown()
+        
         self.DB.General.SM.finish_session()
+
     def launch_final_bpm(self):
         #set mode
+        print("launch_final_bpm")
         self.BloodPressurePlugin.set_mode(mode = "final")
         self.BloodPressurePlugin.LaunchView()
 
@@ -326,7 +337,7 @@ class SensorMonitorThread(QtCore.QThread):
         while self.on:
             #update data
             self.c.SensorManager.update_data()
-            self.c.SensorManager.print_data()
+            #self.c.SensorManager.print_data()
             #load data to the database
             self.c.DB.General.SM.load_sensor_data(hr          = self.c.SensorManager.data['ecg'],
                                                 speed       = self.c.SensorManager.data['laser']['speed'],

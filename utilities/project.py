@@ -22,13 +22,13 @@ class ProjectHandler(object):
         #flag for settings
         self.OnSettings = False
         #general settings variable
-        self.GeneralSettings = {'robot': {'IpRobot'       : "192.168.0.101",
+        self.GeneralSettings = {'robot': {'IpRobot'       : "10.30.0.12",
                                           'port'          : 9559,#9559
                                           'mode'          : 1,
                                           'name'          : "Palin",
                                           'UseSpanish'    : True,
-                                          'MotivationTime': 1*60,
-                                          'BorgTime'      : 2*60,
+                                          'MotivationTime': 5*60,
+                                          'BorgTime'      : 7*60,
                                           'useMemory'     : False,
                                           'nao_image'     : '/home/nao/dev/images',
                                           'UserProfile'   : {}

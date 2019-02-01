@@ -1154,6 +1154,7 @@ class RecogniserBN:
         Calls recognise method and says the identity estimated for confirmation (if isSpeak True). Returns estimated identity ID
         IMPORTANT: call setSessionConstant and setSessionVar and take picture before calling this function
         """
+        print "enter startRecognition"
         identity_est = self.recognise(isRegistered = self.isRegistered, recog_results_from_file = recog_results_from_file)
         print ("recognise function out.... identity est")
         print identity_est
@@ -1340,7 +1341,9 @@ class RecogniserBN:
                 self.identity_est, self.quality_estimate = self.getEstimatedIdentity() # (4)
                 self.identity_prob_list = [1.0] # for unknown
         else:
+            print "#(2)"
             self.recog_results = self.recognisePerson() # (2)
+            print self.recog_results
             if not self.recog_results:
                 print "No face detected in the image"
                 self.num_mult_recognitions = self.def_num_mult_recognitions
@@ -3119,16 +3122,24 @@ class RecogniserBN:
         ]
 
         """
+
+        print "recognisePerson function enter"
         if self.recog_results_from_file is None:
             if self.isMultipleRecognitions:
                 self.recog_service.setImagePathMult(num_recog)
             if self.isMemoryOnRobot:
+                print "self.isMemoryRobot True"
                 recog_results = self.recog_service.recognisePerson()
+                print "after self.recog_service.recognisePerson()"
+                print recog_results
             else:
+                print "self.isMemoryRobot False"
                 self.recog_service.subscribeToPeopleDetected()
                 self.event_recog = threading.Event()
                 self.subscribeToRecognitionResultsUpdated()
+                print "waiting event_recog event"
                 self.event_recog.wait()
+                print "after event_recog is set"
                 recog_results = self.recog_temp
         else:
             if self.isMultipleRecognitions:

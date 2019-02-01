@@ -50,7 +50,7 @@ class ImageSender(object):
     def sendPhoto(self):
         #if running on windows
         if self.PH.settings['sys'] == "win32":
-            command = 'pscp .\\' + self.local + ' nao@' + self.destIp + '://home//nao//dev//images//nao_image.jpg'
+            command = 'pscp -pw nao ' + self.local + ' nao@' + self.destIp + ':/home/nao/dev/images/nao_image.jpg'
             print command
             res = os.system(command)
             print "response code: " + str(res)

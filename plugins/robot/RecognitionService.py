@@ -49,7 +49,7 @@ class RecognitionService(object):
         self.robotOffsetFromFloorInMeters = 0.59 #TODO: set this!
         self.prob_threshold = 1.0e-75
         self.subscribed = False
-        self.useSpanish = False
+        self.useSpanish = True
         self.timePerson = None
 
     @qi.bind(returnType=qi.Void, paramsType=[qi.Bool, qi.Bool, qi.String])

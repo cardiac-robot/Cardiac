@@ -57,7 +57,7 @@ class RecognitionPlugin(object):
 
 
     #set required signals to interact with the plugins and resources
-    def set_signals(self):
+    def set_signals(self): 
         #start recognition signal(recog button clicked)
         self.RecognitionWin.ControlButtons['StartRecog'].clicked.connect(self.start_recog)
         #When the id has been submitted from the RecognitionWin view
@@ -79,7 +79,7 @@ class RecognitionPlugin(object):
         print("recognition started ")
         #connect to the robot
         self.RecogniserBN.connectToRobot(ip         = self.PH.GeneralSettings['robot']['IpRobot'],
-                                         useSpanish = False,
+                                         useSpanish = True,
                                          imagePath  = "/home/nao/dev/images/nao_image.jpg")
         #set SessionConst session
         self.RecogniserBN.setSessionConstant(isDBinCSV = True)
@@ -92,9 +92,10 @@ class RecognitionPlugin(object):
         #send photo to the robot
         res = self.ISE.sendPhoto()
         #TODO:validate res from image transfering
-
+        print "after ise from RecognitionPlugin"
         #start recognition
         self.identity_est = self.RecogniserBN.startRecognition()
+        print self.identity_est
         #validation of the recognition
         if self.identity_est =="":
             #if none recognized

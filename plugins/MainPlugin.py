@@ -172,4 +172,5 @@ class MainPlugin(object):
 
     #shutdown plugin
     def shutdown(self):
+        print"shutdown main plugin!!!!"
         self.WelcomeWin.close()
