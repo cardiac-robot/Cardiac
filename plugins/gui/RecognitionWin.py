@@ -51,11 +51,16 @@ class RecognitionWin(QtGui.QMainWindow):
 
         self.ControlButtons = {}
         #start recog button
-        self.ControlButtons['StartRecog'] =  QtGui.QPushButton('Start Recognition',self)
+        self.ControlButtons['StartRecog'] =  QtGui.QCommandLinkButton(self)
         self.ControlButtons['StartRecog'].setGeometry(QtCore.QRect(self.winsize_v*0.11, self.winsize_h*0.1, self.winsize_v*0.5, self.winsize_h*0.3))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap( self.PH.paths["img"] + "begin_recog.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.ControlButtons['StartRecog'].setIcon(icon)
+        self.ControlButtons['StartRecog'].setIconSize(QtCore.QSize(self.winsize_v * 0.5, self.winsize_h * 0.28))
+        
         #buttons for identity validation
         self.ControlButtons['Yes'] =  QtGui.QCommandLinkButton(self)
-        self.ControlButtons['Yes'].setGeometry(QtCore.QRect(self.winsize_h*0.6, self.winsize_v*0.7, self.winsize_v*0.2, self.winsize_h*0.1))
+        self.ControlButtons['Yes'].setGeometry(QtCore.QRect(self.winsize_h*0.65, self.winsize_v*0.7, self.winsize_v*0.2, self.winsize_h*0.1))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap( self.PH.paths["img"] + "yes_recog.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.ControlButtons['Yes'].setIcon(icon)
@@ -87,6 +92,14 @@ class RecognitionWin(QtGui.QMainWindow):
         self.id_text = QtGui.QLineEdit(self)
         self.id_text.setGeometry(QtCore.QRect(self.winsize_h * 0.395, self.winsize_v * 0.49, self.winsize_v * 0.37, self.winsize_h * 0.05))
 
+        font = QtGui.QFont()
+        font.setFamily("Century")
+        font.setPointSize(20)
+        font.setBold(False)
+        font.setWeight(80)
+        self.id_text2 = QtGui.QLabel(self)
+        self.id_text2.setGeometry(QtCore.QRect(self.winsize_h * 0.67, self.winsize_v * 0.4, self.winsize_v * 0.37, self.winsize_h * 0.05))
+        self.id_text2.setFont(font)
         #call initial state method
         self.set_initial_state()
         #set internal signals
@@ -142,6 +155,7 @@ class RecognitionWin(QtGui.QMainWindow):
         self.label_background.hide()
         self.label_background3.hide()
         self.label_background2.show()
+        self.id_text2.show()
 
     #widget control function
     def lock_id_request(self):
@@ -152,6 +166,7 @@ class RecognitionWin(QtGui.QMainWindow):
     def unlock_id_request(self):
         self.ControlButtons['submit'].show()
         self.id_text.show()
+        self.id_text2.hide()
         self.ControlButtons['Yes'].hide()
         self.ControlButtons['No'].hide()
         self.label_background.hide()

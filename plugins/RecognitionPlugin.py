@@ -112,6 +112,7 @@ class RecognitionPlugin(object):
             #if someone is recognized
             #log the identity
             print "Identity: " + self.identity_est
+            self.RecognitionWin.id_text2.setText('ID:'+ self.identity_est)
             #load identity
             self.id = self.identity_est
             #finish recognition count

@@ -96,7 +96,7 @@ class TherapyWin(QtGui.QMainWindow):
         self.label_show['layout'].setMargin(0)
         font = QtGui.QFont()
         font.setFamily("Century")
-        font.setPointSize(20)
+        font.setPointSize(10)
         font.setBold(True)
         font.setWeight(80)
 
@@ -109,7 +109,7 @@ class TherapyWin(QtGui.QMainWindow):
         #%% static labels layout
         font = QtGui.QFont()
         font.setFamily("Century")
-        font.setPointSize(15)
+        font.setPointSize(10)
         font.setBold(True)
         font.setWeight(80)
         self.label_names={}
