@@ -5,7 +5,7 @@ import imu.Lec_imu as Lec_imu
 import numpy as np
 
 class Imu(sensor.Sensor):
-    def __init__(self, settings = {"port":'/dev/ttyACM0', "sample":1}):
+    def __init__(self, settings = {"port":'COM7', "sample":1}):
         super(Imu, self).__init__()
         #load settings
         print settings
@@ -44,7 +44,9 @@ class Imu(sensor.Sensor):
                         e3 =  e3 * 180/np.pi
                         #saving the collected data using the thread's lock.
                         d = [e1,e2,e3]
+                        print d
                         #print(d)
+                        self.PrintData(d)
                         if req.is_set():
                             #print("imu data requested" + str(d))
                             self.send_data(d)
@@ -55,7 +57,7 @@ class Imu(sensor.Sensor):
                     #self.load_data(self.val)
                     time.sleep(self.sample_time)
                 except:
-                    print("problems")
+                    self.PrintData("problems")
             else:
                 self.send_data([0,0,0])
                 time.sleep(self.sample_time)

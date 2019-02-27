@@ -1,5 +1,7 @@
 import multiprocessing
+import threading
 import time
+import sys
 
 class Sensor(object):
     def __init__(self):
@@ -17,7 +19,11 @@ class Sensor(object):
     #launch measurement process
     def launch_process(self):
         self.p = multiprocessing.Process(target = self.process,args = (self.onRequest,self.onShutdown,))
+        #self.p = threading.Thread(target = self.process,args = (self.onRequest,self.onShutdown,))        
         self.p.start()
+
+    def launch_thread(self):
+        self.p = threading.Thread(target = self.process,args = (self.onRequest,self.onShutdown,))
 
     #send data
     def send_data(self, d):
@@ -28,7 +34,7 @@ class Sensor(object):
         self.onRequest.set()
         d = self.PipeGet.recv()
         self.onRequest.clear()
-        print "data received" + str(d)
+        #print "data received" + str(d)
         return d
 
     def Sleep(self):
@@ -38,6 +44,10 @@ class Sensor(object):
     def WakeUp(self):
         #clear sleep signal
         self.onSleep.clear()
+
+    def PrintData(self, data):
+        print(data)
+        sys.stdout.flush()    
 
 
     #trigger the event to stop the process

@@ -44,7 +44,7 @@ class ImageSender(object):
                 time.sleep(5)
                 cv2.destroyWindow("cam-test")
                 cv2.imwrite(self.local,img) #save image
-
+            cv2.destroyAllWindows()
             self.cam.release()
     #
     def sendPhoto(self):

@@ -11,7 +11,7 @@ class Ecg(sensor.Sensor):
         self.settings = settings
 
         #defining the serial port that will be used.
-        self.__ser = serial.Serial(self.settings['port'], 115200, timeout=1)
+        #self.__ser = serial.Serial(self.settings['port'], 115200, timeout=1)
         #Flag used to check the synchronization.
         self.__async = False
         #Variables used in the zephyr's serial protocol.
@@ -28,6 +28,9 @@ class Ecg(sensor.Sensor):
     #overrride function
     #def process(self, req, exit):
     def process(self,req,exit):
+        #defining the serial port that will be used.
+        self.__ser = serial.Serial(self.settings['port'], 115200, timeout=1)
+        
 
         while not exit.is_set():
             if not self.onSleep.is_set():
@@ -81,8 +84,9 @@ class Ecg(sensor.Sensor):
                     self.__data_temp = list(struct.unpack("<H2sH2sBBB15H6xHHB3x", payload))
 
                     self.val=reduce(lambda a,b:str(a)+','+str(b),self.__data_temp)+'\n'
-                    #if req.is_set():
-                    #    self.send_data(self.val)
+                    self.PrintData(val)
+                    if req.is_set():
+                        self.send_data(self.val)
 
                     time.sleep(self.sample_time)
                 except:
@@ -101,6 +105,7 @@ class Ecg(sensor.Sensor):
 
 if __name__ == '__main__':
     l = Ecg()
-    l.launch_process()
+    #l.launch_process()
+    l.launch_tread()
     time.sleep(10)
     l.shutdown()
