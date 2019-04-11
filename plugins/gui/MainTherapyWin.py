@@ -213,7 +213,7 @@ class TherapyWin(QtGui.QMainWindow):
             #lock warning button
             self.lock_warning()
             #lock biofeedback display
-            self.lock_display()
+            #self.lock_display()
             #hide backgorund background_blue
             self.label_background2.hide()
 
@@ -259,11 +259,14 @@ class TherapyWin(QtGui.QMainWindow):
 
 
     def send_data(self, hr = 0, speed = 0, sl = 0, cad =0, imu = 0):
+        #print "Data received from plugin"
         self.data_ecg = hr
         self.data_cadence = cad
         self.data_imu = imu
         self.data_step_length = sl
         self.data_speed = speed
+
+        #print [hr, speed, sl, cad, imu]
         #emit signal to update display
         self.onSensorUpdate.emit()
 
@@ -271,19 +274,38 @@ class TherapyWin(QtGui.QMainWindow):
         if self.settings['mode'] == 0:
             a="{0:.2f}".format(self.data_ecg)+"{0:.2f}".format(self.data_speed)+"{0:.2f}".format(self.data_speed)+"{0:.2f}".format(self.data_imu)
             self.label_val.setText(a)
+            self.label_val.show() 
 
         elif self.settings['mode'] == 1 or self.settings['mode'] == 2:
+            print "label"
             self.label_show['label0'].setText("{0:.2f}".format(self.data_ecg)+" ppm")
             self.label_show['label1'].setText("{0:.2f}".format(self.data_imu)+" deg")
             self.label_show['label2'].setText("{0:.2f}".format(self.data_speed)+" mph")
             self.label_show['label3'].setText("{0:.2f}".format(self.data_cadence)+" Hz")
             self.label_show['label4'].setText("{0:.2f}".format(self.data_step_length)+" m")
 
+    #unlock display
+    def show_label_display(self):
+        self.label_show['label0'].show()
+        self.label_show['label1'].show()
+        self.label_show['label2'].show()
+        self.label_show['label3'].show()
+        self.label_show['label4'].show()
+
+
+    #unlock display
+    def hide_label_display(self):
+        self.label_show['label0'].hide()
+        self.label_show['label1'].hide()
+        self.label_show['label2'].hide()
+        self.label_show['label3'].hide()
+        self.label_show['label4'].hide()
+
     #lock biofeedback display
     def lock_display(self):
         self.label_names['label_back'].hide()
         self.label_names['widget'].hide()
-
+        self.hide_label_display()
         self.label_show['label_back'].hide()
         self.label_show['widget'].hide()
 
@@ -293,6 +315,7 @@ class TherapyWin(QtGui.QMainWindow):
         self.label_names['widget'].show()
         self.label_show['label_back'].show()
         self.label_show['widget'].show()
+        self.show_label_display()
 
     #DEPRECATED
     def unlock_cooldown(self):

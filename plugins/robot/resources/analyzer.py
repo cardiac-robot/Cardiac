@@ -64,8 +64,13 @@ class Analyzer(object):
     #check profile alarms with minimum the last 8 measured values
     def check_hr(self):
         #check if there are at least 8 values in the buffer
+        #print('Data Buffer from Robot Controller')
+        #print(type(self.dataBuffer['ecg']))
+        #print(self.dataBuffer['ecg'])
+        
         if len(self.dataBuffer) > 8:
             #calculates the average of the hr
+            
             m = np.mean([ i['ecg'] for i in self.dataBuffer])
             #compare second alarm
             print self.profile

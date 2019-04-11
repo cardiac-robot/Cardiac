@@ -7,6 +7,7 @@ class LogInWin(QtGui.QMainWindow):
     onData = QtCore.pyqtSignal()
     onRegistered = QtCore.pyqtSignal()
     onNotRegistered = QtCore.pyqtSignal()
+    onClose = QtCore.pyqtSignal()
 
     def __init__(self,ProjectHandler):
         super(LogInWin, self).__init__()
@@ -59,6 +60,12 @@ class LogInWin(QtGui.QMainWindow):
 
     def set_signals(self):
         self.submit.clicked.connect(self.submit_button)
+        self.onRegistered.connect(self.emit_close_signal)
+        #self.onNotRegistered(self.onClose.emit)
+
+    def emit_close_signal(self):
+        print "emit close signal"
+        self.onClose.emit()
 
     def submit_button(self):
         if not (str(self.id_text.text()) == ""):

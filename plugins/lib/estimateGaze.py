@@ -40,6 +40,9 @@ class GetGaze():
         self.video_capture = cv2.VideoCapture(0)
         #Get camera setings (resolution)
         ret, frame = self.video_capture.read()
+
+        #self.show_image(frame)
+
         self.video_capture.release()
         size = frame.shape
 
@@ -67,7 +70,12 @@ class GetGaze():
         #Stopping variable
         self.shouldStop = False
 
+    def show_image(self, f):
 
+        img  =f
+        cv2.imshow('image',img)
+        k = cv2.waitKey(0)
+    
 
     def start(self):
         #Queue to return the variable from the process
@@ -76,25 +84,29 @@ class GetGaze():
 
         #Open video
         video_capture = cv2.VideoCapture(0)
+
         look_away =None
         while True:
 
             print("ENTER WHILE GAZE ESTIMATOR")
             #Get an image
             ret, frame = video_capture.read()
-
+            #self.show_image(frame)
             #Preparation of the image
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
             clahe_image = clahe.apply(gray)
 
+            #self.show_image(clahe_image)
+
             #Start detection of faces in a dedicated process
-            process = Process(target = detect,args=(detector,clahe_image,queue))
+            process = Process(target = detect, args=(detector,clahe_image,queue))
             process.start()
             process.join()
 
             #Recover results from the detection
             detections = queue.get()
+            #print detections
 
             for k,d in enumerate(detections): #For each detected face
 
@@ -146,7 +158,47 @@ class GetGaze():
 
 
 def main():
-    gg =  GetGaze()
+
+    
+    class ph():
+        def __init__(self):
+
+            self.paths = {
+			'db'  			  : '/db/',
+                        'memorydb'        : '/db/memory/',
+                        'recognition'     : '/db/memory/recognition/',
+                        'recog_analysis'  : '/db/memory/recognition/AnalysisFolder/',
+                        'recog_img'       : '/db/memory/recognition/images/',
+                        'memory_data'     : '/db/memory/data/',
+                        'memory_general'  : '/db/memory/general/',
+                        'backup'	  : '/db/backup/',
+			'data'		  : '/db/data/',
+                        'general'         : '/db/general/',
+                        'robot_db'        : '/db/robot/',
+                        'db_lib'          : '/db/lib/',
+                        'current_user'    : '/',
+                        'current_session' : '/',
+						'plugin'		  : '/plugins/',
+						'gui' 			  : '/plugins/gui/',
+						'img'             : '/plugins/gui/img/',
+						'sensor_lib'      : 'C:\Users/sorcar/github/Cardiac/plugins/lib/',
+						'robotController' : '/plugins/robot/',
+                        'robotBehaviors'  : '/plugins/robot/behaviors/',
+                        'robotResources'  : '/plugins/robot/resources/',
+                        'utilities'       : '/utilities/'
+    			 }
+
+    class controller():
+        def __init__(self):
+            self.PH = ph()
+
+        def headGaze(self, v):
+            print("no gaze detected")
+            print(v)
+
+    A = controller()
+
+    gg =  GetGaze(controller = A)
     gg.start()
 
 if __name__ == '__main__':

@@ -64,3 +64,8 @@ class ModalityPlugin(object):
 
     def onExitPressed(self,f):
         self.ModalityWin.close()
+
+    def shutdown(self):
+        self.ModalityWin.hide
+        del ModalityWin
+        del self

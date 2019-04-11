@@ -34,6 +34,7 @@ class BloodPressureWin(QtGui.QMainWindow):
         self.label_background=QtGui.QLabel(self.centralwidget)
         self.label_background.setGeometry(QtCore.QRect(0,0,self.winsize_h,self.winsize_v))
         self.label_background.setPixmap(QtGui.QPixmap(self.PH.paths['img'] + "background_pressure.png"))
+        
         self.label_background.setScaledContents(True)
         font = QtGui.QFont()
         font.setFamily("Century")

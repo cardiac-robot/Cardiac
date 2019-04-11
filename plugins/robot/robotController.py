@@ -110,6 +110,8 @@ class Controller(object):
             if self.onSensorData.is_set():
                 #receive data from pipe
                 d = self.GetSensorData.recv()
+                #print('hola')
+                #print(d)
                 #clear the event handler
                 self.onSensorData.clear()
                 #pass the data to the analyzer obejct

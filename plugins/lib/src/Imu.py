@@ -5,11 +5,22 @@ import imu.Lec_imu as Lec_imu
 import numpy as np
 
 class Imu(sensor.Sensor):
-    def __init__(self, settings = {"port":'COM7', "sample":1}):
+    def __init__(self, settings = {"port":'COM4', "sample":1}):
         super(Imu, self).__init__()
         #load settings
         print settings
         self.settings = settings
+        
+        #Arrays where data will be saved.
+        self.angles_data = []
+        self.quat_data = []
+        #self.lock = threading.Lock()
+        #Flag that is used in case of pause.
+        self.__pause=True
+
+    #overrride function
+    #def process(self, req, exit):
+    def process(self,req,exit):
         #Default debug provided by InvenSense.
         self.__debug = Lec_imu.debug_packet_viewer()
         #Default acquisition object provided by InvenSense.
@@ -19,16 +30,7 @@ class Imu(sensor.Sensor):
         self.sample_time = self.settings['sample']
         #Default reader object provided by InvenSense.
         self.__reader = Lec_imu.eMPL_packet_reader(self.__port)
-        #Arrays where data will be saved.
-        self.angles_data = []
-        self.quat_data = []
-        self.lock = threading.Lock()
-        #Flag that is used in case of pause.
-        self.__pause=True
 
-    #overrride function
-    #def process(self, req, exit):
-    def process(self,req,exit):
         while not exit.is_set():
             if not self.onSleep.is_set():
                 try:
@@ -65,7 +67,7 @@ class Imu(sensor.Sensor):
     def reset(self):
         print "reset imu"
         self.onShutdown.set()
-        self.__reader = Lec_imu.eMPL_packet_reader(self.__port)
+        #self.__reader = Lec_imu.eMPL_packet_reader(self.__port)
         self.launch_process()
 
 

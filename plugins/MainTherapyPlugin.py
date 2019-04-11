@@ -178,7 +178,7 @@ class MainTherapyPlugin(object):
     def deploy_resources(self):
         #sensor manager
         #set sensors
-        self.SensorManager.set_sensors(ecg = False, imu = False, laser = False)
+        self.SensorManager.set_sensors(ecg = True, imu = True, laser = False)
         #launch sensors
         self.SensorManager.launch_sensors()
         #launch timer
@@ -353,7 +353,8 @@ class SensorMonitorThread(QtCore.QThread):
                                   sl    = self.c.SensorManager.data['laser']['steplenght'],
                                   cad   = self.c.SensorManager.data['laser']['cadence'],
                                   imu   = self.c.SensorManager.data['imu'])
-
+            #print("sendind data to view")
+            #print self.c.SensorManager.data
             time.sleep(self.ts)
 
 

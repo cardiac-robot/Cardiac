@@ -21,7 +21,10 @@ class Laser(sensor.Sensor):
         self.Ts = self.settings['sample']
         self.data = {"speed": 1, "cadence": 1, "steplenght": 1}
         self.lrf_h = 0.3
+        print('SETTINGS')
+        print(self.settings)
         self.crotch = self.settings['crotch']
+        self.crotch = float(self.crotch)/100
         #print "end init...."
     #overrride function
     #def process(self, req, exit):
@@ -46,7 +49,7 @@ class Laser(sensor.Sensor):
 
                 self.data = {"speed": speed, "cadence": cad, "steplenght": sl}
 
-                print self.data
+            
                 if req.is_set():
                     #print self.data
                     self.send_data([ self.data['cadence'], self.data['steplenght'], self.data['speed'] ])
@@ -88,6 +91,8 @@ class Laser(sensor.Sensor):
                 vel = float(vel)
                 cad = float(cad)
                 sl  = float(sl)
+                print('crotch from laser code')
+                print(self.crotch)
 
 
                 self.crotch = float(self.crotch)
@@ -97,7 +102,7 @@ class Laser(sensor.Sensor):
                 sl=sl*self.crotch/(self.crotch-self.lrf_h)
                 self.data = [float(cad)*sl, cad, str(sl)]
                 self.data = {"speed": float(cad)*sl, "cadence": cad, "steplenght":str(sl)}
-                
+                self.PrintData(self.data)               
                 
                 if req.is_set():
                     #print self.data

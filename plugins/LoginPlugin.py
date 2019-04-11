@@ -21,6 +21,8 @@ class LoginPlugin(object):
 
     def set_signals(self):
         self.LogInWin.onData.connect(self.idReceived)
+        self.LogInWin.onClose.connect(self.shutdown)
+
 
 
     def idReceived(self):
@@ -41,3 +43,7 @@ class LoginPlugin(object):
 
     def onExitPressed(self,f):
         self.LogInWin.close()
+
+    def shutdown(self):
+        self.LogInWin.close()
+        del self.LogInWin        

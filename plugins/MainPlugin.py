@@ -32,23 +32,42 @@ class MainPlugin(object):
         self.WelcomeWin.show()
         #create menu plugin
         self.MainMenuPlugin = MainMenuPlugin.MainMenuPlugin(ProjectHandler = self.PH, DataHandler = self.DB)
+        print("MainMenuPlugin   created")
+        time.sleep(1)
         #create register plugin
         self.RegisterPlugin = RegisterPlugin.RegisterPlugin(ProjectHandler = self.PH, DataHandler = self.DB)
+        print("RegisterPlugin   created")
+        time.sleep(1)
         #create settings plugin
         self.SettingsPlugin = SettingsPlugin.SettingsPlugin(ProjectHandler = self.PH, DataHandler = self.DB)
+        print("SettingsPlugin   created")
+        time.sleep(1)
         #create LoginWin
         self.LoginPlugin = LoginPlugin.LoginPlugin(ProjectHandler = self.PH, DataHandler = self.DB)
+        print("LoginPlugin   created")
+        time.sleep(1)
         #create modality plugin
         self.ModalityPlugin = ModalityPlugin.ModalityPlugin(ProjectHandler = self.PH, DataHandler = self.DB)
+        print("ModalityPlugin  created")
+        time.sleep(1)
         #create recognition plugin
         self.RecognitionPlugin = RecognitionPlugin.RecognitionPlugin(ProjectHandler = self.PH, DataHandler = self.DB)
+        print("RecognitionPlugin   created")
+        time.sleep(1)
         #create therapy plugin
         self.MainTherapyPlugin  = MainTherapyPlugin.MainTherapyPlugin(ProjectHandler = self.PH, DataHandler = self.DB)
+        print("MainTherapyPlugin   created")
+        time.sleep(2)
         #create blood pressure plugin
         #self.BloodPressurePlugin  = BloodPressurePlugin.BloodPressurePlugin(ProjectHandler = self.PH, DataHandler = self.DB)
         #set signals
+
         self.set_signals()
+        print("setting signals   created")
+
+        time.sleep(3)
         #count_down in another thread
+        print("launching count down")
         threading.Thread(target = self.count_down).start()
 
 
@@ -174,3 +193,4 @@ class MainPlugin(object):
     def shutdown(self):
         print"shutdown main plugin!!!!"
         self.WelcomeWin.close()
+        del self.WelcomeWin 

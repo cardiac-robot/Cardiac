@@ -24,6 +24,7 @@ class Sensor(object):
 
     def launch_thread(self):
         self.p = threading.Thread(target = self.process,args = (self.onRequest,self.onShutdown,))
+        self.p.start()
 
     #send data
     def send_data(self, d):
@@ -76,7 +77,7 @@ class Sensor(object):
 
 if __name__ == '__main__':
     s = Sensor()
-    s.launch_process()
+    s.launch_thread()
     for i in range(15):
         s.read_data()
         time.sleep(1)

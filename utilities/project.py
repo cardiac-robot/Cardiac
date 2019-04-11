@@ -22,7 +22,7 @@ class ProjectHandler(object):
         #flag for settings
         self.OnSettings = False
         #general settings variable
-        self.GeneralSettings = {'robot': {'IpRobot'       : "192.168.0.104",
+        self.GeneralSettings = {'robot': {'IpRobot'       : "192.168.0.100",
                                           'port'          : 9559,#9559
                                           'mode'          : 1,
                                           'name'          : "Palin",
@@ -33,9 +33,9 @@ class ProjectHandler(object):
                                           'nao_image'     : '/home/nao/dev/images',
                                           'UserProfile'   : {}
                                          },
-                                'ecg'  : {"port" : 'COM8', "sample" : 1},
-                                'imu'  : {"port" : '/dev/ttyACM0', "sample" : 1},
-                                'laser': {"port" : '/dev/ttyUSB0', "sample" : 1, 'crotch': 0.8},
+                                'ecg'  : {"port" : 'COM6', "sample" : 1},
+                                'imu'  : {"port" : 'COM4', "sample" : 1},
+                                'laser': {"port" : 'COM3', "sample" : 1, 'crotch': 0.8},
                                 'therapy':{'BorgSample' : 20}
                                 }
         #paths dcitionary

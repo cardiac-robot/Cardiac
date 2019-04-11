@@ -2,9 +2,11 @@ import time
 import sensor
 import threading
 import random
+import struct
+import serial
 
 class Ecg(sensor.Sensor):
-    def __init__(self, settings = {"port":'COM8', "sample":1}):
+    def __init__(self, settings = {"port":'COM7', "sample":1}):
         super(Ecg, self).__init__()
         #load settings
         print settings
@@ -14,34 +16,37 @@ class Ecg(sensor.Sensor):
         #self.__ser = serial.Serial(self.settings['port'], 115200, timeout=1)
         #Flag used to check the synchronization.
         self.__async = False
+        
+        self.__data_temp=[]
+        #Flag that is used in case of pause.
+        self.__pause=True
+        self.sample_time= self.settings['sample']
+        print("init run")
+
+    def process(self, req, exit):
+        
+        EcgSensor(port = "COM7")
+        
+
+    #overrride function
+    #def process(self, req, exit):
+    def process_deprecated(self,req,exit):
+        #defining the serial port that will be used.
+        self.__ser = serial.Serial(self.settings['port'], 115200, timeout=3)
         #Variables used in the zephyr's serial protocol.
         self.__stx = struct.pack("<B", 0x02)
         self.__etx = struct.pack("<B", 0x02)
         self.__rate = struct.pack("<B", 0x26)
         self.__dlc_byte = struct.pack("<B", 55)
-        #Array where the EKG data will be saved.
-        self.__data_temp=[]
-        #Flag that is used in case of pause.
-        self.__pause=True
-        self.sample_time= self.settings['sample']
-
-    #overrride function
-    #def process(self, req, exit):
-    def process(self,req,exit):
-        #defining the serial port that will be used.
-        self.__ser = serial.Serial(self.settings['port'], 115200, timeout=1)
-        
-
+        #Array  where the EKG data will be saved.
+        self.PrintData("Processs started")
+        cont =0
         while not exit.is_set():
             if not self.onSleep.is_set():
                 #ECG PROCESS HERE
-                ecg_data = 70 + random.randint(0,30)
-                time.sleep(self.sample_time)
-                continue
-
                 try:
                     d = self.__ser.read()
-                    #print(str(d))
+                    print(str(d))
                     if d != self.__stx:
                         if not self.__async:
                             print >>sys.stderr, "Not synched"
@@ -80,32 +85,53 @@ class Ecg(sensor.Sensor):
                         print >>sys.stderr, "Bad ETX"
 
                     #Saving data into the backup file.
-                    #with self.lock:
-                    self.__data_temp = list(struct.unpack("<H2sH2sBBB15H6xHHB3x", payload))
+                    with self.lock:
+                        self.__data_temp=list(struct.unpack("<H2sH2sBBB15H6xHHB3x", payload))
 
                     self.val=reduce(lambda a,b:str(a)+','+str(b),self.__data_temp)+'\n'
-                    self.PrintData(val)
+                    #self.load_data(self.val)
+
                     if req.is_set():
                         self.send_data(self.val)
-
+                        
                     time.sleep(self.sample_time)
                 except:
                     print("problems with ECG acquisition ")
+                    cont += 1
+                    if (cont == 5):
+                        self.__ser.close()
+                        break
                     pass
+                    
+
+                    #if req.is_set():
+                    #    self.send_data(self.val)
+
+                    #time.sleep(self.sample_time)
+                    
+                #except:
+                #    print("problems with ECG acquisition ")
+                #    cont += 1
+                #    if (cont == 5):
+                #       break
+                #   pass
+                
             else:
                 time.sleep(1)
                 ecg_data = 0
-
-            if req.is_set():
-                #print("desde ECG OBJECT ecg data requested" + str(ecg_data))
-                self.send_data(ecg_data)
 
 
 
 
 if __name__ == '__main__':
     l = Ecg()
-    #l.launch_process()
-    l.launch_tread()
-    time.sleep(10)
+    l.launch_thread()
+    #l.launch_thread()
+    print "process launched"
+    for i in range(15):
+        print "data"
+        d = l.read_data()
+        print d
+        time.sleep(1)
+    print "out"
     l.shutdown()

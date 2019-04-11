@@ -1,0 +1,41 @@
+Type;Cause;value;Timestamp
+BloodPressure;initial;{'systolic': 90, 'diastolic': 60};2019-04-02 18:05:38.507000
+StartRecording;None;None;2019-04-02 18:05:40.515000
+RobotWelcome;Start;WelcomeSentence;2019-04-02 18:05:53.458000
+Motivation;Timeout;None;2019-04-02 18:06:20.802000
+BorgRequest;Timeout;none;2019-04-02 18:06:20.992000
+BorgReceive;Clicked;6;2019-04-02 18:06:24.004000
+RequestLook;None;None;2019-04-02 18:07:48.985000
+Alert1;HighHr;None;2019-04-02 18:08:10.143000
+RequestLook;None;None;2019-04-02 18:10:59.602000
+Motivation;Timeout;None;2019-04-02 18:11:27.352000
+BorgRequest;Timeout;none;2019-04-02 18:13:24.443000
+BorgReceive;Clicked;7;2019-04-02 18:13:28.643000
+RequestLook;None;None;2019-04-02 18:13:44.122000
+RequestLook;None;None;2019-04-02 18:14:45.688000
+Motivation;Timeout;None;2019-04-02 18:16:29.234000
+RequestLook;None;None;2019-04-02 18:17:36.026000
+RequestLook;None;None;2019-04-02 18:19:17.707000
+BorgRequest;Timeout;none;2019-04-02 18:20:28.220000
+RequestLook;None;None;2019-04-02 18:20:40.717000
+BorgReceive;Clicked;10;2019-04-02 18:20:47.126000
+Motivation;Timeout;None;2019-04-02 18:21:31.533000
+RequestLook;None;None;2019-04-02 18:21:50.087000
+RequestLook;None;None;2019-04-02 18:23:50.377000
+RequestLook;None;None;2019-04-02 18:24:57.334000
+RequestLook;None;None;2019-04-02 18:26:14.249000
+Motivation;Timeout;None;2019-04-02 18:26:33.156000
+BorgRequest;Timeout;none;2019-04-02 18:27:32.007000
+BorgReceive;Clicked;10;2019-04-02 18:27:36.392000
+RequestLook;None;None;2019-04-02 18:27:57.266000
+RequestLook;None;None;2019-04-02 18:30:19.539000
+Motivation;Timeout;None;2019-04-02 18:31:34.676000
+RequestLook;None;None;2019-04-02 18:31:52.759000
+RequestLook;None;None;2019-04-02 18:33:12.248000
+Cooldown;None;None;2019-04-02 18:33:55.918000
+BorgRequest;Timeout;none;2019-04-02 18:34:37.241000
+BorgReceive;Clicked;9;2019-04-02 18:34:40.629000
+EndRecording;None;None;2019-04-02 18:36:15.964000
+Motivation;Timeout;None;2019-04-02 18:36:36.249000
+BloodPressure;final;{'systolic': 90, 'diastolic': 60};2019-04-02 18:36:50.759000
+Questions;None;{'satisfaction': 9, 'motivation': 9};2019-04-02 18:36:55.503000

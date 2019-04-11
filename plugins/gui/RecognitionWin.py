@@ -34,14 +34,14 @@ class RecognitionWin(QtGui.QMainWindow):
 
         ## background label
         self.label_background = QtGui.QLabel(self)
-        self.label_background.setGeometry(QtCore.QRect(0, 0, self.winsize_h, self.winsize_v))
-        self.label_background.setPixmap(QtGui.QPixmap(self.PH.paths["img"] + "Blue_background.png"))
-        self.label_background.setScaledContents(True)
+        #self.label_background.setGeometry(QtCore.QRect(0, 0, self.winsize_h, self.winsize_v))
+        #self.label_background.setPixmap(QtGui.QPixmap(self.PH.paths["img"] + "Blue_background.png"))
+        #self.label_background.setScaledContents(True)
         ## background label
         self.label_background2 = QtGui.QLabel(self)
-        self.label_background2.setGeometry(QtCore.QRect(0, 0, self.winsize_h, self.winsize_v))
-        self.label_background2.setPixmap(QtGui.QPixmap(self.PH.paths["img"] + "background_recognition2.png"))
-        self.label_background2.setScaledContents(True)
+        #self.label_background2.setGeometry(QtCore.QRect(0, 0, self.winsize_h, self.winsize_v))
+        #self.label_background2.setPixmap(QtGui.QPixmap(self.PH.paths["img"] + "background_recognition2.png"))
+        #self.label_background2.setScaledContents(True)
         ## background label
         self.label_background3 = QtGui.QLabel(self)
         self.label_background3.setGeometry(QtCore.QRect(0, 0, self.winsize_h, self.winsize_v))
