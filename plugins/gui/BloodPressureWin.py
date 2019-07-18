@@ -4,13 +4,17 @@ from PyQt4 import QtCore, QtGui
 #%% Therapy window
 class BloodPressureWin(QtGui.QMainWindow):
     onValue         = QtCore.pyqtSignal()
+    onValueHr        = QtCore.pyqtSignal()
+    onHeartRateAlert = QtCore.pyqtSignal()
     onStartTherapy  = QtCore.pyqtSignal()
     onFinishTherapy = QtCore.pyqtSignal()
 
-    def __init__(self, ProjectHandler):
+    def __init__(self, ProjectHandler, mode):
         super(BloodPressureWin, self).__init__()
         self.PH = ProjectHandler
+        self.mode = mode
         #get screen size
+        print(self.mode)
         self.screen_h = self.PH.settings['res']['width']
         self.screen_v = self.PH.settings['res']['height']
         #set relative size
@@ -18,8 +22,8 @@ class BloodPressureWin(QtGui.QMainWindow):
         self.init_ui(self)
 
         self.bp = {}
-
-
+        self.hr = {}
+        
     def init_ui(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         #Resizing Mainwindow to a percentage of the total...
@@ -33,7 +37,12 @@ class BloodPressureWin(QtGui.QMainWindow):
         #%% Background
         self.label_background=QtGui.QLabel(self.centralwidget)
         self.label_background.setGeometry(QtCore.QRect(0,0,self.winsize_h,self.winsize_v))
-        self.label_background.setPixmap(QtGui.QPixmap(self.PH.paths['img'] + "background_pressure.png"))
+        if self.mode == None:
+            self.label_background.setPixmap(QtGui.QPixmap(self.PH.paths['img'] + "background_pressure.png"))
+        # Alert Win to configure Heart Rate Treshold
+        else:
+            self.label_background.setPixmap(QtGui.QPixmap(self.PH.paths['img'] + "background_alerts.png"))
+            
         
         self.label_background.setScaledContents(True)
         font = QtGui.QFont()
@@ -79,8 +88,17 @@ class BloodPressureWin(QtGui.QMainWindow):
         return directory
 
     def get_value(self):
-        self.bp = {'systolic': self.systolic_spin.value(), 'diastolic' : self.diastolic_spin.value()}
-        self.onValue.emit()
+        print(self.mode)
+        
+        if self.mode == None:
+            self.bp ={'systolic': self.systolic_spin.value(), 'diastolic' : self.diastolic_spin.value()}
+            self.onValue.emit()
+            
+        else:
+            self.hr = {'systolic': self.systolic_spin.value(), 'diastolic' : self.diastolic_spin.value()}
+            self.onValueHr.emit()
+            
+            
 
     def close_connect(self, f):
         self.exit_button['button'].clicked.connect(f)

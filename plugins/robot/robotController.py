@@ -5,6 +5,7 @@ import threading
 import time
 import qi
 
+
 #import qi
 
 """
@@ -60,6 +61,8 @@ class Controller(object):
         self.onSensorData = multiprocessing.Event()
         #when the robot asks to the patient if evereything is ok
         self.onAlert = multiprocessing.Event()
+
+        self.onAlertHr= multiprocessing.Event()
         #when call staff is required
         self.onCallStaff = multiprocessing.Event()
         #
@@ -79,25 +82,33 @@ class Controller(object):
         self.ts = 1
         #create process
         self.MainProcess = threading.Thread(target = self.process)
+        self.cont = 0
+
+
 
     #launch process method
     def launch(self):
+
+        
         print("Robot launched from robotController")
         self.MainProcess.start()
 
     #process to run in a separate process
     def process(self):
         print("START PROCESSS FROM robotController")
-        #creates data alzer
+        #creates data analyzer
+        #print(self.settings['UserProfile']['alarm1'])
         self.analyzer = analyzer.Analyzer(self.settings['UserProfile'])
         #create robot model
         self.robot = robotModel.Robot(controller = self, settings = self.settings, db = self.DB)
         #init behavior
-        print"memory settingsssss"
-        print self.settings['useMemory']
+        #print"memory settingsssss"
+        #print self.settings['useMemory']
 
         self.robot.start_behavior()
-
+        cont = 0
+        cont1 = 0
+        wait_reponse = False
         #enter to the main programm loop
         while not self.onShutdown.is_set():
             """
@@ -110,7 +121,8 @@ class Controller(object):
             if self.onSensorData.is_set():
                 #receive data from pipe
                 d = self.GetSensorData.recv()
-                #print('hola')
+                
+                #print('DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD')
                 #print(d)
                 #clear the event handler
                 self.onSensorData.clear()
@@ -118,22 +130,49 @@ class Controller(object):
                 self.analyzer.load_data(d = d)
                 #check the hr 0: no problem, 1: first alarm, 2: second alarm
                 r = self.analyzer.check_hr()
+
                 #according to the analysis result some events are set
                 #if set alert
                 print "dta analysis result: " + str(r)
 
                 #call medical staff
                 if r == 2 :
-                    #set events
-                    self.onCallStaff.set()
-                    #call the medical staff
-                    self.robot.alertHr2()
+                    cont = cont + 1
+                    if cont <4:
+                        #set events
+                        #self.onCallStaff.set()
+                        #call the medical staff
+                        self.robot.alertHr2()
+                    if cont >= 30:
+                        r = 0
+                        time.sleep(5)
+                        cont = 0
+
                 #ask patient if evereything is well
+                  
                 elif r == 1:
+                    cont1 = cont1 + 1
+                    if cont1 <2:
+
+                        print('Cont in Robot controller')
+                        print(self.cont)
+                        self.onAlertHr.set()
+                        #patient is feeling too tired
+                        self.robot.alertHr1()
+                        
+                    if cont1 >= 100:
+                        r = 0
+                        time.sleep(5)
+                        cont1 = 0
+                
+
+
                     #set events
-                    self.onAlert.set()
+                    #self.onAlert.set()
                     #ask to the patient if everything is ok
-                    self.robot.alertHr1()
+                    #self.robot.alertHr1()
+
+                    #cont = cont + 1
             """
             REQUEST BORG
             emitting signals:
@@ -175,6 +214,8 @@ class Controller(object):
             if self.onCallStaff.is_set():
                 #set call staff behavior
                 self.robot.callMedicalStaff()
+                #bajar la bandera (clear)
+                self.robot.callMedicalStaff.clear()
 
 
             #listen for cooldown event
@@ -194,6 +235,10 @@ class Controller(object):
         time.sleep(3)
 
     #method to send data from exterior (GUI) to the controller
+    def alert_stop(self):
+            print('((((((((((((((((((((((((((((YES')
+            self.cont=self.cont+1
+
     def send_data(self, d):
         if not self.onSensorData.is_set():
             #load data into the send pipe
@@ -204,12 +249,20 @@ class Controller(object):
     def correct_posture(self):
         self.robot.correct_posture()
 
+    #method to receive the thumbs up response
+    def thumbs_response(self):
+        self.robot.thanks_thumbs()
+
     #method to send borg value from GUI to the robot
     def send_borg(self, b):
         #load data into the send pipe
         self.LoadBorg.send(b)
         #trigger the event for data available
         self.onBorgScale.set()
+
+
+
+
 
     # shutdown method to finish all processes
     def shutdown(self):

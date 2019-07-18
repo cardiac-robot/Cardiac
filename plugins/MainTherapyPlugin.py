@@ -11,6 +11,7 @@ import gui.MainTherapyWin as MainTherapyWin
 #import child plugins
 import BloodPressurePlugin
 import EndQuestionPlugin
+#import AlertPlugin
 
 import lib.estimateGaze as eG
 """
@@ -40,13 +41,21 @@ class MainTherapyPlugin(object):
         self.BloodPressurePlugin = BloodPressurePlugin.BloodPressurePlugin(ProjectHandler = self.PH, DataHandler = self.DB)
         #end questionnaire plugin
         self.EndQuestionPlugin = EndQuestionPlugin.EndQuestionPlugin(ProjectHandler = self.PH, DataHandler = self.DB)
-
+        #self.AlertPlugin = AlertPlugin.AlertPlugin(ProjectHandler = self.PH, DataHandler = self.DB) 
         self.cooldownGaze = 55
+
 
     #set signals
     def set_signals(self):
         #blood pressure plugin
+        self.BloodPressurePlugin.View.onHeartRateAlert.connect(self.BloodPressurePlugin.LaunchView)
         self.BloodPressurePlugin.View.onStartTherapy.connect(self.View.show)
+
+        #self.View.show
+        #alert plugin 
+        #launch bloodpressure plugin
+        #self.AlertPlugin.view.onStartTherapy.connect(self.BloodPressurePlugin.LaunchView)
+        #self.BloodPressurePlugin.LaunchView
         #connect the end questionnaire to the on finishTherapy signal
         self.BloodPressurePlugin.View.onFinishTherapy.connect(self.EndQuestionPlugin.LaunchView)
         #connect shutdown method when blood pressure close_connect is emmited
@@ -62,6 +71,10 @@ class MainTherapyPlugin(object):
         self.View.exit_button['button'].clicked.connect(self.launch_final_bpm)
         #set on alamarms clicked signals
 
+        #setting Thums up buttons, for the first HR alarm
+        self.View.thumbsup_button['button'].clicked.connect(self.thumbsup_Callback)
+        self.View.thumbsdown_button['button'].clicked.connect(self.thumbsdown_Callback)
+
         #set on borg clicked signal
         self.View.onBorgReceive.connect(self.receive_borg)
         #set on everything is alright signal YES
@@ -73,6 +86,7 @@ class MainTherapyPlugin(object):
 
 
     def LaunchView(self):
+        print("launched view MainTherapyPlugin")
         #load settings
         mode = self.DB.General.TherapyStatus['mode']
         user = self.DB.General.TherapyStatus['user']
@@ -100,8 +114,11 @@ class MainTherapyPlugin(object):
                 print("USE MEMORY 0 TRUE")
                 self.useMemory = True
                 self.PH.GeneralSettings['robot']['useMemory'] = self.useMemory
+
+            
             #get user profile
             self.PH.GeneralSettings['robot']['UserProfile'] = self.DB.General.SM.person
+            
             #Create robot controller
             self.robotController = RC.Controller(ProjectHandler = self.PH,
                                                  settings       = self.PH.GeneralSettings['robot'],
@@ -110,6 +127,11 @@ class MainTherapyPlugin(object):
             #create robot monitor thread
             self.RobotMonitorThread = RobotMonitorThread(self)
 
+
+
+
+        #print('HOLAAAAAAAAAAAAAAAA')
+        #print(self.PH.GeneralSettings['robot'])
 
         #create timer display thread
         self.TimerDisplayThread = TimerDisplayThread(self)
@@ -122,14 +144,21 @@ class MainTherapyPlugin(object):
         self.set_signals()
 
         #launch blood pressure
-        self.BloodPressurePlugin.set_mode(mode = "initial")
-        self.BloodPressurePlugin.LaunchView()
+        self.BloodPressurePlugin.View.onHeartRateAlert.emit()
+        self.BloodPressurePlugin.set_mode(mode = "initial" )
+        #self.BloodPressurePlugin.set_mode(mode = "initial")
+        #self.BloodPressurePlugin.LaunchView()
+        #self.AlertPlugin.LaunchView()
 
 
 
         #self.View.show()
 
     #Emit signal to request the borg scale
+    def first_HRalert(self):
+        if self.useRobot:
+            self.robotController.alert_stop()
+
     def request_borg(self):
         #set request borg event
         self.DB.General.SM.load_event(t = "BorgRequest", c = "Timeout", v ="none")
@@ -176,15 +205,25 @@ class MainTherapyPlugin(object):
 
     #deploy all therapy resources
     def deploy_resources(self):
+
+        ##Setting robot Alarms
+        self.PH.GeneralSettings['robot']['UserProfile']['alarm1'] = self.BloodPressurePlugin.View2.hr['systolic']
+        self.PH.GeneralSettings['robot']['UserProfile']['alarm2'] = self.BloodPressurePlugin.View2.hr['diastolic']
         #sensor manager
         #set sensors
-        self.SensorManager.set_sensors(ecg = True, imu = True, laser = False)
+
+        self.SensorManager.set_sensors(ecg = True, imu = False, laser = False)
         #launch sensors
         self.SensorManager.launch_sensors()
         #launch timer
         self.TimerDisplayThread.start()
+
+        print("launch SensorMonitorThread from MainTherapypluWin")
+        time.sleep(5)
         #launch sensor monitor
         self.SensorMonitorThread.start()
+
+        time.sleep(5)
         #robot controller
         if self.useRobot:
             #launch robot
@@ -211,7 +250,19 @@ class MainTherapyPlugin(object):
 
         
 
+    #def activate_ThumbsupButtons(self):
+        #self.View.unlock_thumbs()
 
+
+    def thumbsup_Callback(self):
+    
+        self.robotController.thumbs_response()
+       
+        #self.first_HRalert()
+        #check value
+    def thumbsdown_Callback(self):
+
+        self.robotController.onCallStaff.set()
 
 
     def resetGaze(self):
@@ -251,7 +302,7 @@ class MainTherapyPlugin(object):
         #set cooldown event
         self.DB.General.SM.load_event(t ="Cooldown", c ="None", v = "None")
         #sleep laser an IMu sensor
-        self.SensorManager.sleep_sensors(ecg = False, imu = False, laser = False)
+        self.SensorManager.sleep_sensors(ecg = True, imu = True, laser = True)
         #if using no robot condition, cancel the timer
         if self.settings['mode'] == 0:
             #kill timer
@@ -294,7 +345,7 @@ class MainTherapyPlugin(object):
         #set mode
         print("launch_final_bpm")
         self.BloodPressurePlugin.set_mode(mode = "final")
-        self.BloodPressurePlugin.LaunchView()
+        self.BloodPressurePlugin.LaunchView2()
 
 #robot monitor thread
 class RobotMonitorThread(QtCore.QThread):
@@ -318,6 +369,13 @@ class RobotMonitorThread(QtCore.QThread):
                 self.c.request_borg_confirm()
                 self.c.robotController.onBorgConfirm.clear()
 
+            if self.c.robotController.onAlertHr.is_set():
+                print('on_thumbs signal emitted from MainTherapyPlugin')
+                self.c.View.onThumbs.emit()
+                self.c.robotController.onAlertHr.clear()
+
+            #set event to indicate that the user responded    
+
             time.sleep(self.ts)
 
     def shutdown(self):
@@ -328,15 +386,22 @@ class SensorMonitorThread(QtCore.QThread):
     def __init__(self, controller):
         super(SensorMonitorThread,self).__init__()
         #load controller
+        print("SensorMonitorThread init function run")
         self.c = controller
         self.on = True
         self.ts = 1
+        #print('SensorMonitorThread')
 
     def run(self):
+        print("run function SensorMonitorThread launched")
+        print self.on
         #main monitor loop
+
         while self.on:
             #update data
             self.c.SensorManager.update_data()
+            print "sensor data from MainTherapyPlugin"
+            print self.c.SensorManager.data['laser']
             #self.c.SensorManager.print_data()
             #load data to the database
             self.c.DB.General.SM.load_sensor_data(hr          = self.c.SensorManager.data['ecg'],
@@ -353,14 +418,17 @@ class SensorMonitorThread(QtCore.QThread):
                                   sl    = self.c.SensorManager.data['laser']['steplenght'],
                                   cad   = self.c.SensorManager.data['laser']['cadence'],
                                   imu   = self.c.SensorManager.data['imu'])
-            #print("sendind data to view")
-            #print self.c.SensorManager.data
+            print("sendind data to view")
+            print self.c.SensorManager.data
             time.sleep(self.ts)
+
+            #
 
 
 
     def shutdown(self):
         self.on = False
+
 
 
 # timer display thread

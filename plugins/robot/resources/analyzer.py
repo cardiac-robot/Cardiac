@@ -68,10 +68,16 @@ class Analyzer(object):
         #print(type(self.dataBuffer['ecg']))
         #print(self.dataBuffer['ecg'])
         
+        #print(self.profile['alarm2'])
+        #print(self.profile['alarm1'])
+        
         if len(self.dataBuffer) > 8:
             #calculates the average of the hr
+
             
             m = np.mean([ i['ecg'] for i in self.dataBuffer])
+            print('###########checking#######################')
+            print(m)
             #compare second alarm
             print self.profile
             if m > self.profile['alarm2']:
@@ -80,10 +86,12 @@ class Analyzer(object):
             elif m > self.profile['alarm1']:
                 return 1
             else:
+                print('check_hr from Analyzer!!!!')
                 return 0
         #if there is not enough data in the buffer
         else:
             return 0
+        
 
 
 if __name__ == '__main__':

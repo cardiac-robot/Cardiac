@@ -233,6 +233,7 @@ class TherapyWin(QtGui.QMainWindow):
         self.stop_button['button'].clicked.connect(self.unlock_exit)
         #
         self.stop_button['button'].clicked.connect(self.lock_stop)
+        self.thumbsup_button['button'].clicked.connect(self.lock_thumbs)
         #unlock borg when signal triggered
         #unlock thumbs
         self.onThumbs.connect(self.unlock_thumbs)
@@ -280,9 +281,9 @@ class TherapyWin(QtGui.QMainWindow):
             print "label"
             self.label_show['label0'].setText("{0:.2f}".format(self.data_ecg)+" ppm")
             self.label_show['label1'].setText("{0:.2f}".format(self.data_imu)+" deg")
-            self.label_show['label2'].setText("{0:.2f}".format(self.data_speed)+" mph")
-            self.label_show['label3'].setText("{0:.2f}".format(self.data_cadence)+" Hz")
-            self.label_show['label4'].setText("{0:.2f}".format(self.data_step_length)+" m")
+            self.label_show['label2'].setText("{0:.2f}".format(float(self.data_speed))+" mph")
+            self.label_show['label3'].setText("{0:.2f}".format(float(self.data_cadence))+" Hz")
+            self.label_show['label4'].setText("{0:.2f}".format(float(self.data_step_length))+" m")
 
     #unlock display
     def show_label_display(self):

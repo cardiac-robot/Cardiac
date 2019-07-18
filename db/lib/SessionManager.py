@@ -53,16 +53,22 @@ class SessionManager(object):
                 se = sensor_file.readlines()[1:]
                 se_dict = {"Heartrate":"","Speed":"","Cadence":"","Steplenght":"","Inclination":"","Timestamp":""}
                 l = 0
+                print('Session manager, sensor file')
+               
                 for l in enumerate(se):
+                    
                     d = se[l[0]].strip().split(";")
-
-                    se_dict['Heartrate'] = d[0]
-                    se_dict['Speed'] = d[1]
-                    se_dict['Cadence'] = d[2]
-                    se_dict['Steplenght'] = d[3]
-                    se_dict['Inclination'] = d[4]
-                    se_dict['Timestamp'] = d[5]
-                    session_sensor_list.append(dict(se_dict))
+                    
+                    if len(d)==6:
+                        se_dict['Heartrate'] = d[0]
+                        se_dict['Speed'] = d[1]
+                        se_dict['Cadence'] = d[2]
+                        se_dict['Steplenght'] = d[3]
+                        se_dict['Inclination'] = d[4]
+                        se_dict['Timestamp'] = d[5]
+                        session_sensor_list.append(dict(se_dict))
+                    else:
+                        print(d)
 
                 event_file = open(string + "/Events.csv", "r")
                 ev = event_file.readlines()[1:]
@@ -198,6 +204,11 @@ class SessionManager(object):
 
     def set_person(self, p):
         self.person = p
+
+    def set_alarms(self, alarms = {}):
+        self.person['alarm1'] = alarms['min']
+        self.person['alarm2'] = alarms['max']
+
 
 
     def register_user(self, name = "nd", age = "nd", gender = "nd", height = "nd", crotch= "nd", id_number = 'nd', weight = "nd", disease = "nd" ):
@@ -352,7 +363,15 @@ class SessionManager(object):
                     self.person['age']            = pl[3]
                     self.person['height']         = pl[4]
                     self.person['weight']         = pl[5]
-                    self.person['crotch']         = pl[6]
+                    print('333333333333333333333333333333333333333333333')
+                    print(pl[6])
+                    print('333333333333333333333333333333333333333333333')
+                    #TODO: if memory read crotch from other place
+                    if self.memory:
+                        self.person['crotch']     = 80    
+                    else:    
+                        self.person['crotch']     = pl[6]
+
                     self.person['disease']        = pl[7]
                     self.person['alarm1']         = 120
                     self.person['alarm2']         = 150

@@ -83,6 +83,10 @@ class Dialogs(object):
         #say bye sentences
         self.ByeSentence = 'Eso ha sido todo por hoy!! \\pau=20\\ No olvides ingresar la presión arterial y responder las preguntas al final! '
 
+        # Behavior to heart rate alert with the doctor
+
+        self.clinicalSatffBehavior = ['call_staff-2840e1/behavior_1', 'call_staff2-0ac685/behavior_1','call_staff3-d6db9c/behavior_1']
+
         print "load dialogs finished"
 
     #returns a random motivation sentences depending on the therapy time
@@ -98,6 +102,13 @@ class Dialogs(object):
         else:
             i = random.randint(0, len(self.sentencesLateMotivation) - 1)
             return self.sentencesLateMotivation[i]
+
+    #returns a random Call Staff sentence
+
+    def get_CallStaff_sentence(self):
+
+        i = random.randint(0, len(self.clinicalSatffBehavior) - 1)
+        return self.clinicalSatffBehavior[i]
 
     #returns a random borg sentence
     def get_borg_sentence(self):
@@ -119,6 +130,10 @@ class Dialogs(object):
     def get_borg_receive(self):
         i = random.randint(0, len(self.sentenceBorgResponseLow) - 1)
         return self.sentenceBorgResponseLow[i]
+
+    def sentence_fine(self):
+
+        return self.sentenceFine
 
     #
     def ask_borg_again(self):

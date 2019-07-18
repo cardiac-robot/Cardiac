@@ -9,6 +9,7 @@ import functools
 import resources.dialogs as dialogs
 import threading
 import resources.MemoryRobot as RMEM
+
 class Robot(object):
     def __init__(self, settings = { 'IpRobot': "192.168.0.100",
                                     'port'   : 9559,
@@ -69,6 +70,7 @@ class Robot(object):
             self.MemoryRobot.set_routines()
             print('memory robot launched')
         else:
+            print('##############GET SERVICES ###############################')
             self.get_services()
             self.set_routines()
 #----------------------------Setup and initialization Methods--------------------------
@@ -102,12 +104,25 @@ class Robot(object):
         self.posture = self.session.service("ALRobotPosture")
         #behavior manager
         self.behavior = self.session.service("ALBehaviorManager")
+        #memory for events of touch sensing
+        self.memory = self.session.service("ALMemory")
+        self.memory.subscribeToEvent("MiddleTactilTouched","ReactToTouch", "onTouched")
         #tracker
         self.tracker = self.session.service("ALTracker")
         targetName = "Face"
         faceWidth = 0.1
         self.tracker.registerTarget(targetName, faceWidth)
         self.tracker.track(targetName)
+        #names = self.behavior.getInstalledBehaviors()
+        #print(names)
+
+    def onTouched(self):
+
+        if self.settings['useMemory']:
+            self.MemoryRobot.tts.say(self.dialogs.sentenceFine)
+        else:
+            self.tts.say(self.dialogs.sentenceFine)
+
 
     #set language method
     def setLanguage(self, value):
@@ -221,6 +236,15 @@ class Robot(object):
             s = self.dialogs.get_borg_receive()
             self.animatedSpeech.say(s)
 
+    #thumbs receive
+    def thanks_thumbs(self):
+        if self.settings['useMemory']:
+            s = self.dialogs.sentence_fine()
+            self.MemoryRobot.animatedSpeech.say(s)
+        else:
+            s = self.dialogs.sentence_fine()
+            self.animatedSpeech.say(s)
+
    #ask borg again behavior
     def ask_borg_again(self):
 
@@ -238,16 +262,35 @@ class Robot(object):
         if self.db:
             self.db.General.SM.load_event(t = "Alert1", c = "HighHr", v = "None")
 
-        self.tts.say(self.dialogs.sentenceWarning)
-        self.motion.rest()
+        if self.settings['useMemory']:
+            self.MemoryRobot.tts.say(self.dialogs.sentenceWarning)
+            
+            #self.motion.rest()
+            
+        else:
+           self.tts.say(self.dialogs.sentenceWarning)
+           #self.motion.rest()
 
-    #aler 2 behavior
+    #alert 2 behavior
     #TODO: set redundancy control
     def alertHr2(self):
         if self.db:
             self.db.General.SM.load_event(t = "Alert2", c = "HighHr", v = "none")
+            
+        if self.settings['useMemory']:
+            self.MemoryRobot.tts.say(self.dialogs.sentenceAlertHR)
+            m = self.dialogs.get_CallStaff_sentence()
+            self.MemoryRobot.behavior.runBehavior(m)
+            #self.MemoryRobot.memory.subscribeToEvent("MiddleTactilTouched","ReactToTouch", "onTouched")
 
-        self.tts.say(self.dialogs.sentenceAlertHR)
+            #self.motion.rest()
+            
+        else:
+           self.tts.say(self.dialogs.sentenceAlertHR)
+           m = self.dialogs.get_CallStaff_sentence()
+           self.behavior.runBehavior(m)
+           #self.memory.subscribeToEvent("MiddleTactilTouched","ReactToTouch", "onTouched")
+           #self.motion.rest()
 
     #call doctor behavior
     def callMedicalStaff(self):

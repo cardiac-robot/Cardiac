@@ -106,7 +106,7 @@ class Laser(sensor.Sensor):
                 
                 if req.is_set():
                     #print self.data
-                    self.send_data([ self.data['cadence'], self.data['steplenght'], self.data['speed'] ])
+                    self.send_data([self.data['cadence'], self.data['steplenght'], self.data['speed']])
                 time.sleep(self.Ts)
             else:
                 self.data = {"speed": 0.0, "cadence": 0.0, "steplenght":0.0}

@@ -22,7 +22,7 @@ class ProjectHandler(object):
         #flag for settings
         self.OnSettings = False
         #general settings variable
-        self.GeneralSettings = {'robot': {'IpRobot'       : "192.168.0.100",
+        self.GeneralSettings = {'robot': {'IpRobot'       : "192.168.1.102",
                                           'port'          : 9559,#9559
                                           'mode'          : 1,
                                           'name'          : "Palin",
@@ -35,7 +35,7 @@ class ProjectHandler(object):
                                          },
                                 'ecg'  : {"port" : 'COM6', "sample" : 1},
                                 'imu'  : {"port" : 'COM4', "sample" : 1},
-                                'laser': {"port" : 'COM3', "sample" : 1, 'crotch': 0.8},
+                                'laser': {"port" : 'COM8', "sample" : 1, 'crotch': 0.8},
                                 'therapy':{'BorgSample' : 20}
                                 }
         #paths dcitionary

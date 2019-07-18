@@ -74,12 +74,22 @@ class MemoryRobot(object):
         self.posture = self.session.service("ALRobotPosture")
         #behavior manager
         self.behavior = self.session.service("ALBehaviorManager")
+        #Memory for touch sensing
+        self.memory = self.session.service("ALMemory")
+        self.memory.subscribeToEvent("MiddleTactilTouched","ReactToTouch", "onTouched")
+        
         #tracker
         self.tracker = self.session.service("ALTracker")
         targetName = "Face"
         faceWidth = 0.1
         self.tracker.registerTarget(targetName, faceWidth)
         self.tracker.track(targetName)
+        #names = self.behavior.getInstalledBehaviors()
+        #print(names)
+    
+    def onTouched(self):
+
+        self.tts.say(self.dialogs.sentenceFine)
 
     def set_routines(self):
         print("settings memory routines")
