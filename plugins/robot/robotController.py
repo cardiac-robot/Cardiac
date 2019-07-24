@@ -59,6 +59,9 @@ class Controller(object):
         self.onBorgConfirm = multiprocessing.Event()
         #sensor data received
         self.onSensorData = multiprocessing.Event()
+	#on speed change detected
+	self.onSpeedUp = multiprocessing.Event()
+	self.onSpeedDown = multiprocessing.Event()
         #when the robot asks to the patient if evereything is ok
         self.onAlert = multiprocessing.Event()
 
@@ -130,6 +133,8 @@ class Controller(object):
                 self.analyzer.load_data(d = d)
                 #check the hr 0: no problem, 1: first alarm, 2: second alarm
                 r = self.analyzer.check_hr()
+		#TODO: implement check velocity change event
+		speed_res = self.analyzer.check_speed()
 
                 #according to the analysis result some events are set
                 #if set alert
@@ -143,13 +148,13 @@ class Controller(object):
                         #self.onCallStaff.set()
                         #call the medical staff
                         self.robot.alertHr2()
+			self.robot.add_alert_count()
                     if cont >= 30:
                         r = 0
                         time.sleep(5)
                         cont = 0
 
-                #ask patient if evereything is well
-                  
+                #ask patient if evereything is well                  
                 elif r == 1:
                     cont1 = cont1 + 1
                     if cont1 <2:
@@ -159,20 +164,25 @@ class Controller(object):
                         self.onAlertHr.set()
                         #patient is feeling too tired
                         self.robot.alertHr1()
-                        
+                        self.robot.add_alert_count()
+
                     if cont1 >= 100:
                         r = 0
                         time.sleep(5)
                         cont1 = 0
-                
 
-
-                    #set events
-                    #self.onAlert.set()
-                    #ask to the patient if everything is ok
-                    #self.robot.alertHr1()
-
-                    #cont = cont + 1
+                # check speed results
+		if speed_res == 1:
+		    #increment perceived
+                    print("Increment of speed perceived from robotController")
+		    #set event
+		    self.onSpeedUp.set()			
+   
+		elif speed_res == 2:
+		    #decrement of speed
+		    print("Decrement of speed perceived from robotController")
+		    #set event
+		    self.onSpeedDown.set()	
             """
             REQUEST BORG
             emitting signals:
@@ -201,6 +211,7 @@ class Controller(object):
                     self.onAlert.set()
                     #patient is feeling too tired
                     self.robot.alertFatigue()
+		    #self.robot.add_alert_count()
                 #
                 elif r == 2:
                     #set event to request again the borg scale
@@ -209,6 +220,7 @@ class Controller(object):
                     self.analyzer.clear_borg()
                     #ask for borg confirmation
                     self.robot.ask_borg_again()
+		    
 
             #listen for events
             if self.onCallStaff.is_set():

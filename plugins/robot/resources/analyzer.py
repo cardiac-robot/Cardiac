@@ -19,6 +19,9 @@ class Analyzer(object):
         #
         self.isBorgConfirmed = False
 
+	self.prev_speed = 0
+	self.curr_speed = 0
+
     #load sensor data to the analyzer buffer
     def load_data(self,d):
         #check buffer size
@@ -57,10 +60,35 @@ class Analyzer(object):
                         return 2
 
         return 0
-
-
-
-
+    
+    def check_speed(self):
+	'''
+	   return 0 if no change is perceived
+	   return 1 if increasing is perceived
+	   return 2 if decreasing is perceived
+	   return -1 for error
+	'''
+	if len(self.dataBuffer) > 8:
+	    #get data 
+	    self.curr_speed = np.mean([i['speed'] for i in self.dataBuffer])		
+            print('###########checking speed from analyzer#############')
+            print(m)
+	    print("####################################################")
+	    var = (self.curr_speed - self.prev_speed)/self.curr_speed
+	    #update window
+	    self.prev_speed = self.curr_speed
+	    #compare
+	    if abs(var) < 0.15:	    
+		return 0
+	    elif var > 0:
+		return 1
+	    elif var < 0:
+		return 0
+	    else:
+		return -1
+         else:
+	    return 0
+		
     #check profile alarms with minimum the last 8 measured values
     def check_hr(self):
         #check if there are at least 8 values in the buffer
@@ -72,12 +100,11 @@ class Analyzer(object):
         #print(self.profile['alarm1'])
         
         if len(self.dataBuffer) > 8:
-            #calculates the average of the hr
-
-            
+            #calculates the average of the hr            
             m = np.mean([ i['ecg'] for i in self.dataBuffer])
-            print('###########checking#######################')
+            print('###########checking hr from analyzer#############')
             print(m)
+	    print("#################################################")
             #compare second alarm
             print self.profile
             if m > self.profile['alarm2']:

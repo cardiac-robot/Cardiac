@@ -342,7 +342,7 @@ class MemoryRobot(object):
         last_session_events = self.p_events[-1]
         print last_session_events
         vals = [0,0,0] # [heart_rate_counter, blood_pressure_counter, borg_scale_counter]
-
+	#TODO: adjust type of events according to the database
         for s in last_session_events:
             if s["Type"] == "alert":
                 if s["cause"] == "HR > HR2":
@@ -422,7 +422,6 @@ class MemoryRobot(object):
             self.session_intensity = 0
         elif targetSpeed > int(last_session_avgs["Speed"]) or targetSlope > int(last_session_avgs["Inclination"]):
             session_announcement += self.session_intensity_more
-            self.session_intensity = 1
         else:
             session_announcement += self.session_intensity_less
             self.session_intensity = -1

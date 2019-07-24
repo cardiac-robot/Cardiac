@@ -33,6 +33,8 @@ class Robot(object):
         #micro second
         self.micro = 1000000
 
+	self.num_alerts  = 0
+
         if self.settings['useMemory']:
             print "creating robot memory from model"
             self.MemoryRobot = RMEM.MemoryRobot(ProjectHandler = self.controller.PH,
@@ -152,6 +154,9 @@ class Robot(object):
     def stop_routines(self):
         self.motivationTask.stop()
         self.borgTask.stop()
+   
+    def add_alert_count(self):
+	self.num_alerts += 1
 
 #----------------------------------------------------------------------
 #----------------------------Behavior Methods--------------------------
@@ -168,6 +173,8 @@ class Robot(object):
             self.MemoryRobot.motion.wakeUp()
             #threading.Thread(target = self.MemoryRobot.run_welcome_behavior).start()
             self.MemoryRobot.run_welcome_behavior()
+	    #TODO: checkPreviousSessionAlerts(begin), checkProgress(end)
+	    self.MemoryRobot.checkPreviousSessionAlerts()
         else:
             self.motion.wakeUp()
             threading.Thread(target = self.run_welcome_behavior).start()
@@ -314,6 +321,7 @@ class Robot(object):
     #shutdown method, stop routines and get to rest position
     def shutdown(self):
         if self.settings['useMemory']:
+	    self.MemoryRobot.checkProgress(self.num_alerts)
             self.MemoryRobot.animatedSpeech.say(self.dialogs.ByeSentence)
             self.MemoryRobot.motion.rest()
         else:
