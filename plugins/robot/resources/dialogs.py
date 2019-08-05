@@ -24,16 +24,22 @@ class Dialogs(object):
 
         #Sentences used for feedbacks
         self.sentencesEarlyMotivation = ["\\bound=S\\ Animo! Apenas estamos empezando","Vamos a empezar bien hoy","Empieza caminando despacio"]
-
+        self.sentencesEarlyMotivationMemory = ["\\bound=S\\ Animo, \\pau=200\\ XX! Apenas estamos empezando","Vamos a empezar bien hoy, \\pau=200\\ XX","Empieza caminando despacio, \\pau=200\\ XX"]
         self.earlyMotivationProvided = []
+        
         self.sentencesMidMotivation = ["\\bound=S\\ Vamos! Puedes hacerlo","Anímate","Estás haciéndolo bien","Estoy seguro que puedes hacerlo","Continúa esforzándote!","Que bien lo \\emph=200\\ estás haciendo","Sigue \\bound=S\\ así!","Estás progresando!","Hoy lo estás haciendo mejor","No olvides respirar!","Sé que puedes hacerlo!","Excelente trabajo","Has mejorado"]
+        self.sentencesMidMotivationMemory = ["\\bound=S\\ Vamos, \\pau=200\\ XX! Puedes hacerlo","Anímate, \\pau=200\\ XX","Estás haciéndolo bien, \\pau=200\\ XX","Estoy seguro que puedes hacerlo, \\pau=200\\ XX","Continúa esforzándote, \\pau=200\\ XX!","Que bien lo \\emph=200\\ estás haciendo, \\pau=200\\ XX","Sigue \\bound=S\\ así, \\pau=200\\ XX!","Estás progresando, \\pau=200\\ XX!","Hoy lo estás haciendo mejor, \\pau=200\\ XX","No olvides respirar, \\pau=200\\ XX!","Sé que puedes hacerlo, \\pau=200\\ XX!","Excelente trabajo, \\pau=200\\ XX","Has mejorado, \\pau=200\\ XX"]
         self.midMotivationProvided = []
+        
         self.sentencesLateMotivation = ["Falta poco","Ya casi terminamos","Solo faltan algunos minutos","Puedes hacerlo","Que bien lo has hecho","¡Ánimo!","Lo estás haciendo muy bien","Te veo mejor "]
+        self.sentencesLateMotivationMemory = ["Falta poco, \\pau=200\\ XX","Ya casi terminamos, \\pau=200\\ XX","Solo faltan algunos minutos, \\pau=200\\ XX","Puedes hacerlo, \\pau=200\\ XX","Que bien lo has hecho, \\pau=200\\ XX","¡Ánimo, \\pau=200\\ XX!","Lo estás haciendo muy bien, \\pau=200\\ XX","Te veo mejor, \\pau=200\\ XX"]
         self.lateMotivationProvided = []
         #sentnece for cooldown
         self.cooldownSentence = "Has terminado, ahora puedes seguir con el enfriamiento"
+
         #Sentences for alert
         self.sentenceAlertHR = "Tu frecuencia cardiaca es muy alta, voy a llamar al doctor"
+        self.sentenceAlertHRMemory = "Tu frecuencia cardiaca es muy alta, \\pau=100\\ XX. Voy a llamar al doctor"
         self.sentenceAlertBP = "Tu presión cardiaca es muy alta, voy a llamar al doctor"
 
         self.sentencePain = "^start(animations/Stand/Gestures/Hey_1) \\bound=S\\ \\emph=200\\ Doctora, el paciente tiene dolor. \\pau=500\\ puede venir por favor ^wait(animations/Stand/Gestures/Hey_1)"
@@ -42,7 +48,7 @@ class Dialogs(object):
 
         #Sentences for Borg Scale
         self.sentenceBorgInitial = ["¿Según esta escala, qué tan cansado te sientes?","¿Mira la pantalla, que cansancio tienes?","¿Puedes completar la escala de cansancio?","¿Según esta escala, qué tan cansado estás?","¿Cómo te sientes? Responde según la escala","¿Cuál es tu nivel de cansancio?","¿Según esta escala, como te sientes?","¿Estás cansado?","¿Según esta escala, que cansancio tienes?","¿Según esta escala, cómo te sientes?"]
-        self.sentenceBorgInitialMemory = ["¿XX, \\pau=400\\ Según esta escala, qué tan cansado te sientes?","¿XX, \\pau=400\\ Mira la pantalla, que cansancio tienes?","¿XX \\pau=400\\ , Puedes completar la escala de cansancio?","¿Según esta escala, qué tan cansado estás, \\pau=200\\ XX ?","¿Cómo te sientes, \\pau=400\\ XX? Responde según la escala","¿Cuál es tu nivel de cansancio?","¿Según esta escala, como te sientes?","XX \\pau=400\\ ¿Estás cansado?","¿Según esta escala, que cansancio tienes?","¿Según esta escala, cómo te sientes?"]
+        self.sentenceBorgInitialMemory = ["¿XX, \\pau=400\\ Según esta escala, qué tan cansado te sientes?","¿XX, \\pau=400\\ Mira la pantalla, que cansancio tienes?","¿XX, \\pau=400\\ puedes completar la escala de cansancio?","¿Según esta escala, qué tan cansado estás, \\pau=200\\ XX ?","¿Cómo te sientes, \\pau=400\\ XX? Responde según la escala","¿XX, \\pau=400\\ cuál es tu nivel de cansancio?","¿XX, \\pau=400\\ según esta escala, como te sientes?","¿XX, \\pau=400\\ estás cansado?","¿XX, \\pau=400\\ según esta escala, que cansancio tienes?","¿XX, \\pau=400\\ según esta escala, cómo te sientes?"]
         self.borgInitialProvided = []
         self.sentenceBorgSecond = "Dijiste que estás muy cansado pero tu frecuencia cardiaca se encuentra baja, ¿estás seguro que estás muy cansado?"
         self.sentenceBorgResponseLow = ["Gracias!!"]
@@ -55,7 +61,7 @@ class Dialogs(object):
 
         #Sentences for additional requests and thanks
         self.sentenceRequestLookForward = ["Mira al frente","Pon la vista al frente","Recuerda mirar al frente","No mires a tus pies","Levanta la cabeza","Continua mirando al frente"]
-        self.sentenceRequestLookForwardMemory = ["XX, \\pau=200\\ Mira al frente","Pon la vista al frente, \\pau=100\\ XX "," \\pau=200\\Recuerda mirar al frente","No mires a tus pies","Levanta la cabeza","Continua mirando al frente"]
+        self.sentenceRequestLookForwardMemory = ["XX, \\pau=200\\ Mira al frente","Pon la vista al frente, \\pau=200\\ XX "," \\pau=200\\Recuerda mirar al frente, \\pau=200\\ XX","No mires a tus pies, \\pau=200\\ XX","Levanta la cabeza, \\pau=200\\ XX","Continua mirando al frente, \\pau=200\\ XX"]
         self.requestLookForwardProvided = []
         self.sentenceLookedForward = ["Bien hecho","Muy bien","Continua así","Bien"]
         self.lookedForwardProvided = []
@@ -102,6 +108,20 @@ class Dialogs(object):
         else:
             i = random.randint(0, len(self.sentencesLateMotivation) - 1)
             return self.sentencesLateMotivation[i]
+
+    def get_motivation_memory_sentence(self):
+        timeElapsed = self.get_therapy_time()
+
+        if timeElapsed < self.earlyThreshold:
+            i = random.randint(0, len(self.sentencesEarlyMotivationMemory) - 1)
+            return self.sentencesEarlyMotivationMemory[i]
+        elif timeElapsed < self.midThreshold:
+            i = random.randint(0, len(self.sentencesMidMotivationMemory) - 1)
+            return self.sentencesMidMotivationMemory[i]
+        else:
+            i = random.randint(0, len(self.sentencesLateMotivationMemory) - 1)
+            return self.sentencesLateMotivationMemory[i]
+
 
     #returns a random Call Staff sentence
 

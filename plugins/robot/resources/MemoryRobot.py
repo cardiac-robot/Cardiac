@@ -47,8 +47,12 @@ class MemoryRobot(object):
         self.loadSentencesForMemoryFeedback(useSpanish)
         #set person profile
         self.setPerson(self.settings['UserProfile'])
-        #?
+        #say name of the user n times
         self.num_say_name = 0
+        #number of sessions of the user
+        self.p_num_sessions = 0
+        #counter to say name of the user
+        self.say_name_counter = 0
 
     def set_session(self, s):
         #load session from robot model
@@ -121,8 +125,12 @@ class MemoryRobot(object):
         if self.DB:
             self.DB.General.SM.load_event(t ="Motivation", c = "Timeout", v ="None")
 
-        s = self.dialogs.get_motivation_sentence()
-
+        if self.isSayName():
+            s = self.get_motivation_memory_sentence(s)
+            s = s.replace('XX', self.p_first_name)
+        else:
+            s = self.dialogs.get_motivation_sentence()
+        
         self.animatedSpeech.say(s)
 
     #callback
@@ -132,15 +140,20 @@ class MemoryRobot(object):
             print('set onBorgRequest event from memory robot')
             self.controller.onBorgRequest.set()
             print self.controller.onBorgRequest.is_set()
-
-        s = self.dialogs.get_borg_memory_sentence()
-        s = s.replace('XX', self.settings['UserProfile']['name'])
+        if self.isSayName():
+            s = self.dialogs.get_borg_memory_sentence()
+            s = s.replace('XX', self.p_first_name)
+        else:
+            s = self.dialogs.get_borg_sentence()
         self.animatedSpeech.say(s)
 
     def run_welcome_behavior(self):
-        s = self.dialogs.WelcomeSentenceMemory
-        s = s.replace("XX", self.settings['UserProfile']['name'])
-        self.animatedSpeech.say(s)
+        if self.p_num_sessions == 0:
+            s = self.dialogs.WelcomeSentenceMemory
+            s = s.replace("XX", self.settings['UserProfile']['name'])
+            self.animatedSpeech.say(s)
+        
+        self.sentence_counter = 1
 
         announce = self.dialogs.sentenceAnnounce.replace("XX",str(5))
         announce = announce.replace("YY", str(1))
@@ -153,8 +166,11 @@ class MemoryRobot(object):
         self.start_routines()
 
     def posture_correction_behavior(self):
-        s = self.dialogs.get_posture_correction_memory_sentence()
-        s = s.replace("XX", self.settings['UserProfile']['name'])
+        if self.isSayName():
+            s = self.dialogs.get_posture_correction_memory_sentence()
+            s = s.replace('XX', self.p_first_name)
+        else:
+            s = self.dialogs.get_posture_correction_sentence()
         self.animatedSpeech.say(s)
 
     #TODO: cooldown method
@@ -215,7 +231,9 @@ class MemoryRobot(object):
 
     def setPerson(self, p):
         self.person = p
-        self.p_name = self.person['name']
+        self.p_name = str(self.settings['UserProfile']['name'])
+        identity_say = self.p_name.split()
+        self.p_first_name = str(identity_say[0])
         self.loadInfo()
         self.loadSessionData()
 
@@ -231,7 +249,7 @@ class MemoryRobot(object):
             self.past_holiday.append(self.weekend_word)
         for x in range(1, day_dif+1):
             try_date = session_date + datetime.timedelta(days=x)
-            if try_date < cur_session and try_date in self.holidays_2017:
+            if try_date < cur_session and try_date in self.holidays:
                 self.past_holiday.append(self.bank_holiday_word)
         expected_session = session_date + datetime.timedelta(days=day_dif)
         return expected_session
@@ -286,7 +304,7 @@ class MemoryRobot(object):
                     expected_session = self.getExpectedSession(sorted_times, expected_session, cur_session)
                     print expected_session
                     if cur_session > expected_session:
-                        if expected_session not in self.holidays_2017:
+                        if expected_session not in self.holidays:
                             self.missed_sessions.append(expected_session)
                             missed = cur_session - expected_session
                     else:
@@ -345,7 +363,7 @@ class MemoryRobot(object):
 	#TODO: adjust type of events according to the database
         for s in last_session_events:
             if s["Type"] == "alert":
-                if s["cause"] == "HR > HR2":
+                if s["Cause"] == "HR > HR2":
                     # "high heart rate"
                     vals[0] += 1
                 elif s["Cause"] == "BP > BP2":
@@ -422,6 +440,7 @@ class MemoryRobot(object):
             self.session_intensity = 0
         elif targetSpeed > int(last_session_avgs["Speed"]) or targetSlope > int(last_session_avgs["Inclination"]):
             session_announcement += self.session_intensity_more
+            self.session_intensity = 1
         else:
             session_announcement += self.session_intensity_less
             self.session_intensity = -1
@@ -475,8 +494,7 @@ class MemoryRobot(object):
             progress_feedback = progress_feedback.replace(" XX", " " + self.extra_comment)
         else:
             progress_feedback = progress_feedback.replace(" XX", "")
-        identity_say = self.p_name.split()
-        progress_feedback = progress_feedback.replace("YY", str(identity_say[0]))
+        progress_feedback = progress_feedback.replace("YY", self.p_first_name)
         text_to_say = progress_feedback
         print text_to_say
         # self.say(text_to_say)
@@ -489,22 +507,19 @@ class MemoryRobot(object):
         # TODO: check avg heart beat/blood pressure/borg scale
         # TODO: ask Monica how they monitor the patient, is it good for the heart beat to decrease, etc.
 
-    def isSayName(self, counter):
+    def isSayName(self):
         """if true the robot with memory will say the name of the person (in addition to the sentence being said)"""
-        if self.num_say_name == 0 or counter == self.num_say_name:
-            self.num_say_name = random.randint(2,5)
+        if self.num_say_name == 0 or self.sentence_counter == self.num_say_name:
+            self.num_say_name = random.randint(2,4)
+            self.sentence_counter = 0
             return True
+        self.sentence_counter += 1
         return False
 
     def addNameToSentence(self, sentenceToSay):
-        identity_say = self.p_name.split()
-        print "############################ P_NAME ##################################"
-        print self.p_name
-        print identity_say
-        print "############################ P_NAME ##################################"
         addChar = sentenceToSay[-1]
         sentenceToSay = sentenceToSay.rstrip('!?.')
-        sentenceToSay += " " + str(identity_say[0])
+        sentenceToSay += ", \\pau=200\\ " + self.p_first_name
         if addChar == "!" or addChar == "?" or addChar == ".":
             sentenceToSay += addChar
         return sentenceToSay
@@ -512,17 +527,26 @@ class MemoryRobot(object):
     def loadSentencesForMemoryFeedback(self, useSpanish):
         if useSpanish:
             # in Colombia 2017
-            self.holidays_2017 = [datetime.date(2017, 1, 1), datetime.date(2017, 1, 9),
-                             datetime.date(2017, 3, 20), datetime.date(2017, 4, 13),
-                             datetime.date(2017, 4, 14), datetime.date(2017, 5, 1),
-                             datetime.date(2017, 5, 29), datetime.date(2017, 6, 19),
-                             datetime.date(2017, 6, 26), datetime.date(2017, 7, 3),
-                             datetime.date(2017, 7, 20), datetime.date(2017, 8, 7),
-                             datetime.date(2017, 8, 15), datetime.date(2017, 10, 16),
-                             datetime.date(2017, 11, 6), datetime.date(2017, 11, 13),
-                             datetime.date(2017, 11, 13), datetime.date(2017, 12, 8),
-                             datetime.date(2017, 12, 25)]
+#             self.holidays = [datetime.date(2017, 1, 1), datetime.date(2017, 1, 9),
+#                              datetime.date(2017, 3, 20), datetime.date(2017, 4, 13),
+#                              datetime.date(2017, 4, 14), datetime.date(2017, 5, 1),
+#                              datetime.date(2017, 5, 29), datetime.date(2017, 6, 19),
+#                              datetime.date(2017, 6, 26), datetime.date(2017, 7, 3),
+#                              datetime.date(2017, 7, 20), datetime.date(2017, 8, 7),
+#                              datetime.date(2017, 8, 15), datetime.date(2017, 10, 16),
+#                              datetime.date(2017, 11, 6), datetime.date(2017, 11, 13),
+#                              datetime.date(2017, 11, 13), datetime.date(2017, 12, 8),
+#                              datetime.date(2017, 12, 25)]
 
+            self.holidays = [datetime.date(2019, 1, 1), datetime.date(2019, 1, 7),
+                             datetime.date(2019, 3, 25), datetime.date(2019, 4, 18),
+                             datetime.date(2019, 4, 19), datetime.date(2019, 5, 1),
+                             datetime.date(2019, 6, 3), datetime.date(2019, 6, 24),
+                             datetime.date(2019, 7, 1), datetime.date(2019, 8, 7),
+                             datetime.date(2019, 8, 19), datetime.date(2019, 10, 14),
+                             datetime.date(2019, 11, 4), datetime.date(2019, 11, 11),
+                             datetime.date(2019, 12, 8), datetime.date(2019, 12, 25)]
+            
             self.missing_one_session = "No viniste a la sesion el pasado XX. Espero que todo este bien! "
             self.missing_multiple_sessions = "No viniste a las últimas XX sesiones. Espero que todo esté bien! "
             self.holiday_sentence = "Espero que hayas tenido XX. "
@@ -551,15 +575,17 @@ class MemoryRobot(object):
             self.session_intensity_less = " un poco menos intenso que la última vez. "
 
             # Progress feedback:
+            self.end_of_session_announcement = "Eso ha sido todo por hoy! "
             self.no_alert_feedback = "Súper, no tuvimos problemas en esta sesión XX! Me alegra haberte acompañado YY! "
             self.equal_alerts_as_previous = "Tuvimos el mismo número de problemas que la última vez XX. La próxima vez lo haremos mejor YY! "
             self.less_alerts_than_previous = "Tuvimos menos problemas que la última vez XX. Sigamos trabajando así YY! "
-            self.more_alerts_than_previous = "Tuvimos menos problemas que la última vez XX. La próxima vez lo haremos mejor YY! "
+            self.more_alerts_than_previous = "Tuvimos más problemas que la última vez XX. La próxima vez lo haremos mejor YY! "
             self.session_intensity_comment = "a pesar que la intensidad de la sesión fue más alta"
             self.session_intensity_comment_bad = "pero la intensidad de la sesión fue un poco más alta"
+            self.fill_questionnaire = "\\pau=20\\ No olvides ingresar la presión arterial y responder las preguntas al final!"
         else:
             #in UK
-            self.holidays_2017 = [datetime.date(2017, 1, 2), datetime.date(2017, 4, 14),
+            self.holidays = [datetime.date(2017, 1, 2), datetime.date(2017, 4, 14),
                              datetime.date(2017, 4, 17), datetime.date(2017, 5, 1),
                              datetime.date(2017, 5, 29), datetime.date(2017, 6, 28),
                              datetime.date(2017, 12, 25), datetime.date(2017, 12, 26)]
@@ -616,14 +642,11 @@ if __name__ == "__main__":
     MR.checkPreviousSessionAlerts(sentenceAnnounce, targetSpeed, targetSlope)
 
     numAlerts = 1
-    counter = 0
     sentenceToSay = "Mereces un aplauso, buen trabajo."
     for i in range(0,50):
-        if MR.isSayName(counter):
-            counter = 0
+        if MR.isSayName():
             sentence_to_say = MR.addNameToSentence(sentenceToSay)
         else:
-            counter += 1
             sentence_to_say = sentenceToSay
         print sentence_to_say
     MR.checkProgress(numAlerts)
