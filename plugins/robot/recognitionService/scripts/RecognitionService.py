@@ -1,5 +1,25 @@
 # coding: utf-8
 
+#! /usr/bin/env python
+
+#========================================================================================================#
+#  Copyright 2017 Bahar Irfan                                                                            #
+#                                                                                                        #
+#  RecogniserService is a script for obtaining multi-modal information from the user: face similarity    #
+#  scores, gender, age, height estimations of the user through NAOqi modules (ALFaceDetection and        #
+#  ALPeopleDetection, NAOqi 2.4 and 2.5 - works on both NAO and Pepper). This information is used by     #
+#  RecogniserMemory, amulti-modal incremental Bayesian network (MMIBN) with option for online learning   #
+#  (evidence based updating of likelihoods) for reliable recognition in open-world identification.       #
+#                                                                                                        #
+#  Please cite the following work if using this code:                                                    #
+#    B. Irfan, N. Lyubova, M. Garcia Ortiz, and T. Belpaeme (2018), 'Multi-modal Open-Set Person         #
+#    Identification in HRI', 2018 ACM/IEEE International Conference on Human-Robot Interaction Social    #
+#    Robots in the Wild workshop.                                                                        #
+#                                                                                                        #
+#  RecognitionService, RecognitionMemory and each script in this project is under the GNU General Public #
+#  License.                                                                                              #
+#========================================================================================================#
+
 import qi
 import stk.runner
 import stk.events
@@ -30,7 +50,7 @@ class RecognitionService(object):
         self.image = "/home/nao/dev/images/nao_image.jpg" #TODO: set this!
         self.image_base = self.image
         self.robotOffsetFromFloorInMeters = 0.59 #TODO: set this!
-        self.prob_threshold = 0.000001
+        self.prob_threshold = 1.0e-75
         self.subscribed = False
 
         self.useSpanish = True
@@ -298,19 +318,21 @@ class RecognitionService(object):
         else:
             results = self.faceResults
         if not results:
-            # if face recognition fails, then fill the values such that they would not change the overall recognition
-            faceAccuracy = self.prob_threshold
-            people_db = self.s.ALFaceDetection.getLearnedFacesList()
-            if len(people_db) == 0:
-                norm_val = 1.0
-            else:
-                norm_val = float("{0:.3f}".format(1.0/len(people_db)))
-            faceWithConfidence = []
-            for counter in range(0, len(people_db)):
-                faceWithConfidence.append([people_db[counter], norm_val])
-            faceWithConfidence = [faceAccuracy, faceWithConfidence]
-            genderWithConfidence = ["Female", 0.5]
-            ageWithConfidence = [35, 0]
+            self.s.ALMemory.raiseEvent("RecognitionResultsUpdated", recog_results)
+            return recog_results # []
+#             # if face recognition fails, then fill the values such that they would not change the overall recognition
+#             faceAccuracy = self.prob_threshold
+#             people_db = self.s.ALFaceDetection.getLearnedFacesList()
+#             if len(people_db) == 0:
+#                 norm_val = 1.0
+#             else:
+#                 norm_val = float("{0:.3f}".format(1.0/len(people_db)))
+#             faceWithConfidence = []
+#             for counter in range(0, len(people_db)):
+#                 faceWithConfidence.append([people_db[counter], norm_val])
+#             faceWithConfidence = [faceAccuracy, faceWithConfidence]
+#             genderWithConfidence = ["Female", 0.5]
+#             ageWithConfidence = [35, 0]
         else:
             if results[0][5]:
                 faceWithConfidence = results[0][5] # faces with confidences

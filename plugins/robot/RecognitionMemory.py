@@ -135,10 +135,14 @@ class RecogniserBN:
 
         """OPTIMISED PARAMETERS"""
         self.face_recog_threshold = 0.4 # threshold of the face recognition (optimised for NAOqi ALFaceDetection recognition)
-        self.quality_threshold = 0.013 # threshold for the quality of the identity estimate (quality = highest_prob - second_highest_prob * num_people) (optimised, see weights for description)
-        self.weights = [1.0, 0.19, 0.589, 0.15, 0.34] # [face_weight, gender_weight, age_weight, height_weight, time_weight] (optimised weights for hybrid normalisation with no online learning on IMDB dataset with Nall_uniformT -uniform time)
-        self.update_prob_method = "none" # method for online learning: none, evidence (MMIBN-OL), sum, avg
-        self.update_prob_unknown_method = "none" # method for online learning for unknown state: none, evidence (MMIBN-OL), sum, avg
+        # self.quality_threshold = 0.013 # threshold for the quality of the identity estimate (quality = highest_prob - second_highest_prob * num_people) (optimised, see weights for description)
+        # self.weights = [1.0, 0.19 , 0.589, 0.15 , 0.34] # [face_weight, gender_weight, age_weight, height_weight, time_weight] (optimised weights for hybrid normalisation with no online learning on IMDB dataset with Nall_gaussianT -gaussian time)    
+#         self.update_prob_method = "none" # method for online learning: none, evidence (MMIBN-OL), sum, avg
+#         self.update_prob_unknown_method = "none" # method for online learning for unknown state: none, evidence (MMIBN-OL), sum, avg
+        self.quality_threshold = 0.028 # threshold for the quality of the identity estimate (quality = highest_prob - second_highest_prob * num_people) (optimised, see weights for description)
+        self.weights = [1.0, 0.634, 0.534, 0.169, 0.346] # [face_weight, gender_weight, age_weight, height_weight, time_weight] (optimised weights for hybrid normalisation with online learning on IMDB dataset with Nall_gaussianT -uniform time)    
+        self.update_prob_method = "evidence" # method for online learning: none, evidence (MMIBN-OL), sum, avg
+        self.update_prob_unknown_method = "evidence" # method for online learning for unknown state: none, evidence (MMIBN-OL), sum, avg
         # self.update_partial_params = ["T"] # online learning for only specified parameters! self.update_partial_params = None if all parameters are to be learned
         self.update_partial_params = None
 
@@ -2504,11 +2508,13 @@ class RecogniserBN:
 
     def saveAnalysisFile(self, recog_results, identity_real, ie, isPrevSavedToAnalysis, num_recog = None):
         if self.isDBinCSV:
-            saveAnalysisToJson(self, recog_results, identity_real, ie, isPrevSavedToAnalysis, num_recog = num_recog)
+            if num_recog:
+                self.saveAnalysisToJson(recog_results, identity_real, ie, isPrevSavedToAnalysis, num_recog = num_recog)
+            else:
+                self.saveAnalysisToJson(recog_results, identity_real, ie, isPrevSavedToAnalysis)
         else:
-            saveAnalysisToMongo(self, recog_results, identity_real, ie)
-
-
+            self.saveAnalysisToMongo(recog_results, identity_real, ie)
+            
     def saveAnalysisToMongo(self, recog_results, identity_real, ie):
         """Save analysis to mongo db"""
         data = self.getAnalysisData(recog_results, identity_real, ie)
@@ -2519,7 +2525,7 @@ class RecogniserBN:
         """Save analysis to json file"""
 
         a = []
-        if self.isMultipleRecognitions and num_recog < self.num_mult_recognitions - 1:
+        if self.isMultipleRecognitions and num_recog is not None and num_recog < self.num_mult_recognitions - 1:
             self.analysis_data_list.append(self.getAnalysisData(recog_results, identity_real, ie))
         else:
             if self.isMultipleRecognitions:
