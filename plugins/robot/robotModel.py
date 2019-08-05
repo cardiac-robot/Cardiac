@@ -31,7 +31,8 @@ class Robot(object):
         self.dialogs = dialogs.Dialogs()
         #micro second
         self.micro = 1000000
-
+        # number of alerts in the session
+        self.num_alerts = 0
         if self.settings['useMemory']:
             print "creating robot memory from model"
             self.MemoryRobot = RMEM.MemoryRobot(ProjectHandler = self.controller.PH,
@@ -42,7 +43,7 @@ class Robot(object):
 
                 #launch_robot
         self.launch_robot()
-
+        
 
 
     #launch the main robot utilities
@@ -207,7 +208,10 @@ class Robot(object):
 
         #set alarm  event
         if self.settings['useMemory']:
-            self.MemoryRobot.tts.say(self.dialogs.sentenceWarning)
+            s = self.dialogs.sentenceWarning
+            if self.MemoryRobot.isSayName():
+                s = self.MemoryRobot.addNameToSentence(s)
+            self.MemoryRobot.tts.say(s)
         else:
             self.tts.say(self.dialogs.sentenceWarning)
 
@@ -215,6 +219,8 @@ class Robot(object):
     def thanks_borg(self):
         if self.settings['useMemory']:
             s = self.dialogs.get_borg_receive()
+            if self.MemoryRobot.isSayName():
+                s = self.MemoryRobot.addNameToSentence(s)
             self.MemoryRobot.animatedSpeech.say(s)
         else:
             s = self.dialogs.get_borg_receive()
@@ -225,19 +231,23 @@ class Robot(object):
 
         if self.settings['useMemory']:
             s = self.dialogs.ask_borg_again()
+            if self.MemoryRobot.isSayName():
+                s = self.MemoryRobot.addNameToSentence(s)
+                
             self.MemoryRobot.tts.say(s)
         else:
             s = self.dialogs.ask_borg_again()
             self.tts.say(s)
-
-
 
     #alert 1 behavior
     def alertHr1(self):
         if self.db:
             self.db.General.SM.load_event(t = "Alert1", c = "HighHr", v = "None")
 
-        self.tts.say(self.dialogs.sentenceWarning)
+        s = self.dialogs.sentenceWarning
+        if self.settings['useMemory'] and self.MemoryRobot.isSayName():
+            s = self.MemoryRobot.addNameToSentence(s)
+        self.tts.say(s)
         self.motion.rest()
 
     #aler 2 behavior
@@ -246,20 +256,33 @@ class Robot(object):
         if self.db:
             self.db.General.SM.load_event(t = "Alert2", c = "HighHr", v = "none")
 
-        self.tts.say(self.dialogs.sentenceAlertHR)
+        s = self.dialogs.sentenceAlertHR
+        if self.settings['useMemory'] and self.MemoryRobot.isSayName():
+            s = self.dialogs.sentenceAlertHRMemory
+            s = s.replace('XX', self.MemoryRobot.p_first_name)
+        self.tts.say(s)
 
     #call doctor behavior
     def callMedicalStaff(self):
         print("call doctor behavior")
+        if self.settings['useMemory']:
+            self.num_alerts += 1
+            
         if self.db:
             self.db.General.SM.load_event(t = "CallMedicalStaff", c = "HighHr", v = "none")
 
-        self.tts.say(self.dialogs.sentenceWarning)
-
+        s = self.dialogs.sentenceWarning
+        if self.settings['useMemory'] and self.MemoryRobot.isSayName():
+            s = self.MemoryRobot.addNameToSentence(s)
+        self.tts.say(s)
+            
     #cooldown behavior
     def cooldown(self):
         if self.settings['useMemory']:
-            self.MemoryRobot.animatedSpeech.say(self.dialogs.cooldownSentence)
+            s = self.dialogs.cooldownSentence
+            if self.MemoryRobot.isSayName():
+                s = self.MemoryRobot.addNameToSentence(s)
+            self.MemoryRobot.animatedSpeech.say(s)
             self.MemoryRobot.stop_routines()
         else:
             self.animatedSpeech.say(self.dialogs.cooldownSentence)
@@ -270,7 +293,9 @@ class Robot(object):
     #shutdown method, stop routines and get to rest position
     def shutdown(self):
         if self.settings['useMemory']:
-            self.MemoryRobot.animatedSpeech.say(self.dialogs.ByeSentence)
+            s = self.MemoryRobot.end_of_session_announcement + self.MemoryRobot.checkProgress(self.num_alerts) + self.MemoryRobot.fill_questionnaire
+            self.num_alerts = 0
+            self.MemoryRobot.animatedSpeech.say(s)
             self.MemoryRobot.motion.rest()
         else:
             self.animatedSpeech.say(self.dialogs.ByeSentence)
