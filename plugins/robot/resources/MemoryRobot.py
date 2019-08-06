@@ -17,6 +17,7 @@ import os.path
 import dialogs
 import bisect
 import random # for making random choices for choosing the number of sentences between saying patient name in isSayName
+random.seed(123456789)
 
 class MemoryRobot(object):
 
