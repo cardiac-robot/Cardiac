@@ -24,9 +24,9 @@ class SensorManager(object):
             self.e.set()
             self.update_data()
             self.e.clear()
-            print "reader " + str(self.settings)
+            #print "reader " + str(self.settings)
             time.sleep(self.sample_time)
-        print("going out reader")
+        #print("going out reader")
 
     def shutdown(self):
         self.e1.set()
@@ -52,12 +52,12 @@ class SensorManager(object):
         PipeOut,PipeIn = pipe
         while not e1.is_set():
             t = t +1
-            print "reducing " +str(t)
+            #print "reducing " +str(t)
             if e.is_set():
-                print "send"
+            #    print "send"
                 PipeIn.send(t)
             time.sleep(0.5)
-        print "going out"
+        #print "going out"
 
 
 

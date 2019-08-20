@@ -212,7 +212,7 @@ class MainTherapyPlugin(object):
         #sensor manager
         #set sensors
 
-        self.SensorManager.set_sensors(ecg = True, imu = False, laser = False)
+        self.SensorManager.set_sensors(ecg = False, imu = False, laser = False)
         #launch sensors
         self.SensorManager.launch_sensors()
         #launch timer
@@ -394,14 +394,14 @@ class SensorMonitorThread(QtCore.QThread):
 
     def run(self):
         print("run function SensorMonitorThread launched")
-        print self.on
+        #print self.on
         #main monitor loop
 
         while self.on:
             #update data
             self.c.SensorManager.update_data()
-            print "sensor data from MainTherapyPlugin"
-            print self.c.SensorManager.data['laser']
+            #print "sensor data from MainTherapyPlugin"
+            #print self.c.SensorManager.data['laser']
             #self.c.SensorManager.print_data()
             #load data to the database
             self.c.DB.General.SM.load_sensor_data(hr          = self.c.SensorManager.data['ecg'],
@@ -418,8 +418,8 @@ class SensorMonitorThread(QtCore.QThread):
                                   sl    = self.c.SensorManager.data['laser']['steplenght'],
                                   cad   = self.c.SensorManager.data['laser']['cadence'],
                                   imu   = self.c.SensorManager.data['imu'])
-            print("sendind data to view")
-            print self.c.SensorManager.data
+            #print("sendind data to view")
+            #print self.c.SensorManager.data
             time.sleep(self.ts)
 
             #

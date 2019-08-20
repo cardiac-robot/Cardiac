@@ -19,6 +19,7 @@ class RegisterWin(QtGui.QMainWindow):
         #set relative size
         self.r_size = 0.7
         self.init_ui()
+        self.btn = None
         #info variable
         self.info_reg = {}
 
@@ -87,13 +88,27 @@ class RegisterWin(QtGui.QMainWindow):
         self.female = QtGui.QRadioButton(self)
         self.female.setGeometry(QtCore.QRect(self.winsize_h * 0.62, self.winsize_v * 0.49, self.winsize_v * 0.21, self.winsize_h * 0.032))
         self.female.setText("Femenino")
+        self.female.toggled.connect(lambda:self.RadioButton_state(num = 2))
 
         self.male = QtGui.QRadioButton(self)
         self.male.setGeometry(QtCore.QRect(self.winsize_h * 0.75, self.winsize_v * 0.49, self.winsize_v * 0.21, self.winsize_h * 0.032))
         self.male.setText("Masculino")
+        self.male.toggled.connect(lambda:self.RadioButton_state(num = 3))
 
         #set internal signals
         self.set_signals()
+
+
+    def RadioButton_state(self, num):
+
+        print('##############################GENDER ELECTION######################################')
+
+        if num == 2:
+            self.gender = 'F'
+            print('User is a female')
+        elif num == 3:
+            self.gender = 'M'
+            print('User is a male')
 
 
     def set_signals(self):
@@ -116,6 +131,7 @@ class RegisterWin(QtGui.QMainWindow):
                     c = c+1
             c_patology = c
             if (c_name == 0) and (c_patology == 0) and (str(self.controllabels['age'].text()).isdigit() == True) and (str(self.controllabels['height'].text()).isdigit() == True) and (str(self.controllabels['weight'].text()).isdigit() == True) and (str(self.controllabels['height_c'].text()).isdigit() == True) and (str(self.controllabels['id'].text()).isdigit() == True):
+                
                 self.info_reg['name'] = str(self.controllabels['name'].text())
                 self.info_reg['age'] = str(self.controllabels['age'].text())
                 self.info_reg['height'] = str(self.controllabels['height'].text())
@@ -123,8 +139,9 @@ class RegisterWin(QtGui.QMainWindow):
                 self.info_reg['height_c'] = str(self.controllabels['height_c'].text())
                 self.info_reg['id'] = str(self.controllabels['id'].text())
                 self.info_reg['patology'] = str(self.controllabels['patology'].text())
+                self.info_reg['gender']  = str(self.gender)
                 self.onData.emit()
-                print(self.info_reg)
+                #print(self.info_reg)
 
 
         if (c_name > 0) and not (self.controllabels['name'].text() ==""):

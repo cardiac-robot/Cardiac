@@ -65,7 +65,7 @@ class General(object):
         self.UserStatus = self.SM.register_user(id_number = user['id'],
                                                 name      = user['name'],
                                                 age       = user['age'],
-                                                gender    = "F",
+                                                gender    = user['gender'],
                                                 height    = user['height'],
                                                 disease   = user ['patology'],
                                                 crotch    = user['height_c'],

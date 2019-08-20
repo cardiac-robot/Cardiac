@@ -133,8 +133,8 @@ class Controller(object):
                 self.analyzer.load_data(d = d)
                 #check the hr 0: no problem, 1: first alarm, 2: second alarm
                 r = self.analyzer.check_hr()
-		#TODO: implement check velocity change event
-		speed_res = self.analyzer.check_speed()
+                #TODO: implement check velocity change event
+                speed_res = self.analyzer.check_speed()
 
                 #according to the analysis result some events are set
                 #if set alert

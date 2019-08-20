@@ -88,7 +88,7 @@ class GetGaze():
         look_away =None
         while True:
 
-            print("ENTER WHILE GAZE ESTIMATOR")
+            #print("ENTER WHILE GAZE ESTIMATOR")
             #Get an image
             ret, frame = video_capture.read()
             #self.show_image(frame)
@@ -137,16 +137,19 @@ class GetGaze():
             #Reaction to angle
             if self.controller == None:
                 if look_away:
-                    print "look straigth"
+                    pass
+                    #print "look straigth"
                 else:
-                    print "fine"
+                    pass
+                    #print "fine"
             else:
                 print("CONTROLLER GAZE ESTIMATOR")
                 if look_away:
-                    print("HEAD GAZE")
+                    #print("HEAD GAZE")
                     self.controller.headGaze(look_away)
                 else:
-                    print('fine fine fine')
+                    pass
+                    #print('fine fine fine')
 
             #Check if loop should be stopped
             if (cv2.waitKey(1) & 0xFF == ord('q')) or self.shouldStop: #Exit program when the user presses 'q'

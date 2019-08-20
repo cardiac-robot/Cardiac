@@ -46,12 +46,13 @@ class MemoryRobot(object):
         #load custom memory sentences
         #TODO: migrate custom sentences to the dialog manager
         self.loadSentencesForMemoryFeedback(useSpanish)
+        #number of sessions of the user
+        self.p_num_sessions = 0
         #set person profile
         self.setPerson(self.settings['UserProfile'])
         #say name of the user n times
         self.num_say_name = 0
-        #number of sessions of the user
-        self.p_num_sessions = 0
+        
         #counter to say name of the user
         self.say_name_counter = 0
 
@@ -127,7 +128,7 @@ class MemoryRobot(object):
             self.DB.General.SM.load_event(t ="Motivation", c = "Timeout", v ="None")
 
         if self.isSayName():
-            s = self.get_motivation_memory_sentence(s)
+            s = self.dialogs.get_motivation_memory_sentence(s)
             s = s.replace('XX', self.p_first_name)
         else:
             s = self.dialogs.get_motivation_sentence()
@@ -184,7 +185,8 @@ class MemoryRobot(object):
         threading.Thread(target = self.animatedSpeechProxy.say, args=(sentence,self.configuration)).start()
 
     def loadInfo(self):
-
+    	print'###############################'
+    	print 'loadInfo'
         #self.db_handler = db.DbHandler()
         #p = self.db_handler.get_person_data({"name":self.p_name})
         self.p = self.person
@@ -193,43 +195,83 @@ class MemoryRobot(object):
         self.p_height = float(self.p["height"])
         self.p_times = []
         times = self.DB.General.SM.load_user_times(p = self.PH.paths['current_user'])
+        print'times'
+        print times
         for tt in times:
-            print tt
+            #print tt
             self.p_times.append([tt.time().strftime('%H:%M:%S'), tt.isoweekday()])
 
+    	print 'loadInfo'
+    	print "##############################"
+
     def loadSessionData(self):
-        print "loadSessionData start"
+    	#print('#####################################################################################')
+        #print "loadSessionData start"
+        #print('#####################################################################################')
         s = self.DB.General.SM.get_all_sessions()
+        '''
+		s {"dates:[], "events":[], "sensors":[], "averages":[]}
+        '''
         #
         counter = 0
         self.p_dates = []
         self.p_events = []
         self.p_averages = []
         #
+        #print "**********************************************************************"
+        #print s
+        #print "**********************************************************************"
+        
         for ss in s:
             self.p_dates.append(datetime.datetime.strptime(ss["date"], '%Y-%m-%d'))
             s_events = []
             e = ss["events"]
+            #s_avg = []
+            avrg = {"Speed": 0, "Inclination": 0,"Hr": 0}
             for e_s in e:
-                s_events.append(e_s)
+            	s_events.append(e_s)
+            	
+            	if e_s["Type"] == "average":
+            		
+            		if e_s["Cause"] == 'speed':
+            			avrg["Speed"] = e_s['Value']
+            		elif e_s["Cause"] == 'hr':
+            			avrg["Hr"] = e_s['Value']
+            		elif e_s["Cause"] == 'incl':
+            			avrg["Inclination"] = e_s['Value']
+
             self.p_events.append(s_events)
-            s_avg = []
-            a = ss["average"]
-            print "################ ss[average] ##################"
-            print a
-            print "################ ss[average] ##################"
+            
+
+
+
+            #a = ss["average"]
+            #print "################ ss[average] ##################"
+            #print a
+            #print "################ ss[average] ##################"
             #for a_s in a:
             #    s_avg.append(a_s)
-            self.p_averages.append(a)
+            self.p_averages.append(avrg)
 
-            counter = counter + 1
+            counter = counter + 1 
+
+
+        #print 'date'
+        #print(self.p_dates)
+        #print 'events'
+        #print(self.p_events)
+        #print 'averages'
+        #print(self.p_averages)
+
 
         print "################"
         print "number of sessions " + str(counter)
         print "################"
         self.p_num_sessions = counter
-        print "loadSessionData finish"
-
+        #print('#####################################################################################')
+     	#print "loadSessionData finish"
+     	#print('#####################################################################################')
+       
     def setPerson(self, p):
         self.person = p
         self.p_name = str(self.settings['UserProfile']['name'])
@@ -326,8 +368,12 @@ class MemoryRobot(object):
 
     def checkAbsence(self):
         text_to_say = ""
+        print('-------------------------------------------CHECK Absence number sesio----------------------')
+        print(self.p_num_sessions)
+        print('-------------------------------------------CHECK Absence number sesio----------------------')
         if self.p_num_sessions == 0:
-            return text_to_say
+        	print "saying when self.p_num_sessions is zero"
+        	return text_to_say
         self.past_holiday = []
         self.missed_sessions = []
         self.came_early = False
@@ -363,6 +409,21 @@ class MemoryRobot(object):
         vals = [0,0,0] # [heart_rate_counter, blood_pressure_counter, borg_scale_counter]
 	#TODO: adjust type of events according to the database
         for s in last_session_events:
+
+        	if s["Type"] == "Alert1":
+        		vals[0] += 1
+
+        	if s["Type"] == "Alert2":
+        		vals[0] += 1
+
+        	if s["Type"] == "HighBorg":
+        		vals[2] += 1
+
+        	if s["Type"] == "Emergency":
+        		vals[1] += 1
+
+
+        	'''
             if s["Type"] == "alert":
                 if s["Cause"] == "HR > HR2":
                     # "high heart rate"
@@ -397,8 +458,8 @@ class MemoryRobot(object):
                         # "slightly high values"
                         vals[2] += 1
                         vals[0] += 1
-                elif s["Cause"] == "Warning":
-                    if s["Value"] == "HR1":
+                elif s["Cause"] == "HighHr":
+                    if s["Value"] == "Alert1":
                         # "slightly high heart rate"
                         vals[0] += 1
                     elif s["Value"] == "BP1":
@@ -408,6 +469,7 @@ class MemoryRobot(object):
                         # "slightly high heart rate and blood pressure"
                         vals[0] += 1
                         vals[1] += 1
+            '''
 
         if sum(vals) == 0:
             prev_session_announcement = self.good_previous_session_announcement

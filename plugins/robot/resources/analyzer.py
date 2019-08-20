@@ -68,26 +68,26 @@ class Analyzer(object):
 	   return 2 if decreasing is perceived
 	   return -1 for error
 	'''
-	if len(self.dataBuffer) > 8:
-	    #get data 
-	    self.curr_speed = np.mean([i['speed'] for i in self.dataBuffer])		
-            print('###########checking speed from analyzer#############')
-            print(m)
-	    print("####################################################")
-	    var = (self.curr_speed - self.prev_speed)/self.curr_speed
-	    #update window
-	    self.prev_speed = self.curr_speed
-	    #compare
-	    if abs(var) < 0.15:	    
-		return 0
-	    elif var > 0:
-		return 1
-	    elif var < 0:
-		return 0
-	    else:
-		return -1
-         else:
-	    return 0
+    	if len(self.dataBuffer) > 8:
+    	    #get data 
+    	    self.curr_speed = np.mean([i['laser']['speed'] for i in self.dataBuffer])		
+            #print('###########checking speed from analyzer#############')
+            #print()
+    	    #print("####################################################")
+    	    var = (self.curr_speed - self.prev_speed)/self.curr_speed
+    	    #update window
+    	    self.prev_speed = self.curr_speed
+    	    #compare
+            if abs(var) < 0.15:
+                return 0
+            elif var > 0:
+                return 1
+            elif var < 0:
+                return 0
+            else:
+                return -1
+        else:
+            return 0
 		
     #check profile alarms with minimum the last 8 measured values
     def check_hr(self):

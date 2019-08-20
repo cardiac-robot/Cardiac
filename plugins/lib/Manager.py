@@ -75,7 +75,7 @@ class SensorManager(object):
 
     #read sensor data and update data variable
     def update_data(self):
-        print("Update data from SensorManager")
+        #print("Update data from SensorManager")
         if self.IMU:
             imu_data = self.imu.read_data()
         else:
@@ -97,25 +97,25 @@ class SensorManager(object):
             ecg_data = 70 + random.randint(0,30)
 
         if self.LASER:
-            print("#####READING DATA FROM LASER#####")
+            #print("#####READING DATA FROM LASER#####")
             laser_data = self.laser.read_data()
             if len(laser_data) == 3:
                 laser_data = {"speed": laser_data[2], "cadence": laser_data[0], "steplenght": laser_data[1]}
-                print laser_data
+            #    print laser_data
             else:
                 print("missing data from laser")
                 pass 
 
-            print("################################")
+            #print("################################")
         else:
             laser_data = {"speed": 4.1 + + random.randint(0,2), "cadence": 0.8, "steplenght":0.5}
 
         self.data['imu'] = imu_data[0]
         self.data['laser'] = laser_data
         self.data['ecg'] = ecg_data
-        print("#########sensor manager update data##########")
-        print self.data
-        print("#############################################")
+        #print("#########sensor manager update data##########")
+        #print self.data
+        #print("#############################################")
         #self.data = str(self.data)
 
     #print data

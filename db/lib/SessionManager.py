@@ -3,7 +3,7 @@
 import time
 import os
 import datetime
-
+import numpy as np
 #OBJECT that handles all the patient data during the session
 class SessionManager(object):
     def __init__(self, ProjectHandler = None, UserStatus = None):
@@ -15,12 +15,35 @@ class SessionManager(object):
         self.date = datetime.datetime.now()
         #
         self.memory = False
+        self.set_averagers()
+
+    #
+    def set_averagers(self):
+        self.avrg_speed = Averager()
+        self.avrg_hr = Averager()
+        self.avrg_inclination = Averager()
+
+    def update_average(self, speed, hr, incl):
+        self.avrg_speed.update_value(speed)
+        self.avrg_hr.update_value(hr)
+        self.avrg_inclination.update_value(incl)
+
+    def get_averages(self):
+        speed = self.avrg_speed.get_value()
+        hr = self.avrg_hr.get_value()
+        incl = self.avrg_inclination.get_value()
+        return {"speed": speed, "hr": hr, "incl": incl}
+
+        
+
+ 
 
     def set_memory_db(self, v = True):
         self.memory = v
 
     def load_sensor_data(self, hr = 0,speed =0,cadence = 0, sl =0, inclination = 0 ):
         data = str(hr) + ";" + str(speed) + ";" +str(cadence) + ";" +str(sl) + ";" +str(inclination) + ";"+ str(datetime.datetime.now()) +'\n'
+        self.update_average(speed = speed, hr = hr, incl = inclination)
         self.SensorFile.write(data)
 
     def load_event(self, t = "nd", c = "nd", v = "nd"):
@@ -37,9 +60,14 @@ class SessionManager(object):
     def get_all_sessions(self):
 
         path  =  self.PH.paths['current_user']
+        #print "====================================================="
+        #print "current Path"
+        #print path
 
         sessions = next(os.walk(path))[1]
+        #print sessions
 
+        #print "====================================================="
         session_dict = {"events": [], "average":[],"sensors":[], 'date': []}
         all_sessions = []
         if sessions:
@@ -50,10 +78,12 @@ class SessionManager(object):
                 string = path + "/" +str(s)
                 print string
                 sensor_file = open(string + "/Sensors.csv","r")
+                #print sensor_file
                 se = sensor_file.readlines()[1:]
+                #print se
                 se_dict = {"Heartrate":"","Speed":"","Cadence":"","Steplenght":"","Inclination":"","Timestamp":""}
                 l = 0
-                print('Session manager, sensor file')
+                #print('Session manager, sensor file')
                
                 for l in enumerate(se):
                     
@@ -68,7 +98,8 @@ class SessionManager(object):
                         se_dict['Timestamp'] = d[5]
                         session_sensor_list.append(dict(se_dict))
                     else:
-                        print(d)
+                        #print(d)
+                        pass
 
                 event_file = open(string + "/Events.csv", "r")
                 ev = event_file.readlines()[1:]
@@ -84,15 +115,16 @@ class SessionManager(object):
 
                 session_dict['date'] = s
 
-            session_dict['events'] = session_event_list
-            session_dict['sensors']= session_sensor_list
-            session_dict['average']= {'Speed': 3, 'Inclination': 1}
-            all_sessions.append(dict(session_dict))
+                session_dict['events'] = session_event_list
+                session_dict['sensors']= session_sensor_list
+                session_dict['average']= {'Speed': 3, 'Inclination': 1}
+                all_sessions.append(dict(session_dict))
         else:
             print "0"
             return 0
-
-        print all_sessions
+        #print('################################ PRINT ALL SESSIONS ###########################')
+        #print all_sessions
+        #print('################################ PRINT ALL SESSIONS ###########################')
         return all_sessions
 
     def check_attending_time(self):
@@ -196,6 +228,11 @@ class SessionManager(object):
         #self.EventFile = open(event_name, 'a')
 
     def finish_session(self):
+        avrg_dict = self.get_averages()
+        self.load_event(t = "average", c = "speed", v = avrg_dict["speed"])
+        self.load_event(t = "average", c = "hr", v = avrg_dict["hr"])
+        self.load_event(t = "average", c = "inclination", v = avrg_dict["incl"])
+        
         #close files
         self.SensorFile.close()
         self.EventFile.close()
@@ -224,6 +261,7 @@ class SessionManager(object):
                        'alarm2' : 150,
                        'borg_threshold': 12
                        }
+        print 'USER DARA FROM SESSION MANAGER'
         print self.person
         #saves user in the db if not exists
         self.save_user()
@@ -385,3 +423,32 @@ class SessionManager(object):
             f.write("Id;Name;Gender;Age;Height;Weight;Crotch;Disease\n")
             f.close()
             return {"name" : self.person['name'], "registered" : False, "id" : self.person['id']}
+
+
+
+#%% object that performs the average of incoming data
+class Averager(object):
+    def __init__(self):
+        self.n = 0
+        self.average = 0
+        self.buffer = []
+    def update_value(self, value):
+       
+        if self.n == 0:
+            self.average = value
+            self.n += 1
+        else:
+            self.average = self.average * np.divide(float(self.n), float(self.n + 1))+ np.divide(float(value), float(self.n + 1))
+            self.n += 1
+   
+    def get_value(self):
+        return self.average
+
+    def get_buffer(self):
+        return self.buffer
+
+    def reset(self):
+        self.buffer.append(self.average)
+        self.n = 0
+        self.average = 0
+
