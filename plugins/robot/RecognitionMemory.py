@@ -1213,7 +1213,7 @@ class RecogniserBN:
             if p_id is not None:
                 print p_id
                 if self.isRegistered:
-                    falseRecognitionSentence = random.choice(self.falseRecognition)
+                    falseRecognitionSentence = random.choice(self.correctRecognition)
                     textToSay = falseRecognitionSentence.replace("XX", str(identity_say[0]))
                 else:
                     if self.userAlreadyRegistered:
@@ -3297,7 +3297,7 @@ class RecogniserBN:
             self.falseRecognition = ["Ah, por supuesto, me disculpo! Parece que mis ojos me estan fallando... Bienvenido de nuevo XX!", "Te ves diferente hoy, es un nuevo corte?"]
             self.registrationPhrase = "Hola XX, encantado de conocerte"
             self.falseRegistration = "Ya te había visto antes! Es un gusto verte de nuevo XX!"
-            self.correctRecognition = ["Sabia que eras tu, solo queria estar seguro", "Te ves bien hoy XX!"]
+            self.correctRecognition = ["Sabia que eras tu, solo queria estar seguro", "Te ves bien hoy XX!","Solo quería saludar, ¡espero que estés bien XX!","¡Me siento mucho mejor cada vez que te veo XX!","¡Traes el sol que tanto necesito para mi día XX!"]
             self.noFaceInImage = "Hmmm, parece que hay un problema con la imagen. Podrias mirar la pantalla otra vez por favor?"
         else:
             self.lookAtTablet = "Hello there, could you look at the tablet "

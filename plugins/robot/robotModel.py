@@ -236,6 +236,8 @@ class Robot(object):
             if self.MemoryRobot.isSayName():
                 s = self.MemoryRobot.addNameToSentence(s)
             self.MemoryRobot.tts.say(s)
+            self.add_alert_count()
+
         else:
             self.tts.say(self.dialogs.sentenceWarning)
 
@@ -286,6 +288,7 @@ class Robot(object):
                 s = self.MemoryRobot.addNameToSentence(s)
             
             self.MemoryRobot.tts.say(s)
+            self.add_alert_count()
             
             #self.motion.rest()
             
@@ -306,6 +309,7 @@ class Robot(object):
                 s = s.replace('XX', self.MemoryRobot.p_first_name)
             
             self.MemoryRobot.tts.say(s)
+            self.add_alert_count()
             m = self.dialogs.get_CallStaff_sentence()
             self.MemoryRobot.behavior.runBehavior(m)
             #self.MemoryRobot.memory.subscribeToEvent("MiddleTactilTouched","ReactToTouch", "onTouched")
@@ -328,6 +332,7 @@ class Robot(object):
         s = self.dialogs.sentenceWarning
         if self.settings['useMemory'] and self.MemoryRobot.isSayName():
             s = self.MemoryRobot.addNameToSentence(s)
+            self.add_alert_count()
             
         self.tts.say(s)
 

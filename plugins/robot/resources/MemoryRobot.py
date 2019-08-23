@@ -150,7 +150,9 @@ class MemoryRobot(object):
         self.animatedSpeech.say(s)
 
     def run_welcome_behavior(self):
-        if self.p_num_sessions == 0:
+    	print('run_welcome_behavior_num_sessions')
+    	print(self.p_num_sessions)
+        if self.p_num_sessions-1 == 0:
             s = self.dialogs.WelcomeSentenceMemory
             s = s.replace("XX", self.settings['UserProfile']['name'])
             self.animatedSpeech.say(s)
@@ -281,6 +283,12 @@ class MemoryRobot(object):
         self.loadSessionData()
 
     def getExpectedSession(self, sorted_times, session_date, cur_session, session_day = None, session_index = None):
+    	print('---------session day------------------')
+    	print session_day
+    	print('---------session day------------------')
+    	print('---------session index------------------')
+    	print session_index
+    	print('---------session index------------------')
         if session_day is None:
             session_day = session_date.isoweekday()
         if session_index is None:
@@ -299,6 +307,13 @@ class MemoryRobot(object):
 
     def isPatientOnSchedule(self):
         """check if patient is on schedule (came to the previous session)"""
+        print('-------------------------isPatientOnSchedule-----------------')
+        print('-------------------------P.NUMSESSIONS-----------------')
+        print self.p_num_sessions
+        print('-------------------------P.NUMSESSIONS-----------------')
+        print self.p_times
+
+
 
         on_schedule = True
 
@@ -320,43 +335,41 @@ class MemoryRobot(object):
         # date that the session should have happened, compare the date that should have happened to holiday
         # and find if the patient skipped a day that wasnt a holiday
         if self.p_times >= 2 and self.p_num_sessions >= 2:
-            last_session = self.p_dates[-1].date()
+        	print('-------------------------isPatientOnSchedule-----------------')
+        	last_session = self.p_dates[-1].date()
 
-            sorted_times = sorted(list(set([row[1] for row in self.p_times]))) # get a unique list of sorted days of week for sessions
-#             print sorted_times
+        	sorted_times = sorted(list(set([row[1] for row in self.p_times]))) # get a unique list of sorted days of week for sessions
+        	print sorted_times
+        	print('-------------------------isPatientOnSchedule-----------------')
+        	print('-------------------------last_session_day-----------------')
 
-            last_session_day = last_session.isoweekday()
-#             print "last_session"
-#             print last_session
-#             print last_session_day
-#             print "cur_session"
-#             print cur_session
-#             print cur_session.isoweekday()
-            if last_session_day in sorted_times:
-                last_session_index = sorted_times.index(last_session_day)
-                expected_session = self.getExpectedSession(sorted_times, last_session, cur_session, last_session_day, last_session_index)
-            else:
-                last_session_index = bisect.bisect(sorted_times, last_session_day)
-                expected_session = self.getExpectedSession(sorted_times, last_session, cur_session, last_session_day, last_session_index-1)
-#             print "expected_session:"
-#             print expected_session
-            if cur_session > expected_session:
-                self.missed_sessions.append(expected_session)
-                missed = cur_session - expected_session
-                while missed.days > 0:
-                    expected_session = self.getExpectedSession(sorted_times, expected_session, cur_session)
-                    print expected_session
-                    if cur_session > expected_session:
-                        if expected_session not in self.holidays:
-                            self.missed_sessions.append(expected_session)
-                            missed = cur_session - expected_session
-                    else:
-                        break
-#                 print self.past_holiday
-#                 print self.missed_sessions
-                on_schedule = False
-            elif cur_session < expected_session:
-                self.came_early = True
+        	last_session_day = last_session.isoweekday()
+        	print last_session_day
+        	print('-------------------------last_session_day-----------------')
+        	if last_session_day in sorted_times:
+        		print('checkAbsence compare first if')
+        		last_session_index = sorted_times.index(last_session_day)
+        		expected_session = self.getExpectedSession(sorted_times, last_session, cur_session, last_session_day, last_session_index)
+        	else:
+        		print('checkAbsence compare second if')
+        		last_session_index = bisect.bisect(sorted_times, last_session_day)
+        		expected_session = self.getExpectedSession(sorted_times, last_session, cur_session, last_session_day, last_session_index-1)
+        	if cur_session > expected_session:
+        		self.missed_sessions.append(expected_session)
+        		missed = cur_session - expected_session
+        		while missed.days > 0:
+        			expected_session = self.getExpectedSession(sorted_times, expected_session, cur_session)
+        			print expected_session
+        			if cur_session > expected_session:
+        				if expected_session not in self.holidays:
+        					self.missed_sessions.append(expected_session)
+        					missed = cur_session - expected_session
+        			else:
+        				break
+
+        		on_schedule = False
+        	elif cur_session < expected_session:
+        		self.came_early = True
 
 #             self.lastSessionOfWeek = False
 #             if self.num_session_of_week == len(sorted_times) and cur_session.isoweekday() == sorted_times[self.num_session_of_week-1]:
@@ -515,8 +528,12 @@ class MemoryRobot(object):
 
     def checkProgress(self, numAlerts):
         """check progress of the current session compared to the previous one(s) and announce it at the end of the session"""
+        
+        text_to_say = ""
         if self.p_num_sessions == 0:
-            return ""
+        	text_to_say = announce
+        	return text_to_say
+
         self.p_events_counts =[]
         for s_events in self.p_events:
             alerts_c = 0
@@ -530,7 +547,6 @@ class MemoryRobot(object):
                 elif s_e["Type"] == "request_distance":
                     request_distance_c += 1
             self.p_events_counts.append([alerts_c, request_look_c, request_distance_c])
-
 #         alerts_c = 0
 #         request_look_c = 0
 #         request_distance_c = 0
@@ -542,7 +558,12 @@ class MemoryRobot(object):
 #             elif s_e["type"] == "request_distance":
 #                 request_distance_c += 1
 #         self.p_events_counts.append([alerts_c, request_look_c, request_distance_c])
+
         self.extra_comment = self.session_intensity_comment
+        print('...............................checkProgressAlerts.................')
+        print(numAlerts)
+        print(self.p_events_counts[-1][0])
+        print('...............................checkProgressAlerts.................')
         if numAlerts == 0:
             progress_feedback = self.no_alert_feedback
         elif numAlerts == self.p_events_counts[-1][0]:
