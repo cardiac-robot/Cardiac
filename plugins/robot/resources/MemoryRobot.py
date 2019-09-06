@@ -311,7 +311,7 @@ class MemoryRobot(object):
             cur_session_week_num = cur_session.isocalendar()[1]
             last_session_week_num = last_session.isocalendar()[1]
             num_missed_sessions = (cur_session_week_num - last_session_week_num - 1)*2 # TODO: UPDATE HERE IF IT ISN'T 2 SESSIONS PER WEEK
-            if cur_session.isoweekday() >= 6 : # TODO: UPDATE HERE IF THERE IS A SESSION ON SATURDAY OR SUNDAY
+            if cur_session.isoweekday() >= 5 : # TODO: UPDATE HERE IF THERE IS A SESSION ON SATURDAY OR SUNDAY
                 num_missed_sessions += 1
             
         return num_missed_sessions
