@@ -330,7 +330,7 @@ class MemoryRobot(object):
         print('-------------------------isPatientOnSchedule-----------------')
         print('-------------------------P.NUMSESSIONS-----------------')
         print self.p_num_sessions
-        print('-------------------------P.NUMSESSIONS-----------------')
+        print('-------------------------P.Times-----------------')
         print self.p_times
 
         on_schedule = True
@@ -345,7 +345,7 @@ class MemoryRobot(object):
             while counter <= len(self.p_dates):
                 prev_session = ch_session
                 ch_session = self.p_dates[-1*counter].date()
-                if ch_session_week_num == ch_session.isocalendar()[1]: # it is the same week
+                if cur_session_week_num == ch_session.isocalendar()[1]: # it is the same week
     #                     if ch_session != prev_session: #this assumes that the session will not be on the same day (but the assumption is removed now)
                     self.num_session_of_week = self.num_session_of_week + 1
                 else:
