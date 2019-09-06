@@ -55,7 +55,7 @@ class RecognitionService(object):
 
         self.useSpanish = True
 
-    @qi.bind(returnType=qi.Void, paramsType=[qi.Bool, qi.Bool, qi.String])
+    @qi.bind(returnType=qi.Void, paramsType=qi.AnyArguments)
     def initSystem(self, useSpanish, isImageFromTablet, imagePath = ""):
         "Initializes the system"
         # load custom (Alex Mazel's) library for recognising and learning from file through the tablet only if Naoqi > 2.1
