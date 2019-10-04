@@ -3112,6 +3112,18 @@ class RecogniserBN:
             self.isDBinCSV = True
         self.imagePath = imagePath
 
+        #Print inputs
+        print('############################### Use_Spanish #####################################')
+        print(self.useSpanish)
+        print(type(self.useSpanish))
+        print('############################### isImageFromTablet #####################################')
+        print(self.isImageFromTablet)
+        print(type(self.isImageFromTablet))
+        print('############################### Image Path #####################################')
+        print(self.imagePath)
+        print(type(self.imagePath))
+
+
         self.recog_service.initSystem(self.useSpanish, self.isImageFromTablet, imagePath) # initialize the robot breathing, height offset, and language
 
     def recognisePerson(self, num_recog = None):
@@ -3298,7 +3310,7 @@ class RecogniserBN:
             self.registrationPhrase = "Hola XX, encantado de conocerte"
             self.falseRegistration = "Ya te había visto antes! Es un gusto verte de nuevo XX!"
             self.correctRecognition = ["Sabia que eras tu, solo queria estar seguro", "Te ves bien hoy XX!","Solo quería saludar, ¡espero que estés bien XX!","¡Me siento mucho mejor cada vez que te veo XX!","¡Traes el sol que tanto necesito para mi día XX!"]
-            self.noFaceInImage = "Hmmm, parece que hay un problema con la imagen. Podrias mirar la pantalla otra vez por favor?"
+            self.noFaceInImage = "Juumm, parece que hay un problema con la imagen. Podrias mirar la pantalla otra vez por favor?"
         else:
             self.lookAtTablet = "Hello there, could you look at the tablet "
             self.pleasePhrase = "please?"

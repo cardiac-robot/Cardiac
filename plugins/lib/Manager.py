@@ -7,9 +7,9 @@ import time
 import random
 
 class SensorManager(object):
-    def __init__(self, imu   = {"port":'COM4', "sample":1},
+    def __init__(self, imu   = {"port":'COM9', "sample":1},
                        ecg   = {"port":'COM6', "sample":1},
-                       laser = {"port":'COM3', "sample":1, "crotch":0.68}
+                       laser = {"port":'COM8', "sample":1, "crotch":0.68}
                 ):
         #sensor control variable
         self.settings_imu = imu
@@ -43,15 +43,21 @@ class SensorManager(object):
 
     #sleep sensors
     def sleep_sensors(self, ecg = False, imu = False, laser = False):
+        print('################ecg##############')
+        print(ecg)
+        print(self.ECG)
         if ecg and self.ECG:
+            print('ECG  Close')
             self.ecg.close()
         if imu and self.IMU:
             self.imu.Sleep()
         if laser and self.LASER:
+            print('Laser  Close')
             self.laser.Sleep()
 
     #wake up sensors
     def wakeUp_sensors(self, ecg = False, imu = False, laser = False):
+
         if ecg and self.ECG:
             self.ecg.WakeUp()
         if imu and self.IMU:

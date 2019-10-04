@@ -35,7 +35,7 @@ class MainTherapyPlugin(object):
         #load database manager
         self.DB = DataHandler
         #creates robot resources
-        self.useRobot= False
+        self.useRobot= True
         #create child plugins
         #blood pressure plugin
         self.BloodPressurePlugin = BloodPressurePlugin.BloodPressurePlugin(ProjectHandler = self.PH, DataHandler = self.DB)
@@ -212,7 +212,7 @@ class MainTherapyPlugin(object):
         #sensor manager
         #set sensors
 
-        self.SensorManager.set_sensors(ecg = False, imu = False, laser = False)
+        self.SensorManager.set_sensors(ecg = True, imu = True, laser = True)
         #launch sensors
         self.SensorManager.launch_sensors()
         #launch timer
@@ -300,9 +300,10 @@ class MainTherapyPlugin(object):
     #callback method when cooldown is pressed
     def onCooldown(self):
         #set cooldown event
+        print('Push Button to Cool down fucntion')
         self.DB.General.SM.load_event(t ="Cooldown", c ="None", v = "None")
         #sleep laser an IMu sensor
-        self.SensorManager.sleep_sensors(ecg = True, imu = True, laser = True)
+        #self.SensorManager.sleep_sensors(ecg = False, imu = True, laser = True)
         #if using no robot condition, cancel the timer
         if self.settings['mode'] == 0:
             #kill timer
@@ -427,6 +428,7 @@ class SensorMonitorThread(QtCore.QThread):
 
 
     def shutdown(self):
+        print('Shutting Down SensorMonitorThread')
         self.on = False
 
 

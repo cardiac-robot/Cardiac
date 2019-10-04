@@ -279,6 +279,8 @@ class TherapyWin(QtGui.QMainWindow):
 
         elif self.settings['mode'] == 1 or self.settings['mode'] == 2:
             print "label"
+            print('##########################################')
+            print('Showing Data')
             self.label_show['label0'].setText("{0:.2f}".format(self.data_ecg)+" ppm")
             self.label_show['label1'].setText("{0:.2f}".format(self.data_imu)+" deg")
             self.label_show['label2'].setText("{0:.2f}".format(float(self.data_speed))+" mph")

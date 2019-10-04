@@ -531,10 +531,10 @@ class MemoryRobot(object):
         print last_session_avgs
         print "######################LAST SESSION AVGS ################################"
         # TODO: update it to use the avg session values (last value might be the slow down speed and inclination!!!)
-        if targetSpeed == int(last_session_avgs["Speed"]) and targetSlope == int(last_session_avgs["Inclination"]):
+        if targetSpeed == float(last_session_avgs["Speed"]) and targetSlope == float(last_session_avgs["Inclination"]):
             session_announcement += self.session_intensity_same
             self.session_intensity = 0
-        elif targetSpeed > int(last_session_avgs["Speed"]) or targetSlope > int(last_session_avgs["Inclination"]):
+        elif targetSpeed > float(last_session_avgs["Speed"]) or targetSlope > float(last_session_avgs["Inclination"]):
             session_announcement += self.session_intensity_more
             self.session_intensity = 1
         else:

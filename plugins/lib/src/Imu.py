@@ -5,7 +5,7 @@ import imu.Lec_imu as Lec_imu
 import numpy as np
 
 class Imu(sensor.Sensor):
-    def __init__(self, settings = {"port":'COM4', "sample":1}):
+    def __init__(self, settings = {"port":'COM9', "sample":1}):
         super(Imu, self).__init__()
         #load settings
         print settings

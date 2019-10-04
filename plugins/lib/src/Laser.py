@@ -7,7 +7,7 @@ import sys
 #import laser.leg_detector as LD
 
 class Laser(sensor.Sensor):
-    def __init__(self, settings = {"port":'COM9', "sample":1, "crotch":0.68}):
+    def __init__(self, settings = {"port":'COM8', "sample":1, "crotch":0.68}):
         super(Laser, self).__init__()
         #load settings
         self.laser_height = 0.3
