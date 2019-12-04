@@ -1,0 +1,5 @@
+Type;Cause;value;Timestamp
+BloodPressure;initial;{'systolic': 96, 'diastolic': 68};2019-10-22 09:03:10.546000
+StartRecording;None;None;2019-10-22 09:03:11.796000
+Cooldown;None;None;2019-10-22 09:18:35.924000
+EndRecording;None;None;2019-10-22 09:23:02.917000

@@ -1,0 +1,39 @@
+Type;Cause;value;Timestamp
+BloodPressure;initial;{'systolic': 124, 'diastolic': 64};2019-10-23 10:52:02.975000
+StartRecording;None;None;2019-10-23 10:52:04.709000
+RobotWelcome;Start;WelcomeSentence;2019-10-23 10:52:18.893000
+Motivation;Timeout;None;2019-10-23 10:52:33.985000
+BorgRequest;Timeout;none;2019-10-23 10:52:34.317000
+BorgReceive;Clicked;6;2019-10-23 10:52:47.766000
+Alert2;HighHr;none;2019-10-23 10:52:53.164000
+Alert2;HighHr;none;2019-10-23 10:53:21.821000
+Alert2;HighHr;none;2019-10-23 10:53:42.543000
+Alert2;HighHr;none;2019-10-23 10:55:07.157000
+Alert2;HighHr;none;2019-10-23 10:55:24.178000
+Alert2;HighHr;none;2019-10-23 10:55:39.502000
+Motivation;Timeout;None;2019-10-23 10:57:33.990000
+Alert2;HighHr;none;2019-10-23 10:57:50.201000
+Alert2;HighHr;none;2019-10-23 10:58:56.034000
+BorgRequest;Timeout;none;2019-10-23 10:59:37.902000
+BorgReceive;Clicked;7;2019-10-23 10:59:44.588000
+Motivation;Timeout;None;2019-10-23 11:02:36.019000
+Alert2;HighHr;none;2019-10-23 11:02:54.935000
+BorgRequest;Timeout;none;2019-10-23 11:06:42.480000
+BorgReceive;Clicked;7;2019-10-23 11:06:46.211000
+Motivation;Timeout;None;2019-10-23 11:07:38.237000
+Alert2;HighHr;none;2019-10-23 11:07:49.634000
+Alert2;HighHr;none;2019-10-23 11:08:41.835000
+Alert2;HighHr;none;2019-10-23 11:12:26.639000
+Motivation;Timeout;None;2019-10-23 11:12:39.589000
+BorgRequest;Timeout;none;2019-10-23 11:13:46.576000
+BorgReceive;Clicked;7;2019-10-23 11:13:49.067000
+Cooldown;None;None;2019-10-23 11:14:57.944000
+Alert2;HighHr;none;2019-10-23 11:16:17.539000
+Alert2;HighHr;none;2019-10-23 11:17:22.477000
+Alert2;HighHr;none;2019-10-23 11:19:09.373000
+EndRecording;None;None;2019-10-23 11:29:50.517000
+BloodPressure;final;{'systolic': 100, 'diastolic': 60};2019-10-23 11:30:22.337000
+Questions;None;{'satisfaction': 8, 'motivation': 6};2019-10-23 11:30:40.177000
+average;speed;0.13993135049275374;2019-10-23 11:32:06.426000
+average;hr;105.57294685990351;2019-10-23 11:32:06.428000
+average;inclination;-5.322338036879003;2019-10-23 11:32:06.433000

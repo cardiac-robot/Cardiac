@@ -33,8 +33,8 @@ class ProjectHandler(object):
                                           'nao_image'     : '/home/nao/dev/images',
                                           'UserProfile'   : {}
                                          },
-                                'ecg'  : {"port" : 'COM6', "sample" : 1},
-                                'imu'  : {"port" : 'COM9', "sample" : 1},
+                                'ecg'  : {"port" : 'COM10', "sample" : 1},
+                                'imu'  : {"port" : 'COM4', "sample" : 1},
                                 'laser': {"port" : 'COM8', "sample" : 1, 'crotch': 0.8},
                                 'therapy':{'BorgSample' : 20}
                                 }

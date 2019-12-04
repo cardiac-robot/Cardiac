@@ -1,0 +1,11 @@
+Type;Cause;value;Timestamp
+BloodPressure;initial;{'systolic': 120, 'diastolic': 68};2019-10-24 08:50:36.767000
+StartRecording;None;None;2019-10-24 08:50:38.079000
+RequestLook;None;None;2019-10-24 09:06:16.451000
+Cooldown;None;None;2019-10-24 09:10:00.936000
+EndRecording;None;None;2019-10-24 09:23:17.001000
+BloodPressure;final;{'systolic': 110, 'diastolic': 70};2019-10-24 09:23:33.650000
+Questions;None;{'satisfaction': 9, 'motivation': 9};2019-10-24 09:23:37.103000
+average;speed;-0.42528331877461706;2019-10-24 09:23:52.677000
+average;hr;137.56892778993412;2019-10-24 09:23:52.686000
+average;inclination;-1.8450335973448286;2019-10-24 09:23:52.691000

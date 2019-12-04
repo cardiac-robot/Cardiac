@@ -1,0 +1,42 @@
+Type;Cause;value;Timestamp
+BloodPressure;initial;{'systolic': 90, 'diastolic': 80};2019-11-29 11:57:26.923000
+StartRecording;None;None;2019-11-29 11:57:28.204000
+RobotWelcome;Start;WelcomeSentence;2019-11-29 11:57:44.676000
+Motivation;Timeout;None;2019-11-29 11:58:00.162000
+BorgRequest;Timeout;none;2019-11-29 11:58:00.391000
+BorgReceive;Clicked;6;2019-11-29 11:58:19.961000
+RequestLook;None;None;2019-11-29 11:58:44.488000
+RequestLook;None;None;2019-11-29 11:59:41.959000
+Alert1;HighHr;None;2019-11-29 12:00:25.567000
+RequestLook;None;None;2019-11-29 12:01:11.070000
+RequestLook;None;None;2019-11-29 12:02:27.382000
+Motivation;Timeout;None;2019-11-29 12:03:00.176000
+RequestLook;None;None;2019-11-29 12:03:29.589000
+RequestLook;None;None;2019-11-29 12:04:55.640000
+BorgRequest;Timeout;none;2019-11-29 12:05:03.841000
+BorgReceive;Clicked;8;2019-11-29 12:05:06.781000
+RequestLook;None;None;2019-11-29 12:06:12.663000
+RequestLook;None;None;2019-11-29 12:07:24.374000
+Motivation;Timeout;None;2019-11-29 12:08:02.158000
+RequestLook;None;None;2019-11-29 12:08:45.259000
+RequestLook;None;None;2019-11-29 12:10:25.115000
+Alert1;HighHr;None;2019-11-29 12:11:03.595000
+BorgRequest;Timeout;none;2019-11-29 12:12:08.763000
+BorgReceive;Clicked;8;2019-11-29 12:12:12.588000
+Motivation;Timeout;None;2019-11-29 12:13:02.170000
+RequestLook;None;None;2019-11-29 12:13:53.373000
+Alert1;HighHr;None;2019-11-29 12:14:30.905000
+RequestLook;None;None;2019-11-29 12:15:43.203000
+RequestLook;None;None;2019-11-29 12:16:44.406000
+Alert1;HighHr;None;2019-11-29 12:18:02.083000
+Motivation;Timeout;None;2019-11-29 12:18:04.598000
+RequestLook;None;None;2019-11-29 12:18:23.428000
+BorgRequest;Timeout;none;2019-11-29 12:19:12.497000
+BorgReceive;Clicked;6;2019-11-29 12:19:16.447000
+Cooldown;None;None;2019-11-29 12:19:38.073000
+EndRecording;None;None;2019-11-29 12:36:11.774000
+BloodPressure;final;{'systolic': 100, 'diastolic': 70};2019-11-29 12:36:41.155000
+Questions;None;{'satisfaction': 9, 'motivation': 9};2019-11-29 12:36:45.400000
+average;speed;0.563916339736611;2019-11-29 12:36:46.602000
+average;hr;94.19315188762056;2019-11-29 12:36:46.605000
+average;inclination;-1.716094182694761;2019-11-29 12:36:46.606000
