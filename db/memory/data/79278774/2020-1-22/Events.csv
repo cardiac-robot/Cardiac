@@ -1,0 +1,43 @@
+Type;Cause;value;Timestamp
+BloodPressure;initial;{'systolic': 110, 'diastolic': 80};2020-01-22 11:53:37.561000
+StartRecording;None;None;2020-01-22 11:53:39.318000
+RobotWelcome;Start;WelcomeSentence;2020-01-22 11:53:57.842000
+Motivation;Timeout;None;2020-01-22 11:54:18.996000
+BorgRequest;Timeout;none;2020-01-22 11:54:19.422000
+BorgReceive;Clicked;6;2020-01-22 11:54:21.292000
+RequestLook;None;None;2020-01-22 11:55:01.773000
+RequestLook;None;None;2020-01-22 11:55:59.242000
+RequestLook;None;None;2020-01-22 11:57:27.686000
+RequestLook;None;None;2020-01-22 11:59:08.460000
+Motivation;Timeout;None;2020-01-22 11:59:19.011000
+BorgRequest;Timeout;none;2020-01-22 12:01:22.556000
+BorgReceive;Clicked;9;2020-01-22 12:01:24.408000
+RequestLook;None;None;2020-01-22 12:01:32.526000
+Alert2;HighHr;none;2020-01-22 12:02:34.314000
+RequestLook;None;None;2020-01-22 12:02:47.779000
+Alert2;HighHr;none;2020-01-22 12:02:56.947000
+Alert2;HighHr;none;2020-01-22 12:03:19.076000
+Motivation;Timeout;None;2020-01-22 12:04:19.030000
+RequestLook;None;None;2020-01-22 12:04:40.648000
+RequestLook;None;None;2020-01-22 12:05:42.193000
+Alert2;HighHr;none;2020-01-22 12:05:45.129000
+Alert2;HighHr;none;2020-01-22 12:06:00.545000
+RequestLook;None;None;2020-01-22 12:06:47.892000
+RequestLook;None;None;2020-01-22 12:08:06.018000
+BorgRequest;Timeout;none;2020-01-22 12:08:25.872000
+BorgReceive;Clicked;6;2020-01-22 12:08:28.150000
+RequestLook;None;None;2020-01-22 12:09:03.509000
+Motivation;Timeout;None;2020-01-22 12:09:21.025000
+RequestLook;None;None;2020-01-22 12:10:16.681000
+RequestLook;None;None;2020-01-22 12:11:30.505000
+RequestLook;None;None;2020-01-22 12:12:32.085000
+Cooldown;None;None;2020-01-22 12:12:32.413000
+Motivation;Timeout;None;2020-01-22 12:14:21.043000
+BorgRequest;Timeout;none;2020-01-22 12:15:27.571000
+BorgReceive;Clicked;12;2020-01-22 12:15:31.776000
+EndRecording;None;None;2020-01-22 12:15:37.825000
+BloodPressure;final;{'systolic': 110, 'diastolic': 80};2020-01-22 12:16:08.007000
+Questions;None;{'satisfaction': 9, 'motivation': 8};2020-01-22 12:16:09.496000
+average;speed;0.6777631361520166;2020-01-22 12:16:10.252000
+average;hr;121.55977830562135;2020-01-22 12:16:10.254000
+average;inclination;2.488915281076796;2020-01-22 12:16:10.255000

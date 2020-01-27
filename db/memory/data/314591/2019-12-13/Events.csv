@@ -1,0 +1,43 @@
+Type;Cause;value;Timestamp
+BloodPressure;initial;{'systolic': 100, 'diastolic': 70};2019-12-13 07:50:20.694000
+StartRecording;None;None;2019-12-13 07:50:46.627000
+RobotWelcome;Start;WelcomeSentence;2019-12-13 07:51:04.074000
+Motivation;Timeout;None;2019-12-13 07:51:22.763000
+BorgRequest;Timeout;none;2019-12-13 07:51:22.980000
+BorgReceive;Clicked;6;2019-12-13 07:51:26.441000
+Alert1;HighHr;None;2019-12-13 07:52:11.132000
+RequestLook;None;None;2019-12-13 07:52:38.615000
+RequestLook;None;None;2019-12-13 07:53:54.079000
+RequestLook;None;None;2019-12-13 07:54:59.819000
+Alert1;HighHr;None;2019-12-13 07:55:41.588000
+RequestLook;None;None;2019-12-13 07:56:20.297000
+Motivation;Timeout;None;2019-12-13 07:56:25.425000
+RequestLook;None;None;2019-12-13 07:57:18.023000
+BorgRequest;Timeout;none;2019-12-13 07:58:29.929000
+BorgReceive;Clicked;9;2019-12-13 07:58:32.304000
+Alert1;HighHr;None;2019-12-13 07:59:14.100000
+RequestLook;None;None;2019-12-13 07:59:52.984000
+Motivation;Timeout;None;2019-12-13 08:01:27.310000
+RequestLook;None;None;2019-12-13 08:01:28.423000
+Alert1;HighHr;None;2019-12-13 08:02:44.430000
+RequestLook;None;None;2019-12-13 08:04:04.511000
+RequestLook;None;None;2019-12-13 08:05:22.127000
+BorgRequest;Timeout;none;2019-12-13 08:05:33.530000
+BorgReceive;Clicked;10;2019-12-13 08:05:35.379000
+Alert1;HighHr;None;2019-12-13 08:06:14.101000
+Motivation;Timeout;None;2019-12-13 08:06:27.326000
+RequestLook;None;None;2019-12-13 08:06:37.967000
+RequestLook;None;None;2019-12-13 08:07:46.251000
+RequestLook;None;None;2019-12-13 08:08:43.201000
+Alert1;HighHr;None;2019-12-13 08:09:41.028000
+RequestLook;None;None;2019-12-13 08:10:11.247000
+RequestLook;None;None;2019-12-13 08:11:20.775000
+Cooldown;None;None;2019-12-13 08:11:26.682000
+Motivation;Timeout;None;2019-12-13 08:11:28.732000
+Alert1;HighHr;None;2019-12-13 08:17:05.731000
+EndRecording;None;None;2019-12-13 08:28:58.921000
+BloodPressure;final;{'systolic': 100, 'diastolic': 70};2019-12-13 08:29:10.555000
+Questions;None;{'satisfaction': 9, 'motivation': 9};2019-12-13 08:29:12.859000
+average;speed;0.282809650365092;2019-12-13 08:29:14.209000
+average;hr;111.35351736420297;2019-12-13 08:29:14.224000
+average;inclination;10.174322283182326;2019-12-13 08:29:14.225000

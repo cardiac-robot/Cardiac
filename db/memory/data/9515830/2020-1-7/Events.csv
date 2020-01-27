@@ -1,0 +1,41 @@
+Type;Cause;value;Timestamp
+BloodPressure;initial;{'systolic': 140, 'diastolic': 80};2020-01-07 07:52:09.534000
+StartRecording;None;None;2020-01-07 07:52:11.601000
+RobotWelcome;Start;WelcomeSentence;2020-01-07 07:52:32.206000
+Motivation;Timeout;None;2020-01-07 07:52:48.035000
+BorgRequest;Timeout;none;2020-01-07 07:52:48.370000
+BorgReceive;Clicked;6;2020-01-07 07:52:51.491000
+Alert1;HighHr;None;2020-01-07 07:53:03.389000
+Alert1;HighHr;None;2020-01-07 07:56:32.981000
+RequestLook;None;None;2020-01-07 07:56:34.595000
+Motivation;Timeout;None;2020-01-07 07:57:48.043000
+BorgRequest;Timeout;none;2020-01-07 07:59:51.718000
+Alert1;HighHr;None;2020-01-07 08:00:00.361000
+BorgReceive;Clicked;9;2020-01-07 08:00:01.192000
+RequestLook;None;None;2020-01-07 08:00:51.735000
+Alert2;HighHr;none;2020-01-07 08:02:30.088000
+RequestLook;None;None;2020-01-07 08:02:33.840000
+Motivation;Timeout;None;2020-01-07 08:02:49.305000
+Alert2;HighHr;none;2020-01-07 08:02:55.592000
+Alert2;HighHr;none;2020-01-07 08:03:14.930000
+RequestLook;None;None;2020-01-07 08:03:59.142000
+Alert1;HighHr;None;2020-01-07 08:04:45.899000
+BorgRequest;Timeout;none;2020-01-07 08:06:56.128000
+RequestLook;None;None;2020-01-07 08:06:59.353000
+BorgReceive;Clicked;10;2020-01-07 08:07:00.141000
+Alert2;HighHr;none;2020-01-07 08:07:21.687000
+Motivation;Timeout;None;2020-01-07 08:07:51.644000
+RequestLook;None;None;2020-01-07 08:08:13.557000
+Alert2;HighHr;none;2020-01-07 08:08:41.518000
+RequestLook;None;None;2020-01-07 08:09:39.623000
+Alert2;HighHr;none;2020-01-07 08:09:43.967000
+Cooldown;None;None;2020-01-07 08:10:06.606000
+Alert1;HighHr;None;2020-01-07 08:11:50.081000
+Alert1;HighHr;None;2020-01-07 08:15:17.635000
+Alert1;HighHr;None;2020-01-07 08:22:50.197000
+EndRecording;None;None;2020-01-07 08:34:04.798000
+BloodPressure;final;{'systolic': 120, 'diastolic': 80};2020-01-07 08:34:38.022000
+Questions;None;{'satisfaction': 9, 'motivation': 9};2020-01-07 08:34:41.541000
+average;speed;0.389719626105263;2020-01-07 08:36:34.854000
+average;hr;108.42834008097167;2020-01-07 08:36:34.856000
+average;inclination;-5.139337906636908;2020-01-07 08:36:34.859000

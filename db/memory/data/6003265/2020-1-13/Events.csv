@@ -1,0 +1,21 @@
+Type;Cause;value;Timestamp
+BloodPressure;initial;{'systolic': 110, 'diastolic': 70};2020-01-13 10:09:47.328000
+StartRecording;None;None;2020-01-13 10:09:48.342000
+RobotWelcome;Start;WelcomeSentence;2020-01-13 10:10:04.856000
+Motivation;Timeout;None;2020-01-13 10:10:23.816000
+BorgRequest;Timeout;none;2020-01-13 10:10:24.103000
+BorgReceive;Clicked;6;2020-01-13 10:10:31.305000
+RequestLook;None;None;2020-01-13 10:11:18.580000
+RequestLook;None;None;2020-01-13 10:12:17.395000
+RequestLook;None;None;2020-01-13 10:13:14.127000
+RequestLook;None;None;2020-01-13 10:14:11.287000
+RequestLook;None;None;2020-01-13 10:15:11.588000
+Motivation;Timeout;None;2020-01-13 10:15:23.826000
+RequestLook;None;None;2020-01-13 10:16:09.050000
+Cooldown;None;None;2020-01-13 10:16:21.501000
+EndRecording;None;None;2020-01-13 10:37:11.102000
+BloodPressure;final;{'systolic': 110, 'diastolic': 70};2020-01-13 10:37:30.780000
+Questions;None;{'satisfaction': 9, 'motivation': 9};2020-01-13 10:37:53.915000
+average;speed;0.13202416636132305;2020-01-13 10:37:55.630000
+average;hr;60.83269720101781;2020-01-13 10:37:55.633000
+average;inclination;2.5019083969465594;2020-01-13 10:37:55.634000

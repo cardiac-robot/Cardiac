@@ -102,13 +102,20 @@ class SessionManager(object):
                         pass
 
                 event_file = open(string + "/Events.csv", "r")
+                print('--------------------event file from session manager---------------------------')
+                print(event_file)
+                print('--------------------event file from session manager ---------------------------')
                 ev = event_file.readlines()[1:]
                 ev_dict = {"Type":"","Cause":"","Value":"","Timestamp":""}
                 for l in enumerate(ev):
                     e = ev[l[0]].strip().split(";")
+                    print('--------------e from session manager-----------------')
+                    print(e)
+                    print('-------------- e from session manager----------------')
 
                     ev_dict['Type'] = e[0]
                     ev_dict['Cause'] = e[1]
+                
                     ev_dict['Value'] = e[2]
                     ev_dict['Timestamp'] = e[3]
                     session_event_list.append(dict(ev_dict))

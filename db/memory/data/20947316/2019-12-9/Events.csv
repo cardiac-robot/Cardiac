@@ -1,0 +1,27 @@
+Type;Cause;value;Timestamp
+BloodPressure;initial;{'systolic': 100, 'diastolic': 60};2019-12-09 10:53:09.210000
+StartRecording;None;None;2019-12-09 10:53:10.269000
+RobotWelcome;Start;WelcomeSentence;2019-12-09 10:53:28.177000
+Motivation;Timeout;None;2019-12-09 10:53:45.274000
+BorgRequest;Timeout;none;2019-12-09 10:53:45.358000
+BorgReceive;Clicked;6;2019-12-09 10:53:58.554000
+Motivation;Timeout;None;2019-12-09 10:58:45.301000
+RequestLook;None;None;2019-12-09 10:58:49.048000
+RequestLook;None;None;2019-12-09 10:59:50.108000
+BorgRequest;Timeout;none;2019-12-09 11:00:48.989000
+BorgReceive;Clicked;6;2019-12-09 11:00:53.115000
+RequestLook;None;None;2019-12-09 11:02:31.445000
+Motivation;Timeout;None;2019-12-09 11:03:47.165000
+BorgRequest;Timeout;none;2019-12-09 11:07:52.664000
+BorgReceive;Clicked;7;2019-12-09 11:07:56.103000
+Motivation;Timeout;None;2019-12-09 11:08:49.190000
+RequestLook;None;None;2019-12-09 11:09:43.070000
+Motivation;Timeout;None;2019-12-09 11:13:49.203000
+RequestLook;None;None;2019-12-09 11:13:53.467000
+Cooldown;None;None;2019-12-09 11:14:02.190000
+EndRecording;None;None;2019-12-09 11:32:10.832000
+BloodPressure;final;{'systolic': 164, 'diastolic': 82};2019-12-09 11:32:45.506000
+Questions;None;{'satisfaction': 9, 'motivation': 9};2019-12-09 11:32:55.245000
+average;speed;0.24974597614434976;2019-12-09 11:32:57.673000
+average;hr;75.53086419753083;2019-12-09 11:32:57.689000
+average;inclination;-3.7249546479222926;2019-12-09 11:32:57.689000

@@ -1,0 +1,7 @@
+Type;Cause;value;Timestamp
+BloodPressure;initial;{'systolic': 117, 'diastolic': 69};2019-12-06 14:49:18.746000
+StartRecording;None;None;2019-12-06 14:49:46.435000
+RobotWelcome;Start;WelcomeSentence;2019-12-06 14:50:05.418000
+Cooldown;None;None;2019-12-06 14:50:08.492000
+EndRecording;None;None;2019-12-06 14:50:11.818000
+Motivation;Timeout;None;2019-12-06 14:50:22.649000

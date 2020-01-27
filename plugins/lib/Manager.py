@@ -8,7 +8,7 @@ import random
 
 class SensorManager(object):
     def __init__(self, imu   = {"port":'COM9', "sample":1},
-                       ecg   = {"port":'COM6', "sample":1},
+                       ecg   = {"port":'COM11', "sample":1},
                        laser = {"port":'COM8', "sample":1, "crotch":0.68}
                 ):
         #sensor control variable
@@ -27,7 +27,7 @@ class SensorManager(object):
                     }
 
     #activate sensors
-    def set_sensors(self, ecg =True, imu = True, laser = True):
+    def set_sensors(self, ecg =True, imu = False, laser = True):
         self.IMU = imu
         self.LASER = laser
         self.ECG = ecg

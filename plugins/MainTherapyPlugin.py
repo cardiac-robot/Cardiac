@@ -212,7 +212,7 @@ class MainTherapyPlugin(object):
         #sensor manager
         #set sensors
 
-        self.SensorManager.set_sensors(ecg = True, imu = True, laser = True)
+        self.SensorManager.set_sensors(ecg = True, imu = False, laser = True)
         #launch sensors
         self.SensorManager.launch_sensors()
         #launch timer

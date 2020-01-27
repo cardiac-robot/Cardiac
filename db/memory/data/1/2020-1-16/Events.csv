@@ -1,0 +1,3 @@
+Type;Cause;value;Timestamp
+BloodPressure;initial;{'systolic': 90, 'diastolic': 60};2020-01-16 08:59:14.689000
+StartRecording;None;None;2020-01-16 08:59:16.056000

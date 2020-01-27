@@ -1,0 +1,41 @@
+Type;Cause;value;Timestamp
+BloodPressure;initial;{'systolic': 140, 'diastolic': 90};2020-01-24 11:53:13.874000
+StartRecording;None;None;2020-01-24 11:53:15.165000
+RobotWelcome;Start;WelcomeSentence;2020-01-24 11:53:35.303000
+Motivation;Timeout;None;2020-01-24 11:53:56.072000
+BorgRequest;Timeout;none;2020-01-24 11:53:56.510000
+BorgReceive;Clicked;6;2020-01-24 11:53:59.333000
+RequestLook;None;None;2020-01-24 11:54:40.383000
+RequestLook;None;None;2020-01-24 11:55:40.171000
+Alert1;HighHr;None;2020-01-24 11:56:28.211000
+RequestLook;None;None;2020-01-24 11:56:57.670000
+RequestLook;None;None;2020-01-24 11:58:01.357000
+Motivation;Timeout;None;2020-01-24 11:58:56.083000
+RequestLook;None;None;2020-01-24 11:59:23.251000
+RequestLook;None;None;2020-01-24 12:00:21.060000
+BorgRequest;Timeout;none;2020-01-24 12:00:59.693000
+BorgReceive;Clicked;8;2020-01-24 12:01:04.984000
+RequestLook;None;None;2020-01-24 12:01:31.935000
+RequestLook;None;None;2020-01-24 12:02:32.670000
+Alert1;HighHr;None;2020-01-24 12:03:35.380000
+Motivation;Timeout;None;2020-01-24 12:03:57.335000
+RequestLook;None;None;2020-01-24 12:04:05.540000
+RequestLook;None;None;2020-01-24 12:05:03.785000
+RequestLook;None;None;2020-01-24 12:06:02.294000
+RequestLook;None;None;2020-01-24 12:07:00.556000
+BorgRequest;Timeout;none;2020-01-24 12:08:02.848000
+BorgReceive;Clicked;7;2020-01-24 12:08:05.887000
+RequestLook;None;None;2020-01-24 12:08:21.010000
+Alert1;HighHr;None;2020-01-24 12:08:45.685000
+Motivation;Timeout;None;2020-01-24 12:08:59.567000
+RequestLook;None;None;2020-01-24 12:09:19.402000
+RequestLook;None;None;2020-01-24 12:10:16.869000
+RequestLook;None;None;2020-01-24 12:11:20.577000
+Alert1;HighHr;None;2020-01-24 12:11:41.082000
+Cooldown;None;None;2020-01-24 12:12:11.192000
+EndRecording;None;None;2020-01-24 12:28:53.552000
+BloodPressure;final;{'systolic': 120, 'diastolic': 70};2020-01-24 12:29:15.283000
+Questions;None;{'satisfaction': 9, 'motivation': 9};2020-01-24 12:29:17.816000
+average;speed;-0.9310625519062293;2020-01-24 12:29:19.742000
+average;hr;101.32202344231963;2020-01-24 12:29:19.742000
+average;inclination;2.511721159777903;2020-01-24 12:29:19.742000
