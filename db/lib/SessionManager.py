@@ -65,6 +65,7 @@ class SessionManager(object):
         #print path
 
         sessions = next(os.walk(path))[1]
+        # sessions.sort(key = lambda date: datetime.datetime.strptime(date, '%Y-%m-%d')) #TODO: uncomment this line, if all sessions need to be ordered according to date
         #print sessions
 
         #print "====================================================="
