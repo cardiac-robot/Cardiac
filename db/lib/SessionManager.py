@@ -112,7 +112,9 @@ class SessionManager(object):
                     print('--------------e from session manager-----------------')
                     print(e)
                     print('-------------- e from session manager----------------')
-
+                    if len(e) < len(ev_dict):
+                        # if the line is empty, or not in the correct format, skip the line to avoid crash of code
+                        continue
                     ev_dict['Type'] = e[0]
                     ev_dict['Cause'] = e[1]
                 
