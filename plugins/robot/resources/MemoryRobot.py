@@ -656,7 +656,17 @@ class MemoryRobot(object):
                              datetime.date(2019, 7, 1), datetime.date(2019, 8, 7),
                              datetime.date(2019, 8, 19), datetime.date(2019, 10, 14),
                              datetime.date(2019, 11, 4), datetime.date(2019, 11, 11),
-                             datetime.date(2019, 12, 8), datetime.date(2019, 12, 25)]
+                             datetime.date(2019, 12, 8), datetime.date(2019, 12, 25),
+                             datetime.date(2020, 1, 1), datetime.date(2020, 1, 6),
+                             datetime.date(2020, 3, 23), datetime.date(2020, 4, 9),
+                             datetime.date(2020, 4, 10), datetime.date(2020, 5, 1),
+                             datetime.date(2020, 5, 25), datetime.date(2020, 6, 15),
+                             datetime.date(2020, 6, 22), datetime.date(2020, 6, 29),
+                             datetime.date(2020, 7, 20), datetime.date(2020, 8, 7),
+                             datetime.date(2020, 8, 17), datetime.date(2020, 10, 12),
+                             datetime.date(2020, 11, 2), datetime.date(2020, 11, 16),
+                             datetime.date(2020, 12, 8), datetime.date(2020, 12, 25)
+                             ]
             
             self.missing_one_session = "No viniste a la sesión anterior. Espero que todo este bien! "
             self.missing_multiple_sessions = "No viniste a las últimas XX sesiones. Espero que todo esté bien! "
