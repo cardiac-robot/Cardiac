@@ -197,11 +197,17 @@ class MemoryRobot(object):
         self.p_height = float(self.p["height"])
         self.p_times = [] # includes the current session
         times = self.DB.General.SM.load_user_times(p = self.PH.paths['current_user'])
-        print'times'
-        print times
+        #print'times'
+        #print times
+        p_datelist = []
         for tt in times:
-            #print tt
-            self.p_times.append([tt.time().strftime('%H:%M:%S'), tt.isoweekday()])
+            # make sure only one session is added per day
+            #TODO: uncomment the line below, and comment the rest if there is more than one session per day
+            # self.p_times.append([tt.time().strftime('%H:%M:%S'), tt.isoweekday()])
+            date_sess = tt.strftime('%Y-%m-%d')
+            if date_sess not in p_datelist:
+                self.p_times.append([tt.time().strftime('%H:%M:%S'), tt.isoweekday()])
+                p_datelist.append(date_sess)
 
         print 'loadInfo'
         print "##############################"
@@ -211,6 +217,7 @@ class MemoryRobot(object):
         #print "loadSessionData start"
         #print('#####################################################################################')
         s = self.DB.General.SM.get_all_sessions()
+        s.sort(key = lambda x: datetime.datetime.strptime(x["date"], '%Y-%m-%d')) #order sessions by date
         '''
         s {"dates:[], "events":[], "sensors":[], "averages":[]}
         '''
@@ -311,7 +318,7 @@ class MemoryRobot(object):
             cur_session_week_num = cur_session.isocalendar()[1]
             last_session_week_num = last_session.isocalendar()[1]
             num_missed_sessions = (cur_session_week_num - last_session_week_num - 1)*2 # TODO: UPDATE HERE IF IT ISN'T 2 SESSIONS PER WEEK
-            if cur_session.isoweekday() >= 6 : # TODO: UPDATE HERE IF THERE IS A SESSION ON SATURDAY OR SUNDAY
+            if cur_session.isoweekday() >= 5 : # if today is friday, then it is the last session of the week, so the patient missed one session. TODO: UPDATE HERE IF THERE IS A SESSION ON SATURDAY OR SUNDAY
                 num_missed_sessions += 1
             
         return num_missed_sessions
