@@ -88,16 +88,19 @@ class RecognitionPlugin(object):
         #log paths to verify file locations
         self.RecogniserBN.CardiacPrintPaths()
         #take photo
-        self.ISE.takePhoto()
-        #send photo to the robot
-        res = self.ISE.sendPhoto()
-        #TODO:validate res from image transfering
-        print "after ise from RecognitionPlugin"
-        #start recognition
-        self.identity_est = self.RecogniserBN.startRecognition()
-        print self.identity_est
+#         self.ISE.takePhoto()
+#         #send photo to the robot
+#         res = self.ISE.sendPhoto()
+#         #TODO:validate res from image transfering
+#         print "after ise from RecognitionPlugin"
+#         #start recognition
+#         self.identity_est = self.RecogniserBN.startRecognition()
+#         print self.identity_est
         #validation of the recognition
-        if self.identity_est =="":
+        #if self.identity_est =="":
+        self.identity_est = ""
+        while self.identity_est == "":
+            # looped to ensure that a valid image is taken
             #if none recognized
             #take photo
             self.ISE.takePhoto()
@@ -107,8 +110,9 @@ class RecognitionPlugin(object):
 
             #start recognition
             self.identity_est = self.RecogniserBN.startRecognition()
-
-        elif self.identity_est != "0":
+            print self.identity_est
+        if self.identity_est != "0":
+        #elif self.identity_est != "0":
             #if someone is recognized
             #log the identity
             print "Identity: " + self.identity_est
