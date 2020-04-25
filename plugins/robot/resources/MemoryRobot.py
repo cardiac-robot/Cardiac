@@ -246,7 +246,7 @@ class MemoryRobot(object):
                         avrg["Speed"] = e_s['Value']
                     elif e_s["Cause"] == 'hr':
                         avrg["Hr"] = e_s['Value']
-                    elif e_s["Cause"] == 'incl':
+                    elif 'incl' in e_s["Cause"]:
                         avrg["Inclination"] = e_s['Value']
 
             self.p_events.append(s_events)
@@ -446,8 +446,9 @@ class MemoryRobot(object):
             return text_to_say
         last_session_events = self.p_events[-1]
         print last_session_events
-        vals = [0,0,0] # [heart_rate_counter, blood_pressure_counter, borg_scale_counter]
-    #TODO: adjust type of events according to the database
+        # vals = [0,0,0] # [heart_rate_counter, blood_pressure_counter, borg_scale_counter]
+        vals = [0,0,0] # [heart_rate_counter, request_look, borg_scale_counter]
+
         for s in last_session_events:
 
             if s["Type"] == "Alert1":
@@ -456,60 +457,19 @@ class MemoryRobot(object):
             if s["Type"] == "Alert2":
                 vals[0] += 1
 
-            if s["Type"] == "HighBorg":
-                vals[2] += 1
-
-            if s["Type"] == "Emergency":
+            if s["Type"] == "RequestLook":
                 vals[1] += 1
 
+            if s["Type"] == "alarm_fatigue":
+                vals[2] += 1
 
-            '''
-            if s["Type"] == "alert":
-                if s["Cause"] == "HR > HR2":
-                    # "high heart rate"
-                    vals[0] += 1
-                elif s["Cause"] == "BP > BP2":
-                    # "high blood pressure"
-                    vals[1] += 1
-                elif s["Cause"] == "BS > BS2":
-                    # "tiredness"
-                    vals[2] += 1
-                elif s["Cause"] == "Combined HR":
-                    vals[0] += 1
-                    if s["Value"] == "BS1":
-                        # "slightly high heart rate and tiredness"
-                        vals[2] += 1
-                    elif s["Value"] == "BP1":
-                        # "slightly high heart rate and blood pressure"
-                        vals[1] += 1
-                    else:
-                        # "slightly high values"
-                        vals[2] += 1
-                        vals[1] += 1
-                elif s["Cause"] == "Combined BP":
-                    vals[1] += 1
-                    if s["Value"] == "BS1":
-                        # "slightly high blood pressure and tiredness"
-                        vals[2] += 1
-                    elif s["Value"] == "HR1":
-                        # "slightly high blood pressure and heart rate"
-                        vals[0] += 1
-                    else:
-                        # "slightly high values"
-                        vals[2] += 1
-                        vals[0] += 1
-                elif s["Cause"] == "HighHr":
-                    if s["Value"] == "Alert1":
-                        # "slightly high heart rate"
-                        vals[0] += 1
-                    elif s["Value"] == "BP1":
-                        # "slightly high blood pressure"
-                        vals[1] += 1
-                    else:
-                        # "slightly high heart rate and blood pressure"
-                        vals[0] += 1
-                        vals[1] += 1
-            '''
+
+            # if s["Type"] == "HighBorg":
+            #     vals[2] += 1
+
+            # if s["Type"] == "Emergency":
+            #     vals[1] += 1
+
 
         if sum(vals) == 0:
             prev_session_announcement = self.good_previous_session_announcement
@@ -519,7 +479,8 @@ class MemoryRobot(object):
             if max_val == 0:
                 max_bad_value = self.heart_rate_word
             elif max_val == 1:
-                max_bad_value = self.blood_pressure_word
+                # max_bad_value = self.blood_pressure_word
+                max_bad_value = self.posture_word
             else:
                 max_bad_value = self.tiredness_word
 
@@ -565,26 +526,16 @@ class MemoryRobot(object):
         for s_events in self.p_events:
             alerts_c = 0
             request_look_c = 0
-            request_distance_c = 0
+            # request_distance_c = 0
+            alarm_fatigue_c = 0
             for s_e in s_events:
-                if s_e["Type"] == "alert":
+                if "Alert" in s_e["Type"]:
                     alerts_c += 1
-                elif s_e["Type"] == "request_look":
+                elif s_e["Type"] == "RequestLook":
                     request_look_c += 1
-                elif s_e["Type"] == "request_distance":
-                    request_distance_c += 1
-            self.p_events_counts.append([alerts_c, request_look_c, request_distance_c])
-#         alerts_c = 0
-#         request_look_c = 0
-#         request_distance_c = 0
-#         for s_e in self.p_events[-1]:
-#             if s_e["type"] == "alert":
-#                 alerts_c += 1
-#             elif s_e["type"] == "request_look":
-#                 request_look_c += 1
-#             elif s_e["type"] == "request_distance":
-#                 request_distance_c += 1
-#         self.p_events_counts.append([alerts_c, request_look_c, request_distance_c])
+                elif s_e["Type"] == "alarm_fatigue":
+                    alarm_fatigue_c += 1
+            self.p_events_counts.append([alerts_c, request_look_c, alarm_fatigue_c])
 
         self.extra_comment = self.session_intensity_comment
         print('...............................checkProgressAlerts.................')
@@ -690,6 +641,7 @@ class MemoryRobot(object):
             self.heart_rate_word = "con la frecuencia cardiaca"
             self.blood_pressure_word = "con la presión sanguínea"
             self.tiredness_word = "de cansancio"
+            self.posture_word = "con la postura"
 
             self.session_intensity_same = " es la misma intensidad que la última vez. "
             self.session_intensity_more = " un poco más intenso que la última vez. "
@@ -734,6 +686,7 @@ class MemoryRobot(object):
             self.heart_rate_word = "heart rate"
             self.blood_pressure_word = "blood pressure"
             self.tiredness_word = "tiredness"
+            self.posture_word = "posture"
 
             self.session_intensity_same = " same intensity as the last time. "
             self.session_intensity_more = " more intense than the last time. "
